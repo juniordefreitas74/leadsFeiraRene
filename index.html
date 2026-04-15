@@ -6,105 +6,187 @@
 <title>FF Person - RSI Leads</title>
 
 <style>
-body { font-family: Arial; margin:0; background:#f4f6f9;}
-header { background:#111; color:#fff; padding:15px; font-size:20px;}
+body { font-family: Arial, sans-serif; margin:0; background:#f4f6f9; color: #333;}
+header { background:#111; color:#fff; padding:15px; font-size:20px; display: flex; justify-content: space-between; align-items: center;}
 .container { padding:20px;}
+
+/* Estilo das Abas */
+.tabs { display: flex; background: #ddd; margin-bottom: 20px; border-radius: 8px; overflow: hidden;}
+.tab-btn { flex: 1; padding: 12px; border: none; cursor: pointer; background: #ddd; font-weight: bold; transition: 0.3s;}
+.tab-btn.active { background: #007bff; color: white; }
+
 .cards { display:flex; gap:10px; margin-bottom:20px;}
-.card { background:#fff; padding:15px; flex:1; border-radius:10px;}
-input, select { padding:8px; margin-right:10px; margin-bottom:10px;}
-table { width:100%; background:#fff; border-collapse:collapse;}
-th,td { padding:10px; border-bottom:1px solid #ddd;}
-tr:hover { background:#f1f1f1; cursor:pointer;}
-.btn { padding:5px 10px; border:none; border-radius:5px; cursor:pointer;}
+.card { background:#fff; padding:15px; flex:1; border-radius:10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+input, select, textarea { padding:10px; margin-bottom:10px; border: 1px solid #ccc; border-radius: 5px; width: 100%; box-sizing: border-box;}
+
+table { width:100%; background:#fff; border-collapse:collapse; border-radius: 10px; overflow: hidden;}
+th,td { padding:12px; border-bottom:1px solid #ddd; text-align: left;}
+tr:hover { background:#f9f9f9; }
+
+.btn { padding:8px 12px; border:none; border-radius:5px; cursor:pointer; font-size: 12px; font-weight: bold; margin-right: 5px;}
 .ok { background:green; color:#fff;}
+.btn-wa { background: #25D366; color: white; }
+.btn-mail { background: #ea4335; color: white; }
+
+.hidden { display: none; }
 
 @media (max-width: 768px) {
   .cards { flex-direction: column; }
-  input, select { width: 100%; }
+  .btn { margin-bottom: 5px; width: 100%; }
 }
 </style>
 </head>
 
 <body>
 
-<header>📊 CRM de Leads RSI</header>
+<header>
+    <span>📊 CRM de Leads RSI</span>
+</header>
 
 <div class="container">
+    <!-- Navegação por Abas -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('leads')">Lista de Leads</button>
+        <button class="tab-btn" onclick="switchTab('email')">Enviar E-mail</button>
+    </div>
 
-<div class="cards">
-<div class="card">Total: <span id="total"></span></div>
-<div class="card">🔥 Alta: <span id="alta"></span></div>
-<div class="card">Contatados: <span id="contatados"></span></div>
-</div>
+    <!-- ABA 1: LISTA DE LEADS -->
+    <div id="tab-leads">
+        <div class="cards">
+            <div class="card">Total: <span id="total">0</span></div>
+            <div class="card">🔥 Alta: <span id="alta">0</span></div>
+            <div class="card">Contatados: <span id="contatados">0</span></div>
+        </div>
 
-<select id="filtroRamo">
-<option value="">Ramo</option>
-</select>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <select id="filtroRamo" style="flex: 1; min-width: 150px;"><option value="">Todos os Ramos</option></select>
+            <select id="filtroPrioridade" style="flex: 1; min-width: 150px;">
+                <option value="">Todas Prioridades</option>
+                <option>🔥 ALTA</option>
+                <option>⚡ MEDIA</option>
+                <option>❄️ BAIXA</option>
+            </select>
+            <input type="text" id="busca" placeholder="Buscar nome ou empresa..." style="flex: 2; min-width: 200px;">
+        </div>
 
-<select id="filtroPrioridade">
-<option value="">Prioridade</option>
-<option>🔥 ALTA</option>
-<option>⚡ MEDIA</option>
-<option>❄️ BAIXA</option>
-</select>
+        <table>
+            <thead>
+                <tr>
+                    <th>Lead</th>
+                    <th>Empresa</th>
+                    <th>Prioridade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabela"></tbody>
+        </table>
+    </div>
 
-<input type="text" id="busca" placeholder="Buscar nome ou empresa...">
+    <!-- ABA 2: ENVIAR EMAIL -->
+    <div id="tab-email" class="hidden">
+        <div class="card" style="max-width: 600px; margin: auto;">
+            <h3>📧 Compor E-mail</h3>
+            <label>Selecionar Lead:</label>
+            <select id="selectLeadEmail" onchange="carregarDadosEmail()">
+                <option value="">Selecione um lead...</option>
+            </select>
+            
+            <label>E-mail do Destinatário:</label>
+            <input type="email" id="emailDestino" placeholder="email@exemplo.com">
+            
+            <label>Assunto:</label>
+            <input type="text" id="emailAssunto" value="Novidades da RSI - Impressoras Laser">
+            
+            <label>Mensagem:</label>
+            <textarea id="emailMensagem" rows="6">Olá, 
 
-<table>
-<thead>
-<tr>
-<th>Nome</th>
-<th>Empresa</th>
-<th>Ramo</th>
-<th>Prioridade</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody id="tabela"></tbody>
-</table>
-
+Tudo bem? Gostaria de dar continuidade ao nosso contato na feira...</textarea>
+            
+            <button class="btn btn-mail" style="width: 100%; padding: 15px;" onclick="enviarEmail()">Enviar E-mail (Abrir Gmail/Outlook)</button>
+        </div>
+    </div>
 </div>
 
 <script>
 let dados = [];
 let contatados = JSON.parse(localStorage.getItem("contatados") || "[]");
 
-// 🔥 DETECTA MOBILE (caso queira usar futuramente)
-function isMobile() {
-    return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+// Alternar entre abas
+function switchTab(tab) {
+    document.getElementById('tab-leads').classList.add('hidden');
+    document.getElementById('tab-email').classList.add('hidden');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    
+    document.getElementById('tab-' + tab).classList.remove('hidden');
+    event.currentTarget.classList.add('active');
 }
 
-// 🔥 API
+// 🔥 Carregar API
 fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
 .then(res => res.json())
 .then(json => {
-
     dados = json.map(l => ({
-        nome: l.name || "",
+        nome: l.name || l.Nome || "",
         empresa: l.Empresa || "",
         telefone: (l.Telefone || "").replace(/\D/g, ""),
+        email: l.Email || l.email || "", // Captura o campo de e-mail
         ramo: l.Ramo || "",
         prioridade: l.Prioridade || "❄️ BAIXA"
     }));
 
-    // filtros de ramo
+    popularFiltros();
+    atualizar();
+    popularSelectEmail();
+});
+
+function popularFiltros() {
     let ramos = [...new Set(dados.map(d => d.ramo))];
     let select = document.getElementById("filtroRamo");
-
     ramos.forEach(r => {
         if(r){
             let opt = document.createElement("option");
-            opt.value = r;
-            opt.text = r;
-            select.add(opt);
+            opt.value = r; opt.text = r; select.add(opt);
         }
     });
+}
 
-    atualizar();
-});
+function popularSelectEmail() {
+    let select = document.getElementById("selectLeadEmail");
+    dados.forEach((d, index) => {
+        let opt = document.createElement("option");
+        opt.value = index;
+        opt.text = `${d.nome} (${d.empresa})`;
+        select.add(opt);
+    });
+}
+
+function carregarDadosEmail() {
+    let idx = document.getElementById("selectLeadEmail").value;
+    if(idx !== "") {
+        let lead = dados[idx];
+        document.getElementById("emailDestino").value = lead.email;
+        document.getElementById("emailMensagem").value = `Olá ${lead.nome},\n\nEspero que esteja bem! Somos da RSI e gostaríamos de apresentar nossas novas soluções em impressão para a ${lead.empresa}.\n\nPodemos agendar uma conversa?`;
+    }
+}
+
+function enviarEmail() {
+    let para = document.getElementById("emailDestino").value;
+    let assunto = document.getElementById("emailAssunto").value;
+    let corpo = document.getElementById("emailMensagem").value;
+    
+    if(!para) { alert("Por favor, selecione um lead ou digite um e-mail."); return; }
+
+    let mailtoLink = `mailto:${para}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
+    window.location.href = mailtoLink;
+}
+
+function abrirWA(nome, tel) {
+    if(!tel) return alert("Telefone não cadastrado");
+    let msg = `Olá ${nome}, tudo bem? Somos da empresa RSI que você conheceu na feira. Posso te enviar as opções de impressoras laser?`;
+    window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, "_blank");
+}
 
 function prioridadeScore(p){
-    if(!p) return 1;
     if(p.includes("ALTA")) return 3;
     if(p.includes("MEDIA")) return 2;
     return 1;
@@ -115,14 +197,14 @@ function atualizar(){
     tabela.innerHTML = "";
 
     let busca = document.getElementById("busca").value.toLowerCase();
-    let filtroRamo = document.getElementById("filtroRamo").value;
-    let filtroPrioridade = document.getElementById("filtroPrioridade").value;
+    let fRamo = document.getElementById("filtroRamo").value;
+    let fPrio = document.getElementById("filtroPrioridade").value;
 
     let filtrados = dados
         .filter(d =>
             (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
-            (!filtroRamo || d.ramo == filtroRamo) &&
-            (!filtroPrioridade || d.prioridade == filtroPrioridade)
+            (!fRamo || d.ramo == fRamo) &&
+            (!fPrio || d.prioridade == fPrio)
         )
         .sort((a,b)=>prioridadeScore(b.prioridade)-prioridadeScore(a.prioridade));
 
@@ -132,52 +214,12 @@ function atualizar(){
 
     filtrados.forEach(d => {
         let tr = document.createElement("tr");
-
-        let ja = contatados.includes(d.telefone);
+        let jaContatado = contatados.includes(d.telefone);
 
         tr.innerHTML = `
-            <td>${d.nome}</td>
+            <td><strong>${d.nome}</strong><br><small>${d.ramo}</small></td>
             <td>${d.empresa}</td>
-            <td>${d.ramo || "-"}</td>
             <td>${d.prioridade}</td>
             <td>
-                <button class="btn ${ja?'ok':''}">
-                    ${ja?'✔ Contatado':'Contatar'}
-                </button>
-            </td>
-        `;
-
-        // abrir WhatsApp
-        tr.onclick = () => {
-            if(!d.telefone) return;
-
-            let msg = `Olá ${d.nome}, tudo bem? Somos da empresa RSI que você conheceu na feira. Temos ótimas condições em impressoras laser. Posso te enviar algumas opções?`;
-
-            let url = `https://wa.me/${d.telefone}?text=${encodeURIComponent(msg)}`;
-
-            window.open(url, "_blank");
-        };
-
-        // marcar como contatado
-        tr.querySelector("button").onclick = (e)=>{
-            e.stopPropagation();
-
-            if(!contatados.includes(d.telefone)){
-                contatados.push(d.telefone);
-                localStorage.setItem("contatados", JSON.stringify(contatados));
-            }
-
-            atualizar();
-        };
-
-        tabela.appendChild(tr);
-    });
-}
-
-document.getElementById("busca").addEventListener("input", atualizar);
-document.getElementById("filtroRamo").addEventListener("change", atualizar);
-document.getElementById("filtroPrioridade").addEventListener("change", atualizar);
-</script>
-
-</body>
-</html>
+                <button class="btn btn-wa" onclick="abrirWA('${d.nome}', '${d.telefone}')">WhatsApp</button>
+                <button class="btn btn-mail"
