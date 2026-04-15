@@ -3,48 +3,68 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM - Business Edition</title>
+<title>RSI CRM - Business Edition v1.5.1</title>
 <style>
-:root { --primary: #007bff; --wa: #25D366; --mail: #ea4335; --dark: #111; --bg: #f4f6f9; }
-body { font-family: 'Segoe UI', sans-serif; margin:0; background: var(--bg); }
+:root { 
+    --primary: #007bff; --wa: #25D366; --mail: #ea4335; --dark: #111; --bg: #f4f6f9; 
+    --f-novo: #6c757d; --f-contato: #17a2b8; --f-proposta: #fd7e14; --f-fechado: #28a745;
+}
+body { font-family: 'Segoe UI', system-ui, sans-serif; margin:0; background: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
 
 /* TELA DE LOGIN */
 #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #111; display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .login-box { background: #fff; padding: 40px; border-radius: 15px; width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-.login-box img { width: 70px; margin-bottom: 20px; border-radius: 50%; border: 3px solid var(--primary); }
-input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-.btn-login { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-.forgot { font-size: 11px; color: #666; cursor: pointer; display: block; margin-top: 15px; }
+.login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
+input, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; outline: none; }
+.btn-login { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+.btn-login:hover { background: #0056b3; }
+.forgot { font-size: 11px; color: #666; cursor: pointer; display: block; margin-top: 15px; text-decoration: underline; }
 
-/* CRM */
+/* APLICATIVO CRM */
 #crm-app { display: none; }
 header { background: var(--dark); color:#fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-.header-brand { display: flex; align-items: center; gap: 10px; }
-.header-brand img { height: 40px; width: 40px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
-.container { padding: 20px; max-width: 1200px; margin: auto; }
+.header-brand { display: flex; align-items: center; gap: 12px; }
+.header-brand img { height: 45px; width: 45px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
+.header-brand span { font-size: 20px; font-weight: bold; }
+#sync-info { font-size: 10px; margin-left: 10px; font-weight: normal; transition: 0.3s; }
 
-.tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.tab-btn { padding: 15px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 12px; flex: 1; color: #666; border-bottom: 3px solid transparent; }
-.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: #f8fbff; }
+.container { padding: 20px; max-width: 1200px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
 
 /* Dashboard */
-.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom: 20px; }
-.card { background:#fff; padding:15px; border-radius:10px; border-left: 5px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.card h3 { margin: 0; font-size: 10px; color: #888; text-transform: uppercase; }
-.card span { font-size: 20px; font-weight: bold; display: block; }
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom: 25px;}
+.card { background:#fff; padding:15px; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #ddd; }
+.card h3 { margin: 0; font-size: 11px; color: #888; text-transform: uppercase; }
+.card span { font-size: 22px; font-weight: bold; display: block; margin-top: 5px; }
 
+/* Tabs */
+.tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.tab-btn { padding: 15px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 12px; flex: 1; color: #666; transition: 0.3s; border-bottom: 3px solid transparent;}
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: #f8fbff; }
+
+/* Tabela */
 .table-container { background:#fff; border-radius: 12px; overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-table { width:100%; border-collapse:collapse; min-width: 850px;}
-td, th { padding: 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
-.status-select { padding: 5px; font-size: 11px; font-weight: bold; border-radius: 5px; }
-.note-area { width: 100%; height: 40px; font-size: 12px; border: 1px solid #eee; border-radius: 5px; resize: none; }
+table { width:100%; border-collapse:collapse; min-width: 900px;}
+th { background: #f8f9fa; padding:12px 15px; text-align: left; font-size: 11px; color: #777; text-transform: uppercase; border-bottom: 2px solid #eee; }
+td { padding:12px 15px; border-bottom:1px solid #eee; font-size: 14px; vertical-align: middle; }
 
+/* Ações */
 .btn-group { display: flex; gap: 5px; }
-.btn-act { width: 35px; height: 35px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.btn-act svg { width: 16px; fill: white; }
+.btn-act { width: 38px; height: 38px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.btn-act svg { width: 18px; height: 18px; fill: white; }
+.btn-wa { background: var(--wa); }
+.btn-mail { background: var(--mail); }
+.btn-call { background: #6366f1; }
 
+.status-select { padding: 5px; border-radius: 6px; font-size: 11px; font-weight: bold; border: 1px solid #ddd; cursor: pointer;}
+.note-area { font-size: 12px; width: 100%; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 6px; padding: 6px; min-height: 40px; font-family: inherit; resize: vertical;}
+
+/* Paginação */
+.pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding-bottom: 20px; }
+.btn-pag { background: #fff; border: 1px solid #ddd; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.btn-pag:disabled { opacity: 0.3; cursor: not-allowed; }
+
+footer { text-align: center; padding: 20px; font-size: 11px; color: #888; background: #fff; border-top: 1px solid #eee; margin-top: auto;}
 .hidden { display: none; }
-footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
 </style>
 </head>
 <body>
@@ -53,108 +73,152 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
 <div id="login-screen">
     <div class="login-box">
         <img src="logo.jpg" alt="RSI">
-        <h2 style="margin:0 0 20px 0; font-size: 18px;">RSI Business Login</h2>
-        <input type="email" id="userEmail" placeholder="E-mail">
-        <input type="password" id="userPass" placeholder="Senha">
-        <button class="btn-login" onclick="acaoLogin()">ENTRAR</button>
+        <h2 style="margin:0 0 20px 0; font-size: 18px;">RSI Business CRM</h2>
+        <input type="email" id="userEmail" placeholder="Seu e-mail">
+        <input type="password" id="userPass" placeholder="Sua senha">
+        <button class="btn-login" onclick="acaoLogin()">ACESSAR SISTEMA</button>
         <span class="forgot" onclick="recuperarSenha()">Esqueci minha senha</span>
-        <p id="msg-login" style="font-size: 11px; margin-top: 10px;"></p>
+        <p id="msg-login" style="font-size: 11px; margin-top: 15px; font-weight: bold;"></p>
     </div>
 </div>
 
-<!-- CRM PRINCIPAL -->
+<!-- CRM APP -->
 <div id="crm-app">
     <header>
         <div class="header-brand">
             <img src="logo.jpg">
-            <span>RSI CRM <small id="sync" style="font-size: 9px; color: #25D366; font-weight: normal;">• Sincronizado</small></span>
+            <span>RSI Cloud <small id="sync" style="color:#25D366;">• Sincronizado</small></span>
         </div>
-        <button onclick="logout()" style="background:none; border: 1px solid #fff; color:white; border-radius: 5px; padding: 4px 8px; cursor: pointer; font-size: 10px;">SAIR</button>
+        <button onclick="logout()" style="background:none; border: 1px solid #fff; color:white; border-radius: 5px; padding: 5px 10px; cursor: pointer; font-size: 10px;">SAIR DO CRM</button>
     </header>
 
     <div class="container">
-        <!-- Dashboards -->
+        <!-- Dashboard Funil -->
         <div class="cards">
-            <div class="card"><h3>Total</h3><span id="total">0</span></div>
+            <div class="card"><h3>Total Leads</h3><span id="total">0</span></div>
+            <div class="card" style="border-left-color: #6c757d"><h3>Novos</h3><span id="dash-novo">0</span></div>
             <div class="card" style="border-left-color: #fd7e14"><h3>Propostas</h3><span id="dash-proposta">0</span></div>
             <div class="card" style="border-left-color: #28a745"><h3>Fechados</h3><span id="dash-fechado">0</span></div>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('funil', this)">GESTÃO DO FUNIL</button>
-            <button class="tab-btn" onclick="showTab('mkt', this)">E-MAIL MKT</button>
-            <button id="tab-admin" class="tab-btn hidden" onclick="showTab('config', this)">USUÁRIOS</button>
+            <button class="tab-btn active" id="btn-tab-lista" onclick="tab('lista')">GESTÃO DO FUNIL</button>
+            <button class="tab-btn" id="btn-tab-email" onclick="tab('email')">E-MAIL MKT</button>
+            <button class="tab-btn hidden" id="btn-tab-config" onclick="tab('config')">USUÁRIOS</button>
         </div>
 
-        <!-- ABA FUNIL -->
-        <div id="view-funil">
-            <div style="display:flex; gap:10px; margin-bottom: 15px;">
-                <select id="fRamo" onchange="atualizarTabela()" style="flex:1;"><option value="">Todos Segmentos</option></select>
-                <input type="text" id="busca" oninput="atualizarTabela()" placeholder="Buscar cliente..." style="flex:2;">
+        <!-- ABA LISTA -->
+        <div id="view-lista">
+            <div style="display: flex; gap:10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <select id="fStatus" onchange="resetPag()" style="flex:1; min-width: 140px;">
+                    <option value="">Status (Todos)</option>
+                    <option value="Novo">🟡 Novo</option>
+                    <option value="Contato">🔵 Contato</option>
+                    <option value="Proposta">🟠 Proposta</option>
+                    <option value="Fechado">🟢 Fechado</option>
+                </select>
+                <select id="fRamo" onchange="resetPag()" style="flex:1; min-width: 140px;"><option value="">Segmentos (Todos)</option></select>
+                <input type="text" id="busca" oninput="resetPag()" placeholder="Buscar cliente ou empresa..." style="flex:2; min-width: 200px;">
             </div>
+
             <div class="table-container">
                 <table>
-                    <thead><tr><th>Cliente</th><th>Estágio</th><th>Notas</th><th>Ações</th></tr></thead>
+                    <thead><tr><th width="20%">Cliente</th><th width="15%">Funil</th><th width="35%">Notas</th><th width="30%">Ações</th></tr></thead>
                     <tbody id="tabela-leads"></tbody>
                 </table>
             </div>
+
+            <div class="pagination">
+                <button class="btn-pag" id="btn-prev" onclick="pag(-1)">Anterior</button>
+                <span id="info-pag" style="font-weight: bold; font-size: 14px;"></span>
+                <button class="btn-pag" id="btn-next" onclick="pag(1)">Próximo</button>
+            </div>
         </div>
 
-        <!-- ABA CONFIGURAÇÃO (SÓ ADMIN/MASTER) -->
+        <!-- ABA EMAIL -->
+        <div id="view-email" class="hidden">
+            <div class="card" style="max-width: 600px; margin: auto; border-top: 4px solid var(--mail); padding: 30px;">
+                <h3 style="margin-bottom: 20px;">📧 Compostor RSI</h3>
+                <select id="mail-template" onchange="aplicarTemplate()" style="margin-bottom: 10px;">
+                    <option value="apresentacao">Apresentação Institucional RSI</option>
+                    <option value="feira">Agradecimento Feira</option>
+                    <option value="proposta">Envio de Orçamento</option>
+                </select>
+                <input type="email" id="mail-para" placeholder="E-mail do cliente">
+                <textarea id="mail-msg" rows="12" style="width:100%; font-family: inherit; padding: 10px; border-radius: 8px; border: 1px solid #ddd; line-height: 1.5;"></textarea>
+                <button class="btn-login" style="margin-top: 15px; background: var(--mail);" onclick="dispararMail()">ABRIR NO MEU E-MAIL</button>
+            </div>
+        </div>
+
+        <!-- ABA CONFIG -->
         <div id="view-config" class="hidden">
-            <div class="card" style="max-width: 500px; margin: auto;">
-                <h3>Cadastrar Novo Vendedor (Limite: 1)</h3>
-                <input type="email" id="newEmail" placeholder="E-mail do vendedor">
+            <div class="card" style="max-width: 500px; margin: auto; border-top: 4px solid var(--dark); padding: 25px;">
+                <h3>Gerenciar Equipe (Máx 1 Vendedor)</h3>
+                <input type="email" id="newEmail" placeholder="E-mail do novo vendedor">
                 <input type="text" id="newPass" placeholder="Senha provisória">
-                <button class="btn-login" onclick="cadastrarVendedor()">CADASTRAR</button>
-                <hr>
+                <button class="btn-login" style="background: var(--dark);" onclick="cadastrarVendedor()">CRIAR ACESSO</button>
+                <hr style="margin: 20px 0;">
                 <div id="lista-usuarios"></div>
             </div>
         </div>
-
-        <!-- ABA MKT -->
-        <div id="view-mkt" class="hidden">
-            <div class="card" style="max-width: 500px; margin: auto;">
-                <h3>E-mail Automatizado</h3>
-                <input type="text" id="mkt-para" placeholder="Para:">
-                <textarea id="mkt-msg" style="width:100%; height: 150px; border-radius: 8px; padding: 10px;" placeholder="Mensagem..."></textarea>
-                <button class="btn-login" onclick="enviarMail()">ABRIR E-MAIL</button>
-            </div>
-        </div>
     </div>
-    <footer>CRM v1.5.0 | Developed by FF Person</footer>
+
+    <footer>
+        CRM RSI Leads v1.5.1 | Desenvolvido por <strong>FF Person</strong>
+    </footer>
 </div>
 
 <script>
-const SCRIPT_URL = "SUA_URL_DO_GOOGLE_SCRIPT_AQUI"; // Cole o link aqui
+// --- CONFIGURAÇÃO ---
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxP7hKkncWbMTHjxaDp-c_xQRy-JuZlDZ3Ir0v1f0NggCuW5xIhYEf0qcV70QDm0b4Z/exec";
 
 let dadosLeads = [];
-let nivelAcesso = "";
+let nivelUser = "";
+let pagAtual = 1;
+const porPag = 20;
+let leadSelecionado = {};
 
-// --- LOGIN E SEGURANÇA ---
+const iconWA = `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+const iconMail = `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`;
+const iconCall = `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.01-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
+
+// TEXTO RSI
+const RSI_INFO = "RSI – Soluções em Impressão\nEspecializada na compra e venda de impressoras e multifuncionais novas e usadas. Oferecemos equipamentos de alta qualidade para atender às necessidades da sua empresa, com suporte técnico especializado e atendimento ágil.";
+
+const templates = {
+    apresentacao: `Olá [NOME],\n\nSou da RSI e gostaria de apresentar nossa estrutura para a [EMPRESA]:\n\n${RSI_INFO}\n\nPodemos agendar uma conversa?`,
+    feira: `Olá [NOME], foi um prazer falar com você na feira!\n\nReiterando nosso contato pela RSI – Soluções em Impressão.\n\n${RSI_INFO}\n\nQual o melhor horário para falarmos?`,
+    proposta: `Prezado(a) [NOME],\n\nSegue a proposta solicitada para a [EMPRESA].\n\nLembrando que na RSI garantimos suporte técnico completo.\n\nQualquer dúvida, estou à disposição!`
+};
+
+// LOGIN
 function acaoLogin() {
     const u = document.getElementById("userEmail").value;
     const s = document.getElementById("userPass").value;
+    const msg = document.getElementById("msg-login");
     if(!u || !s) return alert("Preencha tudo!");
     
-    document.getElementById("msg-login").innerText = "Verificando...";
-    
+    msg.innerText = "Verificando...";
+    msg.style.color = "orange";
+
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
     .then(r => r.json()).then(res => {
         if(res !== "erro") {
-            nivelAcesso = res;
+            nivelUser = res;
+            sessionStorage.setItem("rsi_logado", "sim");
             sessionStorage.setItem("rsi_nivel", res);
             iniciarApp();
         } else {
-            document.getElementById("msg-login").innerText = "Acesso Negado!";
+            msg.innerText = "E-mail ou senha incorretos!";
+            msg.style.color = "red";
         }
-    });
+    }).catch(() => msg.innerText = "Erro ao conectar. Verifique o Script.");
 }
 
 function iniciarApp() {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("crm-app").style.display = "block";
-    if(nivelAcesso === "admin" || nivelAcesso === "master") document.getElementById("tab-admin").classList.remove("hidden");
+    if(nivelUser === "admin" || nivelUser === "master") document.getElementById("btn-tab-config").classList.remove("hidden");
     carregarLeads();
 }
 
@@ -162,10 +226,10 @@ function recuperarSenha() {
     const u = document.getElementById("userEmail").value;
     if(!u) return alert("Digite seu e-mail no campo de login primeiro.");
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "recover", usuario: u }) })
-    .then(r => r.json()).then(res => alert(res === "enviado" ? "Senha enviada para seu e-mail!" : "E-mail não encontrado."));
+    .then(r => r.json()).then(res => alert(res === "enviado" ? "Senha enviada para seu e-mail!" : "E-mail não cadastrado."));
 }
 
-// --- GESTÃO DE LEADS ---
+// LEADS
 function carregarLeads() {
     fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
     .then(r => r.json()).then(json => {
@@ -174,11 +238,11 @@ function carregarLeads() {
             email: l.Email || "", ramo: l.Ramo || "", status: l.Status || "Novo", notas: l.Notas || ""
         }));
         
-        // Popular Segmentos
-        const ramos = [...new Set(dadosLeads.map(d => d.ramo))].filter(Boolean).sort();
         const sel = document.getElementById("fRamo");
-        ramos.forEach(r => { let o = document.createElement("option"); o.text = r; sel.add(o); });
-        
+        sel.innerHTML = '<option value="">Segmentos (Todos)</option>';
+        [...new Set(dadosLeads.map(d => d.ramo))].filter(Boolean).sort().forEach(r => {
+            let o = document.createElement("option"); o.text = r; sel.add(o);
+        });
         atualizarTabela();
     });
 }
@@ -186,35 +250,44 @@ function carregarLeads() {
 function atualizarTabela() {
     const busca = document.getElementById("busca").value.toLowerCase();
     const ramo = document.getElementById("fRamo").value;
+    const status = document.getElementById("fStatus").value;
     const body = document.getElementById("tabela-leads");
     body.innerHTML = "";
 
     const filtrados = dadosLeads.filter(d => 
         (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
-        (!ramo || d.ramo == ramo)
+        (!ramo || d.ramo == ramo) &&
+        (!status || d.status == status)
     );
 
     document.getElementById("total").innerText = filtrados.length;
     document.getElementById("dash-proposta").innerText = filtrados.filter(d => d.status == "Proposta").length;
     document.getElementById("dash-fechado").innerText = filtrados.filter(d => d.status == "Fechado").length;
+    document.getElementById("dash-novo").innerText = filtrados.filter(d => d.status == "Novo").length;
 
-    filtrados.slice(0, 20).forEach(d => {
+    const totalP = Math.ceil(filtrados.length / porPag) || 1;
+    document.getElementById("info-pag").innerText = `Pág ${pagAtual} de ${totalP}`;
+    document.getElementById("btn-prev").disabled = pagAtual === 1;
+    document.getElementById("btn-next").disabled = pagAtual === totalP;
+
+    filtrados.slice((pagAtual-1)*porPag, pagAtual*porPag).forEach(d => {
         let tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><strong>${d.nome}</strong><br><small>${d.empresa}</small></td>
+            <td><strong>${d.nome}</strong><br><small>${d.empresa} | ${d.ramo}</small></td>
             <td>
                 <select class="status-select" onchange="salvarCloud('${d.telefone}', this.value, null)">
-                    <option value="Novo" ${d.status=='Novo'?'selected':''}>Novo</option>
-                    <option value="Contato" ${d.status=='Contato'?'selected':''}>Contato</option>
-                    <option value="Proposta" ${d.status=='Proposta'?'selected':''}>Proposta</option>
-                    <option value="Fechado" ${d.status=='Fechado'?'selected':''}>Fechado</option>
+                    <option value="Novo" ${d.status=='Novo'?'selected':''}>🟡 Novo</option>
+                    <option value="Contato" ${d.status=='Contato'?'selected':''}>🔵 Contato</option>
+                    <option value="Proposta" ${d.status=='Proposta'?'selected':''}>🟠 Proposta</option>
+                    <option value="Fechado" ${d.status=='Fechado'?'selected':''}>🟢 Fechado</option>
                 </select>
             </td>
             <td><textarea class="note-area" onchange="salvarCloud('${d.telefone}', null, this.value)">${d.notas}</textarea></td>
             <td>
                 <div class="btn-group">
-                    <button class="btn-act" style="background:var(--wa)" onclick="window.open('https://wa.me/${d.telefone}')">W</button>
-                    <button class="btn-act" style="background:var(--mail)" onclick="prepararEmail('${d.email}')">E</button>
+                    <a href="tel:${d.telefone}" class="btn-act" style="background:#6366f1">${iconCall}</a>
+                    <button class="btn-act" style="background:var(--wa)" onclick="abrirWA('${d.telefone}', '${d.nome}', '${d.empresa}')">${iconWA}</button>
+                    <button class="btn-act" style="background:var(--mail)" onclick="prepararEmail('${d.telefone}')">${iconMail}</button>
                 </div>
             </td>
         `;
@@ -224,23 +297,55 @@ function atualizarTabela() {
 
 function salvarCloud(tel, st, nt) {
     document.getElementById("sync").innerText = "• Salvando...";
+    document.getElementById("sync").style.color = "orange";
     let l = dadosLeads.find(x => x.telefone === tel);
     if(st) l.status = st; if(nt !== null) l.notas = nt;
 
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ telefone: tel, status: l.status, notas: l.notas }) })
-    .then(() => { document.getElementById("sync").innerText = "• Sincronizado"; atualizarTabela(); });
+    .then(() => { 
+        document.getElementById("sync").innerText = "• Sincronizado"; 
+        document.getElementById("sync").style.color = "#25D366";
+        if(st) atualizarTabela(); 
+    });
 }
 
-// --- GESTÃO DE USUÁRIOS (SÓ ADMIN) ---
+// EMAIL
+function prepararEmail(tel) {
+    let d = dadosLeads.find(x => x.telefone === tel);
+    leadSelecionado = d;
+    tab('email');
+    document.getElementById('mail-para').value = d.email;
+    document.getElementById('mail-template').value = "apresentacao";
+    aplicarTemplate();
+}
+
+function aplicarTemplate() {
+    const t = document.getElementById("mail-template").value;
+    let msg = templates[t].replace("[NOME]", leadSelecionado.nome || "Cliente").replace("[EMPRESA]", leadSelecionado.empresa || "sua empresa");
+    document.getElementById("mail-msg").value = msg;
+}
+
+function dispararMail() {
+    const p = document.getElementById("mail-para").value;
+    const m = document.getElementById("mail-msg").value;
+    window.location.href = `mailto:${p}?subject=RSI – Soluções em Impressão&body=${encodeURIComponent(m)}`;
+}
+
+// WA
+function abrirWA(tel, nome, empresa) {
+    let msg = `Olá ${nome}, tudo bem? Sou da RSI – Soluções em Impressão. Vi seu interesse na ${empresa} e gostaria de apresentar nossas impressoras revisadas.`;
+    window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
+// CONFIG
 function cadastrarVendedor() {
     const e = document.getElementById("newEmail").value;
     const s = document.getElementById("newPass").value;
     if(!e || !s) return alert("Preencha e-mail e senha!");
-
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "addUser", newEmail: e, newPass: s }) })
     .then(r => r.json()).then(res => {
         if(res === "sucesso") { alert("Vendedor cadastrado!"); carregarUsuarios(); }
-        else alert("Limite de 1 vendedor atingido! Exclua o anterior primeiro.");
+        else alert("Limite de 1 vendedor atingido!");
     });
 }
 
@@ -248,33 +353,35 @@ function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) })
     .then(r => r.json()).then(users => {
         let h = "<h4>Vendedor Atual:</h4>";
-        users.forEach((u, i) => {
-            if(u[2] === "vendedor") h += `<p>${u[0]} <button onclick="deletarUsuario(${i})">Excluir</button></p>`;
-        });
+        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p>${u[0]} <button onclick="deletarUsuario(${i})">Excluir</button></p>`; });
         document.getElementById("lista-usuarios").innerHTML = h;
     });
 }
 
 function deletarUsuario(row) {
-    if(confirm("Deseja excluir este acesso?")) {
-        fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: row }) })
-        .then(() => carregarUsuarios());
+    if(confirm("Excluir este acesso?")) {
+        fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: row }) }).then(() => carregarUsuarios());
     }
 }
 
-// --- NAVEGAÇÃO ---
-function showTab(view, btn) {
-    document.getElementById("view-funil").classList.add("hidden");
-    document.getElementById("view-mkt").classList.add("hidden");
-    document.getElementById("view-config").classList.add("hidden");
+// UI
+function tab(v) {
+    ["lista", "email", "config"].forEach(t => document.getElementById("view-"+t).classList.add("hidden"));
+    document.getElementById("view-"+v).classList.remove("hidden");
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    
-    document.getElementById("view-" + view).classList.remove("hidden");
-    btn.classList.add("active");
-    if(view === "config") carregarUsuarios();
+    if(v === "config") { carregarUsuarios(); document.getElementById("btn-tab-config").classList.add("active"); }
+    else document.getElementById("btn-tab-"+v).classList.add("active");
 }
 
+function pag(d) { pagAtual += d; atualizarTabela(); window.scrollTo(0,0); }
+function resetPag() { pagAtual = 1; atualizarTabela(); }
 function logout() { sessionStorage.clear(); location.reload(); }
+
+// Check session
+if(sessionStorage.getItem("rsi_logado") === "sim") {
+    nivelUser = sessionStorage.getItem("rsi_nivel");
+    iniciarApp();
+}
 </script>
 </body>
 </html>
