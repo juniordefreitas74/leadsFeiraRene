@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM Cloud v1.8.9 | By FF Person</title>
+<title>RSI CRM Cloud v1.9.0 | By FF Person</title>
 <style>
 :root { 
     --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --edit: #f59e0b; --dark: #0f172a; --bg: #f8fafc; 
@@ -15,9 +15,9 @@ body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color:
 
 #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--dark); display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .login-box { background: #fff; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-.login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid #f1f5f9; object-fit: cover; }
+.login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
 
-input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none; margin-bottom: 10px; background: #fff;}
+input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none; margin-bottom: 10px;}
 label { display: block; text-align: left; font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; margin-bottom: 4px; }
 
 .btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
@@ -52,7 +52,7 @@ td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-
 .btn-wa { background: var(--wa); } .btn-mail { background: var(--mail); } .btn-edit { background: var(--edit); } .btn-del { background: #444; } 
 .btn-act svg { width: 16px; height: 16px; fill: white; }
 
-.status-badge { padding: 6px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid #e2e8f0; width: 100%; cursor: pointer;}
+.status-badge { padding: 6px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid #e2e8f0; width: 100%; }
 .note-area { border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; width: 100%; min-height: 40px; resize: vertical; font-family: inherit; }
 
 .pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 20px 0; }
@@ -84,7 +84,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
     <header>
         <div class="header-brand"><img src="logo.jpg"> <span>RSI CRM Cloud</span></div>
         <div style="display:flex; align-items:center; gap: 15px;">
-            <div id="sync" style="font-size: 11px; color: #10b981; font-weight: 800;">• Conectado</div>
+            <div id="sync" style="font-size: 11px; color: #10b981; font-weight: 800;">• Sincronizado</div>
             <button onclick="logout()" style="background: #f1f5f9; border:none; padding: 8px 16px; border-radius: 8px; cursor:pointer; font-size: 11px; font-weight: 700;">Sair</button>
         </div>
     </header>
@@ -111,7 +111,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px; background: var(--dark);" onclick="executarFiltragem()">FILTRAR</button>
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px;" onclick="abrirNovoLead()">+ NOVO LEAD</button>
             </div>
-            <div class="table-container"><table><thead><tr><th>Cliente / Empresa</th><th>Status</th><th>Notas</th><th>Ações</th></tr></thead><tbody id="tabela-leads"></tbody></table></div>
+            <div class="table-container"><table><thead><tr><th>Cliente / Empresa</th><th>Funil</th><th>Notas</th><th>Ações</th></tr></thead><tbody id="tabela-leads"></tbody></table></div>
             <div class="pagination"><button class="btn-pag" id="btn-prev" onclick="pag(-1)">Anterior</button><span id="info-pag"></span><button class="btn-pag" id="btn-next" onclick="pag(1)">Próximo</button></div>
         </div>
 
@@ -125,7 +125,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
             </div>
         </div>
     </div>
-    <footer>VERSÃO 1.8.9 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
+    <footer>VERSÃO 1.9.0 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
 </div>
 
 <div id="modal-lead">
@@ -170,16 +170,22 @@ function acaoLogin() {
 function carregar() {
     fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
     .then(r => r.json()).then(json => {
-        // MAPEAMENTO POR POSIÇÃO ABSOLUTA DA PLANILHA PARA EVITAR ERROS
-        dLeads = json.map(l => ({
-            nome: l[0] || "",
-            empresa: l[1] || "",
-            telefone: String(l[2] || "").replace(/\D/g, ""),
-            email: l[3] || "",
-            ramo: l[4] || "",
-            status: l[5] || "Novo",
-            notas: l[6] || ""
-        }));
+        // MAPEAMENTO DINÂMICO INTELIGENTE
+        dLeads = json.map(l => {
+            const find = (key) => {
+                const k = Object.keys(l).find(x => x.toLowerCase() === key.toLowerCase());
+                return k ? l[k] : "";
+            }
+            return {
+                nome: find("nome") || find("name") || "",
+                empresa: find("empresa") || "",
+                telefone: String(find("telefone") || find("whatsapp") || "").replace(/\D/g, ""),
+                email: find("email") || find("e-mail") || "",
+                ramo: find("ramo") || find("segmento") || "",
+                status: find("status") || "Novo",
+                notas: find("notas") || ""
+            };
+        });
         popularFiltros();
         executarFiltragem();
     });
@@ -267,14 +273,19 @@ function salvarLead() {
     const acao = telOrig ? "updateLead" : "addLead";
     const nome = document.getElementById("addNome").value.trim();
     const tel = document.getElementById("addTelefone").value.replace(/\D/g, "");
-    
-    // TRAVA DUPLICADOS
-    if(!telOrig && dLeads.find(l => l.telefone === tel)) return alert("WhatsApp já cadastrado!");
+    const email = document.getElementById("addEmail").value.trim();
+    const empresa = document.getElementById("addEmpresa").value.trim();
 
-    if(!nome || tel.length < 8) return alert("Preencha Nome e WhatsApp.");
+    // TRAVA DUPLICADOS (SÓ PARA NOVOS)
+    if(!telOrig) {
+        const dup = dLeads.find(l => l.telefone === tel || (email && l.email === email) || (nome === l.nome && empresa === l.empresa));
+        if(dup) return alert("Erro: Este lead já existe!");
+    }
+
+    if(!nome || tel.length < 8) return alert("Preencha Nome e WhatsApp válido.");
 
     document.getElementById("overlay").style.display = "flex";
-    const d = { action: acao, telefoneOriginal: telOrig, nome, empresa: document.getElementById("addEmpresa").value, telefone: tel, email: document.getElementById("addEmail").value, ramo: document.getElementById("addRamo").value };
+    const d = { action: acao, telefoneOriginal: telOrig, nome, empresa, telefone: tel, email, ramo: document.getElementById("addRamo").value };
     
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => {
         setTimeout(() => { document.getElementById("overlay").style.display = "none"; document.getElementById("modal-lead").style.display='none'; carregar(); }, 2000);
@@ -282,8 +293,8 @@ function salvarLead() {
 }
 
 function deletar(tel) {
-    if(!tel || tel.length < 5) return alert("ID inválido");
-    if(confirm("Deseja realmente excluir? NÃO PODE SER RECUPERADO.")) {
+    if(!tel || tel.length < 5) return alert("Erro de segurança: ID de lead inválido.");
+    if(confirm("Deseja realmente excluir este lead? ESTA AÇÃO NÃO PODE SER RECUPERADA.")) {
         document.getElementById("overlay").style.display = "flex";
         fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
         .then(() => setTimeout(() => { document.getElementById("overlay").style.display = "none"; carregar(); }, 2000));
@@ -306,7 +317,7 @@ function cadastrarUsuario() {
 function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
         let h = "<h4>Usuários Ativos:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:10px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none;">[Excluir]</button></p>`; });
+        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:5px; margin-bottom:5px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[Excluir]</button></p>`; });
         document.getElementById("lista-usuarios").innerHTML = h;
     });
 }
