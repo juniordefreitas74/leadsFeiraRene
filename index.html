@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM Cloud v1.8.8 | By FF Person</title>
+<title>RSI CRM Cloud v1.8.9 | By FF Person</title>
 <style>
 :root { 
     --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --edit: #f59e0b; --dark: #0f172a; --bg: #f8fafc; 
@@ -13,17 +13,15 @@ body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color:
 
 #overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9); display:none; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; font-weight: 800; color: var(--primary); }
 
-/* TELA DE LOGIN */
 #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--dark); display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .login-box { background: #fff; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 .login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid #f1f5f9; object-fit: cover; }
 
 input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none; margin-bottom: 10px; background: #fff;}
+label { display: block; text-align: left; font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; margin-bottom: 4px; }
 
-.btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; border: 1px solid transparent;}
-.btn-main:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
 
-/* APP LAYOUT */
 #crm-app { display: none; }
 header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
 .header-brand { display: flex; align-items: center; gap: 10px; }
@@ -37,16 +35,13 @@ header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px;
 .card h3 { margin: 0; font-size: 9px; color: var(--text-sub); text-transform: uppercase; font-weight: 700; }
 .card span { font-size: 22px; font-weight: 800; display: block; margin-top: 5px; }
 
-/* ABAS PROFISSIONAIS */
 .tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
 .tab-btn { padding: 14px; border: none; cursor: pointer; background: none; font-weight: 700; font-size: 12px; flex: 1; color: var(--text-sub); transition: 0.3s; border-bottom: 3px solid transparent;}
 .tab-btn.active { color: var(--primary); background: #f8fbff; border-bottom-color: var(--primary); }
 
 .filter-section { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 24px; border: 1px solid #e2e8f0; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
 .filter-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
-.filter-group label { font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; }
 
-/* TABELA */
 .table-container { background:#fff; border-radius: 16px; overflow-x: auto; border: 1px solid #e2e8f0; }
 table { width:100%; border-collapse:collapse; min-width: 950px;}
 th { background: #f8fafc; padding: 16px; text-align: left; font-size: 11px; color: var(--text-sub); text-transform: uppercase; font-weight: 800; }
@@ -72,7 +67,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
 </head>
 <body>
 
-<div id="overlay">Processando...<br><span style="font-size:12px; font-weight:normal;">Sincronizando com a Planilha</span></div>
+<div id="overlay">Processando...</div>
 
 <div id="login-screen">
     <div class="login-box">
@@ -80,7 +75,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
         <h2>RSI Business Login</h2>
         <input type="email" id="userEmail" placeholder="Usuário">
         <input type="password" id="userPass" placeholder="Senha">
-        <button class="btn-main" onclick="acaoLogin()">ENTRAR NO SISTEMA</button>
+        <button class="btn-main" onclick="acaoLogin()">ENTRAR</button>
         <p id="msg-login" style="font-size: 11px; margin-top: 15px;"></p>
     </div>
 </div>
@@ -122,15 +117,15 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
 
         <div id="view-config" class="hidden">
             <div class="card" style="max-width: 500px; margin: auto; padding: 30px; border-left: none; border-top: 6px solid var(--dark);">
-                <h3>Gerenciar Usuários</h3>
-                <input type="email" id="newEmail" placeholder="E-mail do novo usuário">
+                <h3>Gerenciar Usuário</h3>
+                <input type="email" id="newEmail" placeholder="E-mail">
                 <input type="text" id="newPass" placeholder="Senha">
-                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR USUÁRIO</button>
+                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR</button>
                 <div id="lista-usuarios" style="margin-top: 25px;"></div>
             </div>
         </div>
     </div>
-    <footer>VERSÃO 1.8.8 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
+    <footer>VERSÃO 1.8.9 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
 </div>
 
 <div id="modal-lead">
@@ -168,28 +163,23 @@ function acaoLogin() {
             document.getElementById("crm-app").style.display = "block";
             if(res !== "vendedor") document.getElementById("btn-config-tab").classList.remove("hidden");
             carregar();
-        } else alert("Acesso Negado!");
+        } else alert("Login Inválido!");
     });
 }
 
 function carregar() {
     fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
     .then(r => r.json()).then(json => {
-        dLeads = json.map(l => {
-            const get = (key) => {
-                const found = Object.keys(l).find(k => k.toLowerCase() === key.toLowerCase());
-                return found ? l[found] : "";
-            };
-            return {
-                nome: get("Nome") || get("name") || "",
-                empresa: get("Empresa") || "",
-                telefone: String(get("Telefone") || "").replace(/\D/g, ""),
-                email: get("Email") || get("E-mail") || "",
-                ramo: get("Ramo") || get("Segmento") || "",
-                status: get("Status") || "Novo",
-                notas: get("Notas") || ""
-            };
-        });
+        // MAPEAMENTO POR POSIÇÃO ABSOLUTA DA PLANILHA PARA EVITAR ERROS
+        dLeads = json.map(l => ({
+            nome: l[0] || "",
+            empresa: l[1] || "",
+            telefone: String(l[2] || "").replace(/\D/g, ""),
+            email: l[3] || "",
+            ramo: l[4] || "",
+            status: l[5] || "Novo",
+            notas: l[6] || ""
+        }));
         popularFiltros();
         executarFiltragem();
     });
@@ -210,12 +200,7 @@ function executarFiltragem() {
     const b = document.getElementById("busca").value.toLowerCase();
     const s = document.getElementById("fStatus").value;
     const r = document.getElementById("fRamo").value;
-    fLeads = dLeads.filter(d => {
-        const bateBusca = !b || d.nome.toLowerCase().includes(b) || d.empresa.toLowerCase().includes(b);
-        const bateStatus = !s || d.status === s;
-        const bateRamo = !r || d.ramo === r;
-        return bateBusca && bateStatus && bateRamo;
-    });
+    fLeads = dLeads.filter(d => (!b || d.nome.toLowerCase().includes(b) || d.empresa.toLowerCase().includes(b)) && (!s || d.status === s) && (!r || d.ramo === r));
     pAtu = 1; dash(); render();
 }
 
@@ -231,9 +216,6 @@ function render() {
     const b = document.getElementById("tabela-leads"); b.innerHTML = "";
     const tP = Math.ceil(fLeads.length / pItem) || 1;
     document.getElementById("info-pag").innerText = `Página ${pAtu} de ${tP}`;
-    document.getElementById("btn-prev").disabled = pAtu === 1;
-    document.getElementById("btn-next").disabled = pAtu === tP || fLeads.length === 0;
-
     fLeads.slice((pAtu-1)*pItem, pAtu*pItem).forEach(d => {
         let tr = document.createElement("tr");
         tr.innerHTML = `
@@ -269,43 +251,39 @@ function abrirNovoLead() {
 
 function abrirEditar(tel) {
     const d = dLeads.find(x => x.telefone === tel);
+    if(!d) return;
     document.getElementById("modal-title").innerText = "Alterar Cadastro";
     document.getElementById("editOriginalTel").value = d.telefone;
-    document.getElementById("addNome").value = d.nome; document.getElementById("addEmpresa").value = d.empresa;
-    document.getElementById("addTelefone").value = d.telefone; document.getElementById("addEmail").value = d.email;
-    document.getElementById("addRamo").value = d.ramo; document.getElementById("modal-lead").style.display='flex';
+    document.getElementById("addNome").value = d.nome;
+    document.getElementById("addEmpresa").value = d.empresa;
+    document.getElementById("addTelefone").value = d.telefone;
+    document.getElementById("addEmail").value = d.email;
+    document.getElementById("addRamo").value = d.ramo;
+    document.getElementById("modal-lead").style.display='flex';
 }
 
 function salvarLead() {
     const telOrig = document.getElementById("editOriginalTel").value;
     const acao = telOrig ? "updateLead" : "addLead";
     const nome = document.getElementById("addNome").value.trim();
-    const empresa = document.getElementById("addEmpresa").value.trim();
-    const email = document.getElementById("addEmail").value.trim();
     const tel = document.getElementById("addTelefone").value.replace(/\D/g, "");
     
-    // TRAVA RIGOROSA DE DUPLICADOS (Apenas para NOVOS leads)
-    if(!telOrig) {
-        const dup = dLeads.find(l => 
-            l.nome.toLowerCase() === nome.toLowerCase() || 
-            l.empresa.toLowerCase() === empresa.toLowerCase() || 
-            l.telefone === tel || 
-            (email && l.email.toLowerCase() === email.toLowerCase())
-        );
-        if(dup) return alert("ERRO: Já existe um cadastro com este Nome, Empresa, E-mail ou Telefone.");
-    }
+    // TRAVA DUPLICADOS
+    if(!telOrig && dLeads.find(l => l.telefone === tel)) return alert("WhatsApp já cadastrado!");
 
     if(!nome || tel.length < 8) return alert("Preencha Nome e WhatsApp.");
 
     document.getElementById("overlay").style.display = "flex";
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: acao, telefoneOriginal: telOrig, nome, empresa, telefone: tel, email, ramo: document.getElementById("addRamo").value }) })
-    .then(() => {
+    const d = { action: acao, telefoneOriginal: telOrig, nome, empresa: document.getElementById("addEmpresa").value, telefone: tel, email: document.getElementById("addEmail").value, ramo: document.getElementById("addRamo").value };
+    
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => {
         setTimeout(() => { document.getElementById("overlay").style.display = "none"; document.getElementById("modal-lead").style.display='none'; carregar(); }, 2000);
     });
 }
 
 function deletar(tel) {
-    if(confirm("Deseja realmente excluir este lead? ESTA AÇÃO NÃO PODE SER RECUPERADA.")) {
+    if(!tel || tel.length < 5) return alert("ID inválido");
+    if(confirm("Deseja realmente excluir? NÃO PODE SER RECUPERADO.")) {
         document.getElementById("overlay").style.display = "flex";
         fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
         .then(() => setTimeout(() => { document.getElementById("overlay").style.display = "none"; carregar(); }, 2000));
@@ -327,8 +305,8 @@ function cadastrarUsuario() {
 
 function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
-        let h = "<h4>Usuários na Base:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:10px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; cursor:pointer; border:none; background:none; font-weight:bold;">[Excluir]</button></p>`; });
+        let h = "<h4>Usuários Ativos:</h4>";
+        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:10px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none;">[Excluir]</button></p>`; });
         document.getElementById("lista-usuarios").innerHTML = h;
     });
 }
