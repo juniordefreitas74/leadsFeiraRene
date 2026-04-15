@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>CRM RSI - Leads Pro</title>
+<title>RSI - CRM Estratégico</title>
 
 <style>
 :root {
@@ -12,78 +12,82 @@
     --mail: #ea4335;
     --dark: #111;
     --bg: #f4f6f9;
+    --text: #333;
+    /* Cores do Funil */
+    --f-novo: #6c757d;
+    --f-contato: #17a2b8;
+    --f-proposta: #fd7e14;
+    --f-fechado: #28a745;
 }
 
-body { font-family: 'Segoe UI', Arial, sans-serif; margin:0; background: var(--bg); color: #333;}
+body { font-family: 'Segoe UI', system-ui, sans-serif; margin:0; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
 
-/* HEADER COM LOGO REDONDO */
 header { 
     background: var(--dark); 
     color:#fff; 
-    padding: 10px 20px; 
+    padding: 12px 20px; 
     display: flex; 
     justify-content: space-between; 
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
-.header-brand {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-.header-brand img {
-    height: 50px;       /* Altura do logo */
-    width: 50px;        /* Largura igual à altura para ficar circular */
-    object-fit: cover;  /* Garante que a imagem não distorça ao cortar */
-    border-radius: 50%; /* Deixa redondinho */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-.header-brand span {
-    font-size: 20px;
-    font-weight: bold;
-}
+.header-brand { display: flex; align-items: center; gap: 12px; }
+.header-brand img { height: 45px; width: 45px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
+.header-brand span { font-size: 20px; font-weight: bold; }
 
-.container { padding:20px;}
+.container { padding: 20px; max-width: 1200px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
 
-/* Abas Modernas */
-.tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+/* Dashboard / Dados para Decisão */
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:15px; margin-bottom: 25px;}
+.card { background:#fff; padding:15px; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #ddd; }
+.card h3 { margin: 0; font-size: 11px; color: #888; text-transform: uppercase; }
+.card span { font-size: 22px; font-weight: bold; display: block; margin-top: 5px; }
+.c-novo { border-left-color: var(--f-novo); }
+.c-contato { border-left-color: var(--f-contato); }
+.c-proposta { border-left-color: var(--f-proposta); }
+.c-fechado { border-left-color: var(--f-fechado); }
+
+/* Tabs */
+.tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .tab-btn { padding: 15px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 13px; flex: 1; color: #666; transition: 0.3s; border-bottom: 3px solid transparent;}
 .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: #f8fbff; }
 
-.cards { display:flex; gap:15px; margin-bottom:20px;}
-.card { background:#fff; padding:15px; flex:1; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-top: 4px solid var(--primary);}
-.card h3 { margin: 0; font-size: 12px; color: #888; text-transform: uppercase; }
-.card span { font-size: 24px; font-weight: bold; display: block; margin-top: 5px; }
-
-/* Filtros */
-.filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-input, select, textarea { padding:10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none;}
+/* Filtros / Organização */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 12px; }
+input, select, textarea { padding:10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none;}
 
 /* Tabela */
-.table-container { background:#fff; border-radius: 12px; overflow-x: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-table { width:100%; border-collapse:collapse; min-width: 600px;}
-th { background: #f8f9fa; padding:15px; text-align: left; font-size: 13px; color: #777; border-bottom: 2px solid #eee; }
-td { padding:15px; border-bottom:1px solid #eee; font-size: 14px; }
+.table-container { background:#fff; border-radius: 12px; overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+table { width:100%; border-collapse:collapse; min-width: 900px;}
+th { background: #f8f9fa; padding:12px 15px; text-align: left; font-size: 11px; color: #777; text-transform: uppercase; border-bottom: 2px solid #eee; }
+td { padding:12px 15px; border-bottom:1px solid #eee; font-size: 14px; vertical-align: middle; }
 
-/* Badges de Prioridade */
-.prio { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-.prio-alta { background: #ffebee; color: #c62828; }
-.prio-media { background: #fff3e0; color: #ef6c00; }
-.prio-baixa { background: #e3f2fd; color: #1565c0; }
+/* Status do Funil */
+.status-select { 
+    padding: 5px; 
+    border-radius: 6px; 
+    font-size: 11px; 
+    font-weight: bold; 
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
 
-/* Botões */
-.btn-group { display: flex; gap: 6px; }
-.btn { padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
-.btn-wa { background: var(--wa); color: white; }
-.btn-mail { background: var(--mail); color: white; }
-.btn-status { background: #eee; color: #555; }
-.btn-status.ok { background: #4caf50; color: white; }
+/* Botões de Ação Automatizada */
+.btn-group { display: flex; gap: 5px; }
+.btn { width: 38px; height: 38px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.btn:hover { transform: scale(1.1); }
+.btn svg { width: 18px; height: 18px; fill: white; }
+.btn-wa { background: var(--wa); }
+.btn-mail { background: var(--mail); }
+.btn-call { background: #6366f1; }
+
+.note-area { font-size: 12px; width: 100%; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 6px; padding: 6px; min-height: 40px; font-family: inherit;}
+
+footer { text-align: center; padding: 20px; font-size: 11px; color: #888; background: #fff; border-top: 1px solid #eee; margin-top: auto;}
 
 .hidden { display: none; }
-
-@media (max-width: 768px) {
-  .cards { flex-direction: column; }
-  .btn-group { flex-direction: column; }
-}
 </style>
 </head>
 
@@ -91,44 +95,53 @@ td { padding:15px; border-bottom:1px solid #eee; font-size: 14px; }
 
 <header>
     <div class="header-brand">
-        <img src="logo.jpg" alt="RSI Logo">
-        <span>CRM RSI Leads</span>
+        <img src="logo.jpg" alt="RSI">
+        <span>RSI - CRM Estratégico</span>
     </div>
 </header>
 
 <div class="container">
-    <div class="tabs">
-        <button class="tab-btn active" id="btn-tab-lista" onclick="showTab('lista')">📋 LISTA DE LEADS</button>
-        <button class="tab-btn" id="btn-tab-email" onclick="showTab('email')">📧 COMPOSTOR DE E-MAIL</button>
+    <!-- DASHBOARD: DADOS PARA DECISÃO -->
+    <div class="cards">
+        <div class="card"><h3>Total Leads</h3><span id="total">0</span></div>
+        <div class="card c-novo"><h3>Novos</h3><span id="dash-novo">0</span></div>
+        <div class="card c-contato"><h3>Em Contato</h3><span id="dash-contato">0</span></div>
+        <div class="card c-proposta"><h3>Propostas</h3><span id="dash-proposta">0</span></div>
+        <div class="card c-fechado"><h3>Fechados</h3><span id="dash-fechado">0</span></div>
     </div>
 
-    <!-- ABA 1: LISTA -->
-    <div id="aba-lista">
-        <div class="cards">
-            <div class="card" style="border-top-color: #333;"><h3>Total Leads</h3><span id="total">0</span></div>
-            <div class="card" style="border-top-color: #ea4335;"><h3>🔥 Alta</h3><span id="alta">0</span></div>
-            <div class="card" style="border-top-color: #25D366;"><h3>Contatados</h3><span id="contatados">0</span></div>
-        </div>
+    <div class="tabs">
+        <button class="tab-btn active" id="btn-tab-lista" onclick="showTab('lista')">GESTÃO DO FUNIL</button>
+        <button class="tab-btn" id="btn-tab-email" onclick="showTab('email')">AUTOMAÇÃO DE E-MAIL</button>
+    </div>
 
+    <div id="aba-lista">
+        <!-- ORGANIZAÇÃO DOS CONTATOS -->
         <div class="filter-bar">
-            <select id="filtroRamo"><option value="">Todos os Ramos</option></select>
-            <select id="filtroPrioridade">
-                <option value="">Prioridades</option>
+            <select id="filtroStatus" style="flex: 1;">
+                <option value="">Todos os Status (Funil)</option>
+                <option value="Novo">🟡 Novo</option>
+                <option value="Contato">🔵 Em Contato</option>
+                <option value="Proposta">🟠 Proposta Enviada</option>
+                <option value="Fechado">🟢 Fechado</option>
+            </select>
+            <select id="filtroPrioridade" style="flex: 1;">
+                <option value="">Todas Prioridades</option>
                 <option value="🔥 ALTA">🔥 ALTA</option>
                 <option value="⚡ MEDIA">⚡ MEDIA</option>
                 <option value="❄️ BAIXA">❄️ BAIXA</option>
             </select>
-            <input type="text" id="busca" placeholder="Buscar por nome ou empresa..." style="flex-grow: 1;">
+            <input type="text" id="busca" placeholder="Buscar por cliente, empresa ou observação..." style="flex: 2;">
         </div>
 
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Lead / Empresa</th>
-                        <th>Ramo</th>
-                        <th>Prioridade</th>
-                        <th>Ações</th>
+                        <th width="20%">Cliente / Empresa</th>
+                        <th width="15%">Estágio Funil</th>
+                        <th width="35%">Notas Estratégicas</th>
+                        <th width="30%">Ações de Automação</th>
                     </tr>
                 </thead>
                 <tbody id="tabela"></tbody>
@@ -136,121 +149,100 @@ td { padding:15px; border-bottom:1px solid #eee; font-size: 14px; }
         </div>
     </div>
 
-    <!-- ABA 2: EMAIL -->
+    <!-- AUTOMAÇÃO DE TAREFAS (EMAIL) -->
     <div id="aba-email" class="hidden">
-        <div class="card" style="max-width: 600px; margin: auto; border-top-color: var(--mail);">
-            <h3 style="margin-bottom: 15px; font-size: 18px; color: #333;">📧 Compor E-mail RSI</h3>
-            
-            <label style="font-size: 12px; font-weight: bold;">Modelo de Mensagem:</label>
-            <select id="email-template" onchange="aplicarTemplate()" style="width: 100%; margin-bottom: 15px; background: #f9f9f9;">
+        <div class="card" style="max-width: 600px; margin: auto; border-top-color: var(--mail); padding: 25px;">
+            <h3>📧 Compostor de Vendas</h3>
+            <select id="email-template" onchange="aplicarTemplate()" style="width: 100%; margin-bottom: 15px;">
                 <option value="apresentacao">Apresentação Institucional RSI</option>
                 <option value="feira">Follow-up Pós-Feira</option>
-                <option value="proposta">Envio de Proposta Técnica</option>
+                <option value="proposta">Envio de Orçamento</option>
             </select>
-
-            <label style="font-size: 12px; font-weight: bold;">Para:</label>
-            <input type="email" id="mail-para" placeholder="email@exemplo.com" style="width: 100%;">
-            
-            <label style="font-size: 12px; font-weight: bold;">Assunto:</label>
-            <input type="text" id="mail-assunto" value="RSI – Soluções em Impressão" style="width: 100%;">
-            
-            <label style="font-size: 12px; font-weight: bold;">Mensagem:</label>
-            <textarea id="mail-mensagem" rows="12" style="width: 100%; font-family: sans-serif; resize: vertical; line-height: 1.5;"></textarea>
-            
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button class="btn btn-mail" style="flex: 2; padding: 15px; font-size: 14px;" onclick="dispararEmail()">
-                    🚀 Abrir no E-mail
-                </button>
-                <button class="btn btn-status" style="flex: 1;" onclick="copiarTexto()">
-                    📋 Copiar
-                </button>
-            </div>
+            <input type="email" id="mail-para" placeholder="E-mail" style="width: 100%; margin-bottom: 10px;">
+            <input type="text" id="mail-assunto" placeholder="Assunto" style="width: 100%; margin-bottom: 10px;">
+            <textarea id="mail-mensagem" rows="10" style="width: 100%; font-family: inherit; line-height: 1.5; padding: 10px; border-radius: 8px; border: 1px solid #ddd;"></textarea>
+            <button class="btn btn-mail" style="width: 100%; margin-top: 15px; height: 50px;" onclick="dispararEmail()">ABRIR APLICATIVO DE E-MAIL</button>
         </div>
     </div>
 </div>
 
+<footer>
+    VERSÃO 1.3 | DESENVOLVIDO POR FF PERSON
+</footer>
+
 <script>
-// Mantive toda a lógica original intacta para garantir o funcionamento
 let dados = [];
-let leadAtual = { nome: "", empresa: "" };
-let contatados = JSON.parse(localStorage.getItem("contatados") || "[]");
+let dbExtra = JSON.parse(localStorage.getItem("rsi_db_v3") || "{}");
 
-const TEXTO_RSI = "RSI – Soluções em Impressão\nEspecializada na compra e venda de impressoras e multifuncionais novas e usadas. Oferecemos equipamentos de alta qualidade para atender às necessidades da sua empresa, com suporte técnico especializado e atendimento ágil.";
+const iconWA = `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+const iconMail = `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`;
+const iconCall = `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.01-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
 
-const templates = {
-    apresentacao: "Olá [NOME],\n\nSou da RSI e gostaria de apresentar a você a:\n\n" + TEXTO_RSI + "\n\nPodemos agendar uma conversa para eu entender melhor suas necessidades atuais?\n\nNo aguardo!",
-    feira: "Olá [NOME], foi um prazer conhecê-lo na feira!\n\nReiterando nosso contato, somos a:\n\n" + TEXTO_RSI + "\n\nConforme conversamos, gostaria de enviar as opções de equipamentos para a [EMPRESA]. Qual o melhor horário?",
-    proposta: "Prezado(a) [NOME],\n\nSegue em anexo a proposta comercial solicitada para a [EMPRESA].\n\nLembrando que na RSI – Soluções em Impressão, oferecemos equipamentos de alta qualidade com suporte técnico especializado.\n\nQualquer dúvida, estou à disposição!"
-};
+const TEXTO_RSI = "RSI – Soluções em Impressão\nEspecializada na compra e venda de impressoras novas e usadas. Atendimento ágil e suporte técnico especializado.";
 
-function showTab(nome) {
-    document.getElementById('aba-lista').classList.toggle('hidden', nome !== 'lista');
-    document.getElementById('aba-email').classList.toggle('hidden', nome !== 'email');
-    document.getElementById('btn-tab-lista').classList.toggle('active', nome === 'lista');
-    document.getElementById('btn-tab-email').classList.toggle('active', nome === 'email');
+function showTab(n) {
+    document.getElementById('aba-lista').classList.toggle('hidden', n!=='lista');
+    document.getElementById('aba-email').classList.toggle('hidden', n!=='email');
+    document.getElementById('btn-tab-lista').classList.toggle('active', n==='lista');
+    document.getElementById('btn-tab-email').classList.toggle('active', n==='email');
 }
 
 fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
 .then(res => res.json())
 .then(json => {
     dados = json.map(l => ({
+        id: (l.Telefone || l.name || Math.random()).toString().replace(/\D/g, ""),
         nome: l.name || "",
         empresa: l.Empresa || "",
         telefone: (l.Telefone || "").replace(/\D/g, ""),
         email: l.Email || l.email || "",
-        ramo: l.Ramo || "",
         prioridade: l.Prioridade || "❄️ BAIXA"
     }));
-
-    let ramos = [...new Set(dados.map(d => d.ramo))].filter(Boolean);
-    let select = document.getElementById("filtroRamo");
-    ramos.forEach(r => {
-        let opt = document.createElement("option");
-        opt.value = r; opt.text = r; select.add(opt);
-    });
-
     atualizar();
 });
 
-function getPrioClass(p) {
-    if(p.includes("ALTA")) return 'prio-alta';
-    if(p.includes("MEDIA")) return 'prio-media';
-    return 'prio-baixa';
-}
-
-function atualizar(){
+function atualizar() {
     let tabela = document.getElementById("tabela");
     tabela.innerHTML = "";
-
     let busca = document.getElementById("busca").value.toLowerCase();
-    let fRamo = document.getElementById("filtroRamo").value;
+    let fStatus = document.getElementById("filtroStatus").value;
     let fPrio = document.getElementById("filtroPrioridade").value;
 
-    let filtrados = dados.filter(d =>
-        (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
-        (!fRamo || d.ramo == fRamo) &&
-        (!fPrio || d.prioridade == fPrio)
-    ).sort((a,b) => (a.prioridade.includes("ALTA") ? -1 : 1));
+    let filtrados = dados.filter(d => {
+        let extra = dbExtra[d.id] || { status: "Novo", notas: "" };
+        return (
+            (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca) || extra.notas.toLowerCase().includes(busca)) &&
+            (!fStatus || extra.status == fStatus) &&
+            (!fPrio || d.prioridade == fPrio)
+        );
+    });
 
+    // Dados para Decisão (Dashboard)
     document.getElementById("total").innerText = filtrados.length;
-    document.getElementById("alta").innerText = filtrados.filter(d=>d.prioridade.includes("ALTA")).length;
-    document.getElementById("contatados").innerText = contatados.length;
+    document.getElementById("dash-novo").innerText = filtrados.filter(d => (dbExtra[d.id]?.status || "Novo") == "Novo").length;
+    document.getElementById("dash-contato").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Contato").length;
+    document.getElementById("dash-proposta").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Proposta").length;
+    document.getElementById("dash-fechado").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Fechado").length;
 
     filtrados.forEach(d => {
+        let extra = dbExtra[d.id] || { status: "Novo", notas: "" };
         let tr = document.createElement("tr");
-        let ja = contatados.includes(d.telefone);
-
         tr.innerHTML = `
-            <td><strong>${d.nome}</strong><br><span style="color:#888; font-size:12px">${d.empresa}</span></td>
-            <td>${d.ramo || "-"}</td>
-            <td><span class="prio ${getPrioClass(d.prioridade)}">${d.prioridade}</span></td>
+            <td><strong>${d.nome}</strong><br><small>${d.empresa}</small></td>
+            <td>
+                <select class="status-select" onchange="salvarStatus('${d.id}', this.value)">
+                    <option value="Novo" ${extra.status=='Novo'?'selected':''}>🟡 Novo</option>
+                    <option value="Contato" ${extra.status=='Contato'?'selected':''}>🔵 Em Contato</option>
+                    <option value="Proposta" ${extra.status=='Proposta'?'selected':''}>🟠 Proposta</option>
+                    <option value="Fechado" ${extra.status=='Fechado'?'selected':''}>🟢 Fechado</option>
+                </select>
+            </td>
+            <td><textarea class="note-area" placeholder="Anotações..." onchange="salvarNota('${d.id}', this.value)">${extra.notas}</textarea></td>
             <td>
                 <div class="btn-group">
-                    <button class="btn btn-wa" onclick="abrirWA('${d.nome}', '${d.telefone}', '${d.empresa}')">WhatsApp</button>
-                    <button class="btn btn-mail" onclick="prepararEmail('${d.nome}', '${d.empresa}', '${d.email}')">E-mail</button>
-                    <button class="btn btn-status ${ja?'ok':''}" onclick="alternarStatus('${d.telefone}')">
-                        ${ja?'✔':'OK'}
-                    </button>
+                    <a href="tel:${d.telefone}" class="btn btn-call" title="Ligar">${iconCall}</a>
+                    <button class="btn btn-wa" onclick="abrirWA('${d.id}')">${iconWA}</button>
+                    <button class="btn btn-mail" onclick="prepararEmail('${d.id}')">${iconMail}</button>
                 </div>
             </td>
         `;
@@ -258,52 +250,52 @@ function atualizar(){
     });
 }
 
-function aplicarTemplate() {
-    const tipo = document.getElementById('email-template').value;
-    let texto = templates[tipo]
-        .replace("[NOME]", leadAtual.nome)
-        .replace("[EMPRESA]", leadAtual.empresa);
-    document.getElementById('mail-mensagem').value = texto;
-}
-
-function prepararEmail(nome, empresa, email) {
-    if(!email) { alert("Lead sem e-mail."); return; }
-    leadAtual = { nome, empresa };
-    showTab('email');
-    document.getElementById('mail-para').value = email;
-    document.getElementById('email-template').value = "apresentacao";
-    aplicarTemplate();
-}
-
-function abrirWA(nome, tel, empresa) {
-    if(!tel) return alert("Sem telefone.");
-    let msg = `Olá ${nome}, tudo bem?\n\nSomos da RSI – Soluções em Impressão. Especializada na compra e venda de impressoras novas e usadas.\n\nVi que você representa a ${empresa}. Podemos conversar sobre como melhorar sua estrutura de impressão?`;
-    window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, "_blank");
-}
-
-function copiarTexto() {
-    let msg = document.getElementById('mail-mensagem');
-    msg.select();
-    document.execCommand("copy");
-    alert("Copiado!");
-}
-
-function dispararEmail() {
-    let para = document.getElementById('mail-para').value;
-    let assunto = document.getElementById('mail-assunto').value;
-    let corpo = document.getElementById('mail-mensagem').value;
-    window.location.href = `mailto:${para}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
-}
-
-function alternarStatus(tel) {
-    let index = contatados.indexOf(tel);
-    index === -1 ? contatados.push(tel) : contatados.splice(index, 1);
-    localStorage.setItem("contatados", JSON.stringify(contatados));
+function salvarStatus(id, st) {
+    if(!dbExtra[id]) dbExtra[id] = { notas: "" };
+    dbExtra[id].status = st;
+    localStorage.setItem("rsi_db_v3", JSON.stringify(dbExtra));
     atualizar();
 }
 
+function salvarNota(id, nt) {
+    if(!dbExtra[id]) dbExtra[id] = { status: "Novo" };
+    dbExtra[id].notas = nt;
+    localStorage.setItem("rsi_db_v3", JSON.stringify(dbExtra));
+}
+
+function abrirWA(id) {
+    let d = dados.find(x => x.id === id);
+    let msg = `Olá ${d.nome}, tudo bem? Sou da RSI – Soluções em Impressão. Gostaria de falar sobre nossas impressoras para a ${d.empresa}.`;
+    window.open(`https://wa.me/${d.telefone}?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
+function prepararEmail(id) {
+    let d = dados.find(x => x.id === id);
+    showTab('email');
+    document.getElementById('mail-para').value = d.email;
+    document.getElementById('mail-assunto').value = "RSI – Soluções em Impressão para " + d.empresa;
+    aplicarTemplate(d.nome, d.empresa);
+}
+
+function aplicarTemplate(nome, empresa) {
+    const tipo = document.getElementById('email-template').value;
+    let t = {
+        apresentacao: `Olá ${nome || 'Cliente'},\n\nSou da RSI e gostaria de apresentar nossa estrutura para a ${empresa || 'sua empresa'}:\n\n${TEXTO_RSI}`,
+        feira: `Olá ${nome}, foi um prazer falar com você na feira!\n\nReiterando nosso contato pela RSI.\n\n${TEXTO_RSI}`,
+        proposta: `Prezado(a) ${nome},\n\nConforme solicitado, segue anexo a proposta para a ${empresa}.\n\nA RSI garante equipamentos revisados com suporte técnico completo.`
+    };
+    document.getElementById('mail-mensagem').value = t[tipo];
+}
+
+function dispararEmail() {
+    let p = document.getElementById('mail-para').value;
+    let a = document.getElementById('mail-assunto').value;
+    let c = document.getElementById('mail-mensagem').value;
+    window.location.href = `mailto:${p}?subject=${encodeURIComponent(a)}&body=${encodeURIComponent(c)}`;
+}
+
 document.getElementById("busca").addEventListener("input", atualizar);
-document.getElementById("filtroRamo").addEventListener("change", atualizar);
+document.getElementById("filtroStatus").addEventListener("change", atualizar);
 document.getElementById("filtroPrioridade").addEventListener("change", atualizar);
 </script>
 
