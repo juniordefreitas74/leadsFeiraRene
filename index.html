@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM - Cloud v1.6.8 | Desenvolvido por FF Person</title>
+<title>RSI CRM - Cloud v1.6.9 | Desenvolvido por FF Person</title>
 <style>
 :root { --primary: #007bff; --wa: #25D366; --mail: #ea4335; --dark: #111; --bg: #f4f6f9; }
 body { font-family: 'Segoe UI', system-ui, sans-serif; margin:0; background: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
@@ -11,11 +11,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; margin:0; background: var
 /* TELA DE LOGIN */
 #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #111; display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .login-box { background: #fff; padding: 40px; border-radius: 15px; width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-.login-box img { 
-    width: 80px; height: 80px; margin-bottom: 20px; 
-    border-radius: 50%; border: 3px solid var(--primary); 
-    object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
+.login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 input, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; outline: none; }
 .btn-main { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
 
@@ -27,8 +23,8 @@ header { background: var(--dark); color:#fff; padding: 12px 20px; display: flex;
 
 .container { padding: 20px; max-width: 1200px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
 
-/* DASHBOARD ESTRATÉGICO */
-.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-bottom: 20px;}
+/* DASHBOARD */
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin-bottom: 20px;}
 .card { background:#fff; padding:12px; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #ddd; }
 .card h3 { margin: 0; font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
 .card span { font-size: 22px; font-weight: bold; display: block; margin-top: 2px; }
@@ -48,13 +44,12 @@ td { padding:12px 15px; border-bottom:1px solid #eee; font-size: 14px; vertical-
 .btn-act { width: 38px; height: 38px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; color: white; }
 .btn-wa { background: var(--wa); }
 .btn-mail { background: var(--mail); }
-.btn-del { background: #444; } /* Cinza Escuro para Excluir */
+.btn-del { background: #444; }
 .btn-act svg { width: 18px; height: 18px; fill: white; }
 
 .status-select { padding: 5px; border-radius: 6px; font-size: 11px; font-weight: bold; border: 1px solid #ddd; cursor: pointer;}
 .note-area { font-size: 12px; width: 100%; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 6px; padding: 6px; min-height: 40px; font-family: inherit; resize: vertical;}
 
-/* PAGINAÇÃO */
 .pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding-bottom: 20px; }
 .btn-pag { background: #fff; border: 1px solid #ddd; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 .btn-pag:disabled { opacity: 0.3; }
@@ -62,7 +57,6 @@ td { padding:12px 15px; border-bottom:1px solid #eee; font-size: 14px; vertical-
 #modal-lead { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display:none; justify-content: center; align-items: center; z-index: 1001; }
 .modal-box { background: white; padding: 25px; border-radius: 15px; width: 350px; text-align: center; }
 
-/* RODAPÉ COM CRÉDITOS */
 footer { text-align: center; padding: 20px; font-size: 11px; color: #888; background: #fff; border-top: 1px solid #eee; margin-top: auto;}
 .hidden { display: none; }
 </style>
@@ -87,7 +81,6 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
     </header>
 
     <div class="container">
-        <!-- DASHBOARD ATUALIZADO -->
         <div class="cards">
             <div class="card"><h3>Total Leads</h3><span id="total">0</span></div>
             <div class="card" style="border-left-color: #6c757d"><h3>Novos</h3><span id="dash-novo">0</span></div>
@@ -104,13 +97,25 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
 
         <div id="view-funil">
             <div style="display:flex; gap:10px; margin-bottom: 15px; flex-wrap: wrap;">
-                <input type="text" id="busca" oninput="resetarPagina()" placeholder="Buscar cliente ou empresa..." style="flex:2; min-width: 200px;">
-                <select id="fRamo" onchange="resetarPagina()" style="flex:1; min-width: 150px;"><option value="">Todos Segmentos</option></select>
+                <input type="text" id="busca" oninput="resetarPagina()" placeholder="Buscar cliente ou empresa..." style="flex:2; min-width: 180px;">
+                
+                <!-- FILTRO POR STATUS -->
+                <select id="fStatus" onchange="resetarPagina()" style="flex:1; min-width: 140px;">
+                    <option value="">Status (Todos)</option>
+                    <option value="Novo">🟡 Novo</option>
+                    <option value="Contato">🔵 Contato</option>
+                    <option value="Proposta">🟠 Proposta</option>
+                    <option value="Fechado">🟢 Fechado</option>
+                </select>
+
+                <select id="fRamo" onchange="resetarPagina()" style="flex:1; min-width: 140px;"><option value="">Segmentos (Todos)</option></select>
+                
                 <button class="btn-main" style="flex:1; min-width: 150px; background: #007bff;" onclick="document.getElementById('modal-lead').style.display='flex'">+ NOVO LEAD</button>
             </div>
+            
             <div class="table-container">
                 <table>
-                    <thead><tr><th width="20%">Cliente</th><th width="15%">Status Funil</th><th width="35%">Notas Estratégicas</th><th width="30%">Ações</th></tr></thead>
+                    <thead><tr><th width="20%">Cliente</th><th width="15%">Estágio Funil</th><th width="35%">Notas Estratégicas</th><th width="30%">Ações</th></tr></thead>
                     <tbody id="tabela-leads"></tbody>
                 </table>
             </div>
@@ -147,7 +152,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
 </div>
 
 <footer>
-    VERSÃO 1.6.8 | DESENVOLVIDO POR <strong>FF PERSON</strong>
+    VERSÃO 1.6.9 | DESENVOLVIDO POR <strong>FF PERSON</strong>
 </footer>
 
 <script>
@@ -170,7 +175,6 @@ function acaoLogin() {
     const msg = document.getElementById("msg-login");
     if(!u || !s) return alert("Preencha tudo!");
     msg.innerText = "Validando acesso..."; msg.style.color = "orange";
-
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
     .then(r => r.json()).then(res => {
         if(res !== "erro") {
@@ -195,9 +199,8 @@ function carregarLeads() {
             nome: l.name || l.Nome || "", empresa: l.Empresa || "", telefone: String(l.Telefone || "").replace(/\D/g, ""),
             email: l.Email || "", ramo: l.Ramo || "", status: l.Status || "Novo", notas: l.Notas || ""
         }));
-        
         const sel = document.getElementById("fRamo");
-        sel.innerHTML = '<option value="">Todos Segmentos</option>';
+        sel.innerHTML = '<option value="">Segmentos (Todos)</option>';
         [...new Set(dadosLeads.map(d => d.ramo))].filter(Boolean).sort().forEach(r => {
             let o = document.createElement("option"); o.text = r; sel.add(o);
         });
@@ -208,15 +211,17 @@ function carregarLeads() {
 function atualizarTabela() {
     const busca = document.getElementById("busca").value.toLowerCase();
     const ramo = document.getElementById("fRamo").value;
+    const statusFiltro = document.getElementById("fStatus").value;
     const body = document.getElementById("tabela-leads");
     body.innerHTML = "";
     
     const filtrados = dadosLeads.filter(d => 
         (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
-        (!ramo || d.ramo == ramo)
+        (!ramo || d.ramo == ramo) &&
+        (!statusFiltro || d.status == statusFiltro)
     );
 
-    // ATUALIZAÇÃO DO DASHBOARD INSTANTÂNEA
+    // Dashboard Instantâneo
     document.getElementById("total").innerText = filtrados.length;
     document.getElementById("dash-novo").innerText = filtrados.filter(d => d.status == "Novo").length;
     document.getElementById("dash-contato").innerText = filtrados.filter(d => d.status == "Contato").length;
@@ -245,7 +250,7 @@ function atualizarTabela() {
                 <div class="btn-group">
                     <button class="btn-act btn-wa" title="WhatsApp" onclick="window.open('https://wa.me/${d.telefone}?text=${encodeURIComponent(TEXTO_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}')">${iconWA}</button>
                     <button class="btn-act btn-mail" title="E-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI – Soluções em Impressão&body=${encodeURIComponent(TEXTO_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}'">${iconMail}</button>
-                    <button class="btn-act btn-del" title="Excluir Lead" onclick="deletarLead('${d.telefone}')">${iconDel}</button>
+                    <button class="btn-act btn-del" title="Excluir" onclick="deletarLead('${d.telefone}')">${iconDel}</button>
                 </div>
             </td>
         `;
@@ -255,20 +260,11 @@ function atualizarTabela() {
 
 function salvarStatus(tel, st, nt) {
     document.getElementById("sync").innerText = "• Salvando..."; document.getElementById("sync").style.color = "orange";
-    
-    // Atualiza o objeto local para o dashboard refletir na hora
     let l = dadosLeads.find(x => x.telefone === tel);
-    if(st) {
-        l.status = st;
-        atualizarTabela(); // Recarrega dashboard imediatamente
-    }
+    if(st) { l.status = st; atualizarTabela(); } 
     if(nt !== null) l.notas = nt;
-
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "updateLead", telefone: tel, status: l.status, notas: l.notas }) })
-    .then(() => { 
-        document.getElementById("sync").innerText = "• Sincronizado"; 
-        document.getElementById("sync").style.color = "#25D366";
-    });
+    .then(() => { document.getElementById("sync").innerText = "• Sincronizado"; document.getElementById("sync").style.color = "#25D366"; });
 }
 
 function salvarNovoLead() {
@@ -279,8 +275,7 @@ function salvarNovoLead() {
 
 function deletarLead(tel) {
     if(confirm("Deseja realmente excluir? Esta ação não poderá ser recuperada.")) {
-        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
-        .then(() => { carregarLeads(); alert("Lead excluído com sucesso."); });
+        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) }).then(() => carregarLeads());
     }
 }
 
@@ -315,10 +310,9 @@ function showTab(v, btn) {
     if(v === "config") carregarUsuarios();
 }
 
-function mudarPagina(dir) { paginaAtual += dir; atualizarTabela(); window.scrollTo(0,0); }
+function mudarPagina(dir) { pagAtual += dir; atualizarTabela(); window.scrollTo(0,0); }
 function resetPagina() { paginaAtual = 1; atualizarTabela(); }
 function logout() { sessionStorage.clear(); location.reload(); }
-
 if(sessionStorage.getItem("rsi_logado")) { nivelAcesso = sessionStorage.getItem("rsi_logado"); iniciarApp(); }
 </script>
 </body>
