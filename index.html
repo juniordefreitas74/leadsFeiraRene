@@ -3,345 +3,278 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI - CRM Estratégico</title>
-
+<title>RSI CRM - Business Edition</title>
 <style>
-:root {
-    --primary: #007bff;
-    --wa: #25D366;
-    --mail: #ea4335;
-    --dark: #111;
-    --bg: #f4f6f9;
-    --text: #333;
-    --f-novo: #6c757d;
-    --f-contato: #17a2b8;
-    --f-proposta: #fd7e14;
-    --f-fechado: #28a745;
-}
+:root { --primary: #007bff; --wa: #25D366; --mail: #ea4335; --dark: #111; --bg: #f4f6f9; }
+body { font-family: 'Segoe UI', sans-serif; margin:0; background: var(--bg); }
 
-body { font-family: 'Segoe UI', system-ui, sans-serif; margin:0; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+/* TELA DE LOGIN */
+#login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #111; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+.login-box { background: #fff; padding: 40px; border-radius: 15px; width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+.login-box img { width: 70px; margin-bottom: 20px; border-radius: 50%; border: 3px solid var(--primary); }
+input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+.btn-login { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.forgot { font-size: 11px; color: #666; cursor: pointer; display: block; margin-top: 15px; }
 
-header { 
-    background: var(--dark); 
-    color:#fff; 
-    padding: 12px 20px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-.header-brand { display: flex; align-items: center; gap: 12px; }
-.header-brand img { height: 45px; width: 45px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
-.header-brand span { font-size: 20px; font-weight: bold; }
+/* CRM */
+#crm-app { display: none; }
+header { background: var(--dark); color:#fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+.header-brand { display: flex; align-items: center; gap: 10px; }
+.header-brand img { height: 40px; width: 40px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
+.container { padding: 20px; max-width: 1200px; margin: auto; }
 
-.container { padding: 20px; max-width: 1200px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
-
-/* Dashboard */
-.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:15px; margin-bottom: 25px;}
-.card { background:#fff; padding:15px; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #ddd; }
-.card h3 { margin: 0; font-size: 11px; color: #888; text-transform: uppercase; }
-.card span { font-size: 22px; font-weight: bold; display: block; margin-top: 5px; }
-.c-novo { border-left-color: var(--f-novo); }
-.c-contato { border-left-color: var(--f-contato); }
-.c-proposta { border-left-color: var(--f-proposta); }
-.c-fechado { border-left-color: var(--f-fechado); }
-
-/* Tabs */
 .tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.tab-btn { padding: 15px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 13px; flex: 1; color: #666; transition: 0.3s; border-bottom: 3px solid transparent;}
+.tab-btn { padding: 15px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 12px; flex: 1; color: #666; border-bottom: 3px solid transparent; }
 .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: #f8fbff; }
 
-/* Filtros */
-.filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 12px; }
-input, select, textarea { padding:10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none;}
+/* Dashboard */
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom: 20px; }
+.card { background:#fff; padding:15px; border-radius:10px; border-left: 5px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.card h3 { margin: 0; font-size: 10px; color: #888; text-transform: uppercase; }
+.card span { font-size: 20px; font-weight: bold; display: block; }
 
-/* Tabela */
 .table-container { background:#fff; border-radius: 12px; overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-table { width:100%; border-collapse:collapse; min-width: 900px;}
-th { background: #f8f9fa; padding:12px 15px; text-align: left; font-size: 11px; color: #777; text-transform: uppercase; border-bottom: 2px solid #eee; }
-td { padding:12px 15px; border-bottom:1px solid #eee; font-size: 14px; vertical-align: middle; }
+table { width:100%; border-collapse:collapse; min-width: 850px;}
+td, th { padding: 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
+.status-select { padding: 5px; font-size: 11px; font-weight: bold; border-radius: 5px; }
+.note-area { width: 100%; height: 40px; font-size: 12px; border: 1px solid #eee; border-radius: 5px; resize: none; }
 
-/* Paginação */
-.pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding-bottom: 20px; }
-.btn-pag { background: #fff; border: 1px solid #ddd; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-.btn-pag:disabled { opacity: 0.3; cursor: not-allowed; }
-
-/* Botões de Ação */
 .btn-group { display: flex; gap: 5px; }
-.btn { width: 38px; height: 38px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.btn svg { width: 18px; height: 18px; fill: white; }
-.btn-wa { background: var(--wa); }
-.btn-mail { background: var(--mail); }
-.btn-call { background: #6366f1; }
-
-.status-select { padding: 5px; border-radius: 6px; font-size: 11px; font-weight: bold; border: 1px solid #ddd; cursor: pointer;}
-.note-area { font-size: 12px; width: 100%; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 6px; padding: 6px; min-height: 40px; font-family: inherit;}
-
-footer { text-align: center; padding: 20px; font-size: 11px; color: #888; background: #fff; border-top: 1px solid #eee; margin-top: auto;}
+.btn-act { width: 35px; height: 35px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.btn-act svg { width: 16px; fill: white; }
 
 .hidden { display: none; }
+footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
 </style>
 </head>
-
 <body>
 
-<header>
-    <div class="header-brand">
+<!-- TELA DE LOGIN -->
+<div id="login-screen">
+    <div class="login-box">
         <img src="logo.jpg" alt="RSI">
-        <span>RSI - CRM Estratégico</span>
-    </div>
-</header>
-
-<div class="container">
-    <!-- DASHBOARD -->
-    <div class="cards">
-        <div class="card"><h3>Total Leads</h3><span id="total">0</span></div>
-        <div class="card c-novo"><h3>Novos</h3><span id="dash-novo">0</span></div>
-        <div class="card c-contato"><h3>Em Contato</h3><span id="dash-contato">0</span></div>
-        <div class="card c-proposta"><h3>Propostas</h3><span id="dash-proposta">0</span></div>
-        <div class="card c-fechado"><h3>Fechados</h3><span id="dash-fechado">0</span></div>
-    </div>
-
-    <div class="tabs">
-        <button class="tab-btn active" id="btn-tab-lista" onclick="showTab('lista')">GESTÃO DO FUNIL</button>
-        <button class="tab-btn" id="btn-tab-email" onclick="showTab('email')">AUTOMAÇÃO DE E-MAIL</button>
-    </div>
-
-    <div id="aba-lista">
-        <!-- BARRA DE FILTROS ORGANIZADA -->
-        <div class="filter-bar">
-            <select id="filtroStatus" style="flex: 1; min-width: 140px;">
-                <option value="">Status (Todos)</option>
-                <option value="Novo">🟡 Novo</option>
-                <option value="Contato">🔵 Em Contato</option>
-                <option value="Proposta">🟠 Proposta</option>
-                <option value="Fechado">🟢 Fechado</option>
-            </select>
-            
-            <!-- NOVO FILTRO DE SEGMENTO -->
-            <select id="filtroRamo" style="flex: 1; min-width: 140px;">
-                <option value="">Segmentos (Todos)</option>
-            </select>
-
-            <select id="filtroPrioridade" style="flex: 1; min-width: 140px;">
-                <option value="">Prioridade (Todas)</option>
-                <option value="🔥 ALTA">🔥 ALTA</option>
-                <option value="⚡ MEDIA">⚡ MEDIA</option>
-                <option value="❄️ BAIXA">❄️ BAIXA</option>
-            </select>
-
-            <input type="text" id="busca" placeholder="Buscar por cliente, empresa ou nota..." style="flex: 2; min-width: 200px;">
-        </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="20%">Cliente / Empresa</th>
-                        <th width="15%">Estágio Funil</th>
-                        <th width="35%">Notas Estratégicas</th>
-                        <th width="30%">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="tabela"></tbody>
-            </table>
-        </div>
-
-        <div class="pagination">
-            <button class="btn-pag" id="btn-prev" onclick="mudarPagina(-1)">Anterior</button>
-            <span id="info-pag" style="font-size: 14px; font-weight: bold;">Página 1 de 1</span>
-            <button class="btn-pag" id="btn-next" onclick="mudarPagina(1)">Próximo</button>
-        </div>
-    </div>
-
-    <div id="aba-email" class="hidden">
-        <div class="card" style="max-width: 600px; margin: auto; border-top-color: var(--mail); padding: 25px;">
-            <h3>📧 Compostor de Vendas</h3>
-            <select id="email-template" onchange="aplicarTemplate()" style="width: 100%; margin-bottom: 15px;">
-                <option value="apresentacao">Apresentação Institucional RSI</option>
-                <option value="feira">Follow-up Pós-Feira</option>
-                <option value="proposta">Envio de Orçamento</option>
-            </select>
-            <input type="email" id="mail-para" placeholder="E-mail" style="width: 100%; margin-bottom: 10px;">
-            <input type="text" id="mail-assunto" placeholder="Assunto" style="width: 100%; margin-bottom: 10px;">
-            <textarea id="mail-mensagem" rows="10" style="width: 100%; font-family: inherit; line-height: 1.5; padding: 10px; border-radius: 8px; border: 1px solid #ddd;"></textarea>
-            <button class="btn btn-mail" style="width: 100%; margin-top: 15px; height: 50px;" onclick="dispararEmail()">ABRIR APLICATIVO DE E-MAIL</button>
-        </div>
+        <h2 style="margin:0 0 20px 0; font-size: 18px;">RSI Business Login</h2>
+        <input type="email" id="userEmail" placeholder="E-mail">
+        <input type="password" id="userPass" placeholder="Senha">
+        <button class="btn-login" onclick="acaoLogin()">ENTRAR</button>
+        <span class="forgot" onclick="recuperarSenha()">Esqueci minha senha</span>
+        <p id="msg-login" style="font-size: 11px; margin-top: 10px;"></p>
     </div>
 </div>
 
-<footer>
-    CRM RSI Leads v1.3.2 | Desenvolvido por <strong>FF Person</strong>
-</footer>
+<!-- CRM PRINCIPAL -->
+<div id="crm-app">
+    <header>
+        <div class="header-brand">
+            <img src="logo.jpg">
+            <span>RSI CRM <small id="sync" style="font-size: 9px; color: #25D366; font-weight: normal;">• Sincronizado</small></span>
+        </div>
+        <button onclick="logout()" style="background:none; border: 1px solid #fff; color:white; border-radius: 5px; padding: 4px 8px; cursor: pointer; font-size: 10px;">SAIR</button>
+    </header>
+
+    <div class="container">
+        <!-- Dashboards -->
+        <div class="cards">
+            <div class="card"><h3>Total</h3><span id="total">0</span></div>
+            <div class="card" style="border-left-color: #fd7e14"><h3>Propostas</h3><span id="dash-proposta">0</span></div>
+            <div class="card" style="border-left-color: #28a745"><h3>Fechados</h3><span id="dash-fechado">0</span></div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('funil', this)">GESTÃO DO FUNIL</button>
+            <button class="tab-btn" onclick="showTab('mkt', this)">E-MAIL MKT</button>
+            <button id="tab-admin" class="tab-btn hidden" onclick="showTab('config', this)">USUÁRIOS</button>
+        </div>
+
+        <!-- ABA FUNIL -->
+        <div id="view-funil">
+            <div style="display:flex; gap:10px; margin-bottom: 15px;">
+                <select id="fRamo" onchange="atualizarTabela()" style="flex:1;"><option value="">Todos Segmentos</option></select>
+                <input type="text" id="busca" oninput="atualizarTabela()" placeholder="Buscar cliente..." style="flex:2;">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Cliente</th><th>Estágio</th><th>Notas</th><th>Ações</th></tr></thead>
+                    <tbody id="tabela-leads"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ABA CONFIGURAÇÃO (SÓ ADMIN/MASTER) -->
+        <div id="view-config" class="hidden">
+            <div class="card" style="max-width: 500px; margin: auto;">
+                <h3>Cadastrar Novo Vendedor (Limite: 1)</h3>
+                <input type="email" id="newEmail" placeholder="E-mail do vendedor">
+                <input type="text" id="newPass" placeholder="Senha provisória">
+                <button class="btn-login" onclick="cadastrarVendedor()">CADASTRAR</button>
+                <hr>
+                <div id="lista-usuarios"></div>
+            </div>
+        </div>
+
+        <!-- ABA MKT -->
+        <div id="view-mkt" class="hidden">
+            <div class="card" style="max-width: 500px; margin: auto;">
+                <h3>E-mail Automatizado</h3>
+                <input type="text" id="mkt-para" placeholder="Para:">
+                <textarea id="mkt-msg" style="width:100%; height: 150px; border-radius: 8px; padding: 10px;" placeholder="Mensagem..."></textarea>
+                <button class="btn-login" onclick="enviarMail()">ABRIR E-MAIL</button>
+            </div>
+        </div>
+    </div>
+    <footer>CRM v1.5.0 | Developed by FF Person</footer>
+</div>
 
 <script>
-let dados = [];
-let dbExtra = JSON.parse(localStorage.getItem("rsi_db_v3") || "{}");
-let paginaAtual = 1;
-const itensPorPagina = 20;
+const SCRIPT_URL = "SUA_URL_DO_GOOGLE_SCRIPT_AQUI"; // Cole o link aqui
 
-const iconWA = `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
-const iconMail = `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`;
-const iconCall = `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.01-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
+let dadosLeads = [];
+let nivelAcesso = "";
 
-function showTab(n) {
-    document.getElementById('aba-lista').classList.toggle('hidden', n!=='lista');
-    document.getElementById('aba-email').classList.toggle('hidden', n!=='email');
-    document.getElementById('btn-tab-lista').classList.toggle('active', n==='lista');
-    document.getElementById('btn-tab-email').classList.toggle('active', n==='email');
-}
-
-fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
-.then(res => res.json())
-.then(json => {
-    dados = json.map(l => ({
-        id: (l.Telefone || l.name || Math.random()).toString().replace(/\D/g, ""),
-        nome: l.name || "",
-        empresa: l.Empresa || "",
-        telefone: (l.Telefone || "").replace(/\D/g, ""),
-        email: l.Email || l.email || "",
-        ramo: l.Ramo || "",
-        prioridade: l.Prioridade || "❄️ BAIXA"
-    }));
-
-    popularFiltroRamo();
-    atualizar();
-});
-
-function popularFiltroRamo() {
-    let ramos = [...new Set(dados.map(d => d.ramo))].filter(Boolean).sort();
-    let select = document.getElementById("filtroRamo");
-    ramos.forEach(r => {
-        let opt = document.createElement("option");
-        opt.value = r; opt.text = r; select.add(opt);
-    });
-}
-
-function atualizar() {
-    let tabela = document.getElementById("tabela");
-    tabela.innerHTML = "";
+// --- LOGIN E SEGURANÇA ---
+function acaoLogin() {
+    const u = document.getElementById("userEmail").value;
+    const s = document.getElementById("userPass").value;
+    if(!u || !s) return alert("Preencha tudo!");
     
-    let busca = document.getElementById("busca").value.toLowerCase();
-    let fStatus = document.getElementById("filtroStatus").value;
-    let fRamo = document.getElementById("filtroRamo").value;
-    let fPrio = document.getElementById("filtroPrioridade").value;
-
-    let filtrados = dados.filter(d => {
-        let extra = dbExtra[d.id] || { status: "Novo", notas: "" };
-        return (
-            (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca) || extra.notas.toLowerCase().includes(busca)) &&
-            (!fStatus || extra.status == fStatus) &&
-            (!fRamo || d.ramo == fRamo) &&
-            (!fPrio || d.prioridade == fPrio)
-        );
+    document.getElementById("msg-login").innerText = "Verificando...";
+    
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
+    .then(r => r.json()).then(res => {
+        if(res !== "erro") {
+            nivelAcesso = res;
+            sessionStorage.setItem("rsi_nivel", res);
+            iniciarApp();
+        } else {
+            document.getElementById("msg-login").innerText = "Acesso Negado!";
+        }
     });
+}
 
-    // Dashboard
+function iniciarApp() {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("crm-app").style.display = "block";
+    if(nivelAcesso === "admin" || nivelAcesso === "master") document.getElementById("tab-admin").classList.remove("hidden");
+    carregarLeads();
+}
+
+function recuperarSenha() {
+    const u = document.getElementById("userEmail").value;
+    if(!u) return alert("Digite seu e-mail no campo de login primeiro.");
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "recover", usuario: u }) })
+    .then(r => r.json()).then(res => alert(res === "enviado" ? "Senha enviada para seu e-mail!" : "E-mail não encontrado."));
+}
+
+// --- GESTÃO DE LEADS ---
+function carregarLeads() {
+    fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
+    .then(r => r.json()).then(json => {
+        dadosLeads = json.map(l => ({
+            nome: l.name || "", empresa: l.Empresa || "", telefone: String(l.Telefone || "").replace(/\D/g, ""),
+            email: l.Email || "", ramo: l.Ramo || "", status: l.Status || "Novo", notas: l.Notas || ""
+        }));
+        
+        // Popular Segmentos
+        const ramos = [...new Set(dadosLeads.map(d => d.ramo))].filter(Boolean).sort();
+        const sel = document.getElementById("fRamo");
+        ramos.forEach(r => { let o = document.createElement("option"); o.text = r; sel.add(o); });
+        
+        atualizarTabela();
+    });
+}
+
+function atualizarTabela() {
+    const busca = document.getElementById("busca").value.toLowerCase();
+    const ramo = document.getElementById("fRamo").value;
+    const body = document.getElementById("tabela-leads");
+    body.innerHTML = "";
+
+    const filtrados = dadosLeads.filter(d => 
+        (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
+        (!ramo || d.ramo == ramo)
+    );
+
     document.getElementById("total").innerText = filtrados.length;
-    document.getElementById("dash-novo").innerText = filtrados.filter(d => (dbExtra[d.id]?.status || "Novo") == "Novo").length;
-    document.getElementById("dash-contato").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Contato").length;
-    document.getElementById("dash-proposta").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Proposta").length;
-    document.getElementById("dash-fechado").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Fechado").length;
+    document.getElementById("dash-proposta").innerText = filtrados.filter(d => d.status == "Proposta").length;
+    document.getElementById("dash-fechado").innerText = filtrados.filter(d => d.status == "Fechado").length;
 
-    // Paginação
-    const totalPaginas = Math.ceil(filtrados.length / itensPorPagina) || 1;
-    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
-
-    const inicio = (paginaAtual - 1) * itensPorPagina;
-    const itensPaginados = filtrados.slice(inicio, inicio + itensPorPagina);
-
-    itensPaginados.forEach(d => {
-        let extra = dbExtra[d.id] || { status: "Novo", notas: "" };
+    filtrados.slice(0, 20).forEach(d => {
         let tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><strong>${d.nome}</strong><br><small>${d.empresa} | ${d.ramo}</small></td>
+            <td><strong>${d.nome}</strong><br><small>${d.empresa}</small></td>
             <td>
-                <select class="status-select" onchange="salvarStatus('${d.id}', this.value)">
-                    <option value="Novo" ${extra.status=='Novo'?'selected':''}>🟡 Novo</option>
-                    <option value="Contato" ${extra.status=='Contato'?'selected':''}>🔵 Em Contato</option>
-                    <option value="Proposta" ${extra.status=='Proposta'?'selected':''}>🟠 Proposta</option>
-                    <option value="Fechado" ${extra.status=='Fechado'?'selected':''}>🟢 Fechado</option>
+                <select class="status-select" onchange="salvarCloud('${d.telefone}', this.value, null)">
+                    <option value="Novo" ${d.status=='Novo'?'selected':''}>Novo</option>
+                    <option value="Contato" ${d.status=='Contato'?'selected':''}>Contato</option>
+                    <option value="Proposta" ${d.status=='Proposta'?'selected':''}>Proposta</option>
+                    <option value="Fechado" ${d.status=='Fechado'?'selected':''}>Fechado</option>
                 </select>
             </td>
-            <td><textarea class="note-area" placeholder="Anotações..." onchange="salvarNota('${d.id}', this.value)">${extra.notas}</textarea></td>
+            <td><textarea class="note-area" onchange="salvarCloud('${d.telefone}', null, this.value)">${d.notas}</textarea></td>
             <td>
                 <div class="btn-group">
-                    <a href="tel:${d.telefone}" class="btn btn-call" title="Ligar">${iconCall}</a>
-                    <button class="btn btn-wa" onclick="abrirWA('${d.id}')">${iconWA}</button>
-                    <button class="btn btn-mail" onclick="prepararEmail('${d.id}')">${iconMail}</button>
+                    <button class="btn-act" style="background:var(--wa)" onclick="window.open('https://wa.me/${d.telefone}')">W</button>
+                    <button class="btn-act" style="background:var(--mail)" onclick="prepararEmail('${d.email}')">E</button>
                 </div>
             </td>
         `;
-        tabela.appendChild(tr);
+        body.appendChild(tr);
     });
-
-    document.getElementById("info-pag").innerText = `Página ${paginaAtual} de ${totalPaginas}`;
-    document.getElementById("btn-prev").disabled = paginaAtual === 1;
-    document.getElementById("btn-next").disabled = paginaAtual === totalPaginas;
 }
 
-function mudarPagina(direcao) {
-    paginaAtual += direcao;
-    atualizar();
-    window.scrollTo(0, 0);
+function salvarCloud(tel, st, nt) {
+    document.getElementById("sync").innerText = "• Salvando...";
+    let l = dadosLeads.find(x => x.telefone === tel);
+    if(st) l.status = st; if(nt !== null) l.notas = nt;
+
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ telefone: tel, status: l.status, notas: l.notas }) })
+    .then(() => { document.getElementById("sync").innerText = "• Sincronizado"; atualizarTabela(); });
 }
 
-function resetarPagina() {
-    paginaAtual = 1;
-    atualizar();
+// --- GESTÃO DE USUÁRIOS (SÓ ADMIN) ---
+function cadastrarVendedor() {
+    const e = document.getElementById("newEmail").value;
+    const s = document.getElementById("newPass").value;
+    if(!e || !s) return alert("Preencha e-mail e senha!");
+
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "addUser", newEmail: e, newPass: s }) })
+    .then(r => r.json()).then(res => {
+        if(res === "sucesso") { alert("Vendedor cadastrado!"); carregarUsuarios(); }
+        else alert("Limite de 1 vendedor atingido! Exclua o anterior primeiro.");
+    });
 }
 
-function salvarStatus(id, st) {
-    if(!dbExtra[id]) dbExtra[id] = { notas: "" };
-    dbExtra[id].status = st;
-    localStorage.setItem("rsi_db_v3", JSON.stringify(dbExtra));
-    atualizar();
+function carregarUsuarios() {
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) })
+    .then(r => r.json()).then(users => {
+        let h = "<h4>Vendedor Atual:</h4>";
+        users.forEach((u, i) => {
+            if(u[2] === "vendedor") h += `<p>${u[0]} <button onclick="deletarUsuario(${i})">Excluir</button></p>`;
+        });
+        document.getElementById("lista-usuarios").innerHTML = h;
+    });
 }
 
-function salvarNota(id, nt) {
-    if(!dbExtra[id]) dbExtra[id] = { status: "Novo" };
-    dbExtra[id].notas = nt;
-    localStorage.setItem("rsi_db_v3", JSON.stringify(dbExtra));
+function deletarUsuario(row) {
+    if(confirm("Deseja excluir este acesso?")) {
+        fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: row }) })
+        .then(() => carregarUsuarios());
+    }
 }
 
-function abrirWA(id) {
-    let d = dados.find(x => x.id === id);
-    let msg = `Olá ${d.nome}, tudo bem? Sou da RSI – Soluções em Impressão. Gostaria de falar sobre nossas impressoras para a ${d.empresa}.`;
-    window.open(`https://wa.me/${d.telefone}?text=${encodeURIComponent(msg)}`, "_blank");
+// --- NAVEGAÇÃO ---
+function showTab(view, btn) {
+    document.getElementById("view-funil").classList.add("hidden");
+    document.getElementById("view-mkt").classList.add("hidden");
+    document.getElementById("view-config").classList.add("hidden");
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    
+    document.getElementById("view-" + view).classList.remove("hidden");
+    btn.classList.add("active");
+    if(view === "config") carregarUsuarios();
 }
 
-function prepararEmail(id) {
-    let d = dados.find(x => x.id === id);
-    showTab('email');
-    document.getElementById('mail-para').value = d.email;
-    document.getElementById('mail-assunto').value = "RSI – Soluções em Impressão para " + d.empresa;
-    aplicarTemplate(d.nome, d.empresa);
-}
-
-function aplicarTemplate(nome, empresa) {
-    const tipo = document.getElementById('email-template').value;
-    let t = {
-        apresentacao: `Olá ${nome || 'Cliente'},\n\nSou da RSI e gostaria de apresentar nossa estrutura para a ${empresa || 'sua empresa'}:\n\nRSI – Soluções em Impressão\nEspecializada na compra e venda de impressoras novas e usadas. Atendimento ágil e suporte técnico especializado.`,
-        feira: `Olá ${nome}, foi um prazer falar com você na feira!\n\nReiterando nosso contato pela RSI.`,
-        proposta: `Prezado(a) ${nome},\n\nConforme solicitado, segue anexo a proposta para a ${empresa}.\n\nA RSI garante equipamentos revisados com suporte técnico completo.`
-    };
-    document.getElementById('mail-mensagem').value = t[tipo];
-}
-
-function dispararEmail() {
-    let p = document.getElementById('mail-para').value;
-    let a = document.getElementById('mail-assunto').value;
-    let c = document.getElementById('mail-mensagem').value;
-    window.location.href = `mailto:${p}?subject=${encodeURIComponent(a)}&body=${encodeURIComponent(c)}`;
-}
-
-document.getElementById("busca").addEventListener("input", resetarPagina);
-document.getElementById("filtroStatus").addEventListener("change", resetarPagina);
-document.getElementById("filtroRamo").addEventListener("change", resetarPagina);
-document.getElementById("filtroPrioridade").addEventListener("change", resetarPagina);
+function logout() { sessionStorage.clear(); location.reload(); }
 </script>
-
 </body>
 </html>
