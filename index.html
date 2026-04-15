@@ -188,7 +188,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
             </div>
         </div>
     </div>
-    <footer>VERSÃO 2.0 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
+    <footer>VERSÃO 2.1 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
 </div>
 
 <div id="modal-lead">
@@ -217,8 +217,8 @@ const iconEdit = `<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l
 const iconDel  = `<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`;
 
 // ── Estado global ──────────────────────────────────────────────
-let dLeads = [];   // array master — índice é a fonte da verdade
-let fLeads = [];   // array filtrado (referências aos mesmos objetos)
+let dLeads = [];
+let fLeads = [];
 let nAcesso = "";
 let pAtu = 1;
 const pItem = 20;
@@ -230,7 +230,7 @@ function esc(str) {
     return d.innerHTML;
 }
 
-// ── Login (sem alterações) ─────────────────────────────────────
+// ── Login ──────────────────────────────────────────────────────
 function acaoLogin() {
     const u = document.getElementById("userEmail").value.trim();
     const s = document.getElementById("userPass").value;
@@ -253,28 +253,47 @@ function acaoLogin() {
     });
 }
 
+// ── FIX 1: Mapeamento de colunas robusto ───────────────────────
+// Usa posição fixa das colunas como fallback quando o nome não bate.
+// Ordem esperada na planilha: nome | empresa | telefone | email | ramo | status | notas
+function mapearLead(l, i) {
+    const keys = Object.keys(l);
+
+    // Tenta encontrar pelo nome da coluna (case-insensitive, sem espaços extras)
+    const byName = (aliases) => {
+        for (const alias of aliases) {
+            const k = keys.find(x => x.toLowerCase().trim().replace(/[\s\-_]/g, "") === alias.replace(/[\s\-_]/g, ""));
+            if (k && String(l[k]).trim()) return String(l[k]).trim();
+        }
+        return "";
+    };
+
+    // Fallback: acessa pelo índice posicional da coluna
+    const byPos = (pos) => {
+        const k = keys[pos];
+        return k ? String(l[k] || "").trim() : "";
+    };
+
+    // Tenta nome → se vazio, usa posição 0
+    const nome     = byName(["nome","name"])                      || byPos(0);
+    const empresa  = byName(["empresa","company","razaosocial"])  || byPos(1);
+    const telefone = (byName(["telefone","whatsapp","fone","tel","phone"]) || byPos(2)).replace(/\D/g, "");
+    const email    = byName(["email","email","e-mail","mail"])    || byPos(3);
+    const ramo     = byName(["ramo","segmento","setor","segment"])|| byPos(4);
+    const status   = byName(["status"])                           || byPos(5) || "Novo";
+    const notas    = byName(["notas","nota","notes","obs","observacoes"]) || byPos(6);
+
+    return { _idx: i, nome, empresa, telefone, email, ramo, status, notas };
+}
+
 // ── Carregamento de leads ──────────────────────────────────────
 function carregar() {
     setSyncStatus("saving");
-    fetch(`https://opensheet.elk.sh/${SHEET_ID}/leads`)
+    // Adiciona timestamp para burlar o cache do OpenSheet
+    fetch(`https://opensheet.elk.sh/${SHEET_ID}/leads?_=${Date.now()}`)
     .then(r => r.json())
     .then(json => {
-        dLeads = json.map((l, i) => {
-            const find = (key) => {
-                const k = Object.keys(l).find(x => x.toLowerCase().trim() === key.toLowerCase().trim());
-                return k ? String(l[k] || "").trim() : "";
-            };
-            return {
-                _idx: i,                                           // índice original da linha
-                nome:     find("nome")     || find("name")     || "",
-                empresa:  find("empresa")                       || "",
-                telefone: (find("telefone") || find("whatsapp") || "").replace(/\D/g, ""),
-                email:    find("email")    || find("e-mail")   || "",
-                ramo:     find("ramo")     || find("segmento") || "",
-                status:   find("status")                       || "Novo",
-                notas:    find("notas")                        || ""
-            };
-        });
+        dLeads = json.map((l, i) => mapearLead(l, i));
         popularFiltros();
         executarFiltragem();
         setSyncStatus("ok");
@@ -330,7 +349,6 @@ function dash() {
 }
 
 // ── Render da tabela ───────────────────────────────────────────
-// Usa _idx como chave — não depende do conteúdo do telefone
 function render() {
     const tbody = document.getElementById("tabela-leads");
     tbody.innerHTML = "";
@@ -356,7 +374,6 @@ function render() {
     pagina.forEach(d => {
         const tr = document.createElement("tr");
 
-        // Célula nome/empresa — usando createElement, sem innerHTML com dados do usuário
         const tdNome = document.createElement("td");
         tdNome.className = "nome-cell";
         const strong = document.createElement("strong");
@@ -367,7 +384,6 @@ function render() {
         tdNome.appendChild(document.createElement("br"));
         tdNome.appendChild(small);
 
-        // Célula status
         const tdStatus = document.createElement("td");
         const sel = document.createElement("select");
         sel.className = "status-badge";
@@ -381,7 +397,6 @@ function render() {
         });
         tdStatus.appendChild(sel);
 
-        // Célula notas
         const tdNotas = document.createElement("td");
         const ta = document.createElement("textarea");
         ta.className = "note-area";
@@ -391,7 +406,6 @@ function render() {
         });
         tdNotas.appendChild(ta);
 
-        // Célula ações
         const tdAcoes = document.createElement("td");
         const div = document.createElement("div");
         div.className = "btn-group";
@@ -448,7 +462,7 @@ function salvarStatus(idx, st, nt) {
 // ── Modal: abrir novo lead ─────────────────────────────────────
 function abrirNovoLead() {
     document.getElementById("modal-title").textContent = "Novo Lead";
-    document.getElementById("editIdx").value = "";           // vazio = novo
+    document.getElementById("editIdx").value = "";
     document.getElementById("addNome").value     = "";
     document.getElementById("addEmpresa").value  = "";
     document.getElementById("addTelefone").value = "";
@@ -459,13 +473,12 @@ function abrirNovoLead() {
 }
 
 // ── Modal: abrir edição ────────────────────────────────────────
-// Recebe o _idx do objeto — não depende do telefone como chave
 function abrirEditar(idx) {
     const d = dLeads.find(x => x._idx === idx);
     if (!d) { alert("Lead não encontrado. Recarregue a página."); return; }
 
     document.getElementById("modal-title").textContent   = "Alterar Cadastro";
-    document.getElementById("editIdx").value             = String(idx); // guarda o índice
+    document.getElementById("editIdx").value             = String(idx);
     document.getElementById("addNome").value             = d.nome;
     document.getElementById("addEmpresa").value          = d.empresa;
     document.getElementById("addTelefone").value         = d.telefone;
@@ -493,7 +506,6 @@ function salvarLead() {
     if (tel.length < 8) return alert("Informe um WhatsApp válido (mínimo 8 dígitos).");
 
     if (!isEdit) {
-        // Verificar duplicados apenas para novos leads
         const dup = dLeads.find(l =>
             l.telefone === tel ||
             (email && l.email && l.email.toLowerCase() === email.toLowerCase()) ||
@@ -502,11 +514,10 @@ function salvarLead() {
         if (dup) return alert(`Lead já cadastrado!\nNome: ${dup.nome} | Tel: ${dup.telefone}`);
     }
 
-    const idx    = isEdit ? parseInt(idxStr, 10) : null;
-    const lead   = isEdit ? dLeads.find(x => x._idx === idx) : null;
+    const idx     = isEdit ? parseInt(idxStr, 10) : null;
+    const lead    = isEdit ? dLeads.find(x => x._idx === idx) : null;
     const telOrig = lead ? lead.telefone : "";
 
-    // Atualizar estado local imediatamente
     if (isEdit && lead) {
         lead.nome     = nome;
         lead.empresa  = empresa;
@@ -514,8 +525,8 @@ function salvarLead() {
         lead.email    = email;
         lead.ramo     = ramo;
     } else {
-        // Inserir localmente para resposta imediata
         const novoIdx = dLeads.length > 0 ? Math.max(...dLeads.map(x => x._idx)) + 1 : 0;
+        // FIX 2: Novo lead vai para o FINAL do array, mantendo a ordem
         dLeads.push({ _idx: novoIdx, nome, empresa, telefone: tel, email, ramo, status: "Novo", notas: "" });
     }
 
@@ -523,7 +534,6 @@ function salvarLead() {
     executarFiltragem();
     fecharModal();
 
-    // Enviar ao servidor
     const payload = isEdit
         ? { action: "updateLead", telefoneOriginal: telOrig, nome, empresa, telefone: tel, email, ramo }
         : { action: "addLead", nome, empresa, telefone: tel, email, ramo };
@@ -533,10 +543,13 @@ function salvarLead() {
 
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
     .then(() => {
-        // Aguardar a planilha indexar e recarregar
+        // FIX 2: Aguarda mais tempo para o cache do OpenSheet expirar (~60s)
+        // e só recarrega após esse tempo para não embaralhar a ordem
         setTimeout(() => {
             document.getElementById("overlay").style.display = "none";
-            carregar();
+            setSyncStatus("ok");
+            // Recarrega silenciosamente em background após 60s
+            setTimeout(carregar, 57000);
         }, 3000);
     })
     .catch(() => {
@@ -546,20 +559,20 @@ function salvarLead() {
     });
 }
 
-// ── Deletar ────────────────────────────────────────────────────
-// Usa _idx para encontrar o lead no array local,
-// envia o telefone para o Apps Script (que busca por tel na planilha)
+// ── FIX 3: Deletar — não recarrega do servidor imediatamente ───
+// O OpenSheet tem cache; recarregar cedo faz o lead "voltar".
+// A deleção local é imediata e confiável. O servidor é atualizado
+// em background. O recarregamento ocorre após 60s para garantir
+// que o cache do OpenSheet já expirou.
 function deletar(idx) {
     const lead = dLeads.find(x => x._idx === idx);
     if (!lead) { alert("Lead não encontrado."); return; }
 
     if (!confirm(`Deseja excluir o lead "${lead.nome}"?\nEsta ação não pode ser desfeita.`)) return;
 
-    // Remover localmente de imediato
+    // Remove imediatamente da UI
     dLeads = dLeads.filter(x => x._idx !== idx);
     executarFiltragem();
-
-    document.getElementById("overlay").style.display = "flex";
     setSyncStatus("saving");
 
     fetch(SCRIPT_URL, {
@@ -568,16 +581,13 @@ function deletar(idx) {
         body: JSON.stringify({ action: "deleteLead", telefone: lead.telefone })
     })
     .then(() => {
-        setTimeout(() => {
-            document.getElementById("overlay").style.display = "none";
-            carregar(); // recarrega para confirmar deleção real
-        }, 3000);
+        setSyncStatus("ok");
+        // Recarrega em background depois que o cache do OpenSheet expirar
+        setTimeout(carregar, 60000);
     })
     .catch(() => {
-        document.getElementById("overlay").style.display = "none";
         setSyncStatus("error");
-        alert("Erro ao excluir. Verifique sua conexão.");
-        carregar(); // restaurar estado
+        alert("Erro ao excluir no servidor. O item foi removido localmente mas pode reaparecer ao recarregar.");
     });
 }
 
@@ -614,7 +624,6 @@ function carregarUsuarios() {
     .then(r => r.json())
     .then(users => {
         const lista = document.getElementById("lista-usuarios");
-        // Filtra apenas vendedores e guarda o índice REAL da linha no array completo
         const vendedores = users
             .map((u, i) => ({ email: u[0], papel: u[2], rowIdx: i }))
             .filter(u => u.papel === "vendedor");
@@ -641,7 +650,6 @@ function carregarUsuarios() {
     });
 }
 
-// rowIdx agora é o índice real no array retornado pelo getUsers
 function deletarUsuario(rowIdx, email) {
     if (!confirm(`Remover o usuário ${email}?`)) return;
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: rowIdx }) })
