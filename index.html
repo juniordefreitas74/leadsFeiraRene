@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM Cloud v1.8.6 | By FF Person</title>
+<title>RSI CRM Cloud v1.8.7 | By FF Person</title>
 <style>
 :root { 
     --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --edit: #f59e0b; --dark: #0f172a; --bg: #f8fafc; 
@@ -11,20 +11,17 @@
 }
 body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
 
-/* OVERLAY DE CARREGAMENTO */
-#overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.85); display:none; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; font-weight: 800; color: var(--primary); }
+#overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9); display:none; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; font-weight: 800; color: var(--primary); }
 
-/* LOGIN */
 #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--dark); display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .login-box { background: #fff; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 .login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid #f1f5f9; object-fit: cover; }
 
 input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none; margin-bottom: 10px;}
-label { display: block; text-align: left; font-size: 11px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; margin-bottom: 4px; margin-left: 2px;}
+label { display: block; text-align: left; font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; margin-bottom: 4px; }
 
 .btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
 
-/* APP LAYOUT */
 #crm-app { display: none; }
 header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
 .header-brand { display: flex; align-items: center; gap: 10px; }
@@ -66,15 +63,15 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
 </head>
 <body>
 
-<div id="overlay">Aguarde...<br><span style="font-size:12px; font-weight:normal;">Sincronizando com a nuvem</span></div>
+<div id="overlay">Sincronizando...</div>
 
 <div id="login-screen">
     <div class="login-box">
         <img src="logo.jpg">
-        <h2>RSI CRM Login</h2>
+        <h2>RSI Login</h2>
         <input type="email" id="userEmail" placeholder="Usuário">
         <input type="password" id="userPass" placeholder="Senha">
-        <button class="btn-main" onclick="acaoLogin()">ENTRAR NO SISTEMA</button>
+        <button class="btn-main" onclick="acaoLogin()">ENTRAR</button>
         <p id="msg-login" style="font-size: 11px; margin-top: 15px;"></p>
     </div>
 </div>
@@ -83,7 +80,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
     <header>
         <div class="header-brand"><img src="logo.jpg"> <span>RSI CRM Cloud</span></div>
         <div style="display:flex; align-items:center; gap: 15px;">
-            <div id="sync" style="font-size: 11px; color: #10b981; font-weight: 800;">• Sincronizado</div>
+            <div id="sync" style="font-size: 11px; color: #10b981; font-weight: 800;">• Conectado</div>
             <button onclick="logout()" style="background: #f1f5f9; border:none; padding: 8px 16px; border-radius: 8px; cursor:pointer; font-size: 11px; font-weight: 700;">Sair</button>
         </div>
     </header>
@@ -98,8 +95,8 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
         </div>
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <button class="btn-main" style="width: auto; background: var(--dark);" onclick="showTab('funil')">GESTÃO DO FUNIL</button>
-            <button class="btn-main hidden" id="btn-tab-config" style="width: auto; background: var(--text-sub);" onclick="showTab('config')">USUÁRIOS</button>
+            <button class="tab-btn active" id="tab-funil-btn" onclick="showTab('funil')">GESTÃO DO FUNIL</button>
+            <button class="tab-btn hidden" id="btn-tab-config" onclick="showTab('config')">USUÁRIOS</button>
         </div>
 
         <div id="view-funil">
@@ -110,24 +107,13 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px; background: var(--dark);" onclick="executarFiltragem()">FILTRAR</button>
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px;" onclick="abrirNovoLead()">+ NOVO LEAD</button>
             </div>
-
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Lead / Empresa</th><th>Status</th><th>Notas</th><th>Ações</th></tr></thead>
-                    <tbody id="tabela-leads"></tbody>
-                </table>
-            </div>
-
-            <div class="pagination">
-                <button class="btn-pag" id="btn-prev" onclick="mudarPagina(-1)">Anterior</button>
-                <span id="info-pag" style="font-weight: 800; font-size: 14px;">Página 1</span>
-                <button class="btn-pag" id="btn-next" onclick="mudarPagina(1)">Próximo</button>
-            </div>
+            <div class="table-container"><table><thead><tr><th>Cliente / Empresa</th><th>Funil</th><th>Notas</th><th>Ações</th></tr></thead><tbody id="tabela-leads"></tbody></table></div>
+            <div class="pagination"><button class="btn-pag" id="btn-prev" onclick="pag(-1)">Anterior</button><span id="info-pag">Página 1</span><button class="btn-pag" id="btn-next" onclick="pag(1)">Próximo</button></div>
         </div>
 
         <div id="view-config" class="hidden">
             <div class="card" style="max-width: 500px; margin: auto; padding: 30px; border-left: none; border-top: 6px solid var(--dark);">
-                <h3>Novo Usuário</h3>
+                <h3>Gerenciar Usuário</h3>
                 <input type="email" id="newEmail" placeholder="E-mail">
                 <input type="text" id="newPass" placeholder="Senha">
                 <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR</button>
@@ -135,33 +121,19 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
             </div>
         </div>
     </div>
-
-    <footer>VERSÃO 1.8.6 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
+    <footer>VERSÃO 1.8.7 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
 </div>
 
-<!-- MODAL LEAD -->
 <div id="modal-lead">
     <div class="modal-box">
-        <h3 id="modal-title" style="margin-top:0;">Novo Lead</h3>
+        <h3 id="modal-title" style="margin-top:0;">Lead</h3>
         <input type="hidden" id="editOriginalTel">
-        
-        <label>Nome do Contato</label>
-        <input type="text" id="addNome">
-        
-        <label>Nome da Empresa</label>
-        <input type="text" id="addEmpresa">
-        
-        <label>WhatsApp (DDD + Número)</label>
-        <input type="text" id="addTelefone">
-        
-        <label>E-mail</label>
-        <input type="email" id="addEmail">
-        
-        <label>Segmento (Ramo)</label>
-        <input list="segmentos-lista" id="addRamo">
-        <datalist id="segmentos-lista"></datalist>
-        
-        <button id="btn-save-lead" class="btn-main" onclick="salvarLeadNaPlanilha()">SALVAR DADOS</button>
+        <label>Nome</label><input type="text" id="addNome">
+        <label>Empresa</label><input type="text" id="addEmpresa">
+        <label>WhatsApp</label><input type="text" id="addTelefone">
+        <label>E-mail</label><input type="email" id="addEmail">
+        <label>Segmento (Ramo)</label><input list="ramos-list" id="addRamo"><datalist id="ramos-list"></datalist>
+        <button id="btn-save-lead" class="btn-main" onclick="salvarLead()">SALVAR</button>
         <button style="width:100%; border:none; background:none; margin-top:15px; cursor:pointer;" onclick="document.getElementById('modal-lead').style.display='none'">Cancelar</button>
     </div>
 </div>
@@ -174,13 +146,7 @@ const iconMail = `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2
 const iconEdit = `<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`;
 const iconDel = `<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`;
 
-let dadosLeads = [];
-let filtrados = [];
-let nivelAcesso = "";
-let pagAtual = 1;
-const porPag = 20;
-
-const MSG_RSI = "Olá [NOME],\n\nSomos da RSI – Soluções em Impressão. Especializada na compra e venda de impressoras e multifuncionais novas e usadas. Podemos conversar sobre as necessidades da [EMPRESA]?";
+let dLeads = []; let fLeads = []; let nAcesso = ""; let pAtu = 1; const pItem = 20;
 
 function acaoLogin() {
     const u = document.getElementById("userEmail").value;
@@ -188,99 +154,93 @@ function acaoLogin() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
     .then(r => r.json()).then(res => {
         if(res !== "erro") {
-            nivelAcesso = res; sessionStorage.setItem("rsi_logado", res);
+            nAcesso = res; sessionStorage.setItem("rsi_logado", res);
             document.getElementById("login-screen").style.display = "none";
             document.getElementById("crm-app").style.display = "block";
             if(res !== "vendedor") document.getElementById("btn-tab-config").classList.remove("hidden");
-            carregarLeads();
-        } else alert("Login Inválido!");
+            carregar();
+        } else alert("Acesso Negado!");
     });
 }
 
-function carregarLeads() {
+function carregar() {
     fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
     .then(r => r.json()).then(json => {
-        // MAPEAMENTO RÍGIDO POR POSIÇÃO (A,B,C,D,E,F,G)
-        dadosLeads = json.map(l => ({
-            nome: l[0] || "", empresa: l[1] || "", telefone: String(l[2] || "").replace(/\D/g, ""),
-            email: l[3] || "", ramo: l[4] || "", status: l[5] || "Novo", notas: l[6] || ""
-        }));
-        
-        // Atualiza Seletores de Filtro e Datalist do Modal
-        const sel = document.getElementById("fRamo");
-        const list = document.getElementById("segmentos-lista");
-        sel.innerHTML = '<option value="">Todos</option>';
-        list.innerHTML = '';
-        
-        const ramosUnicos = [...new Set(dadosLeads.map(d => d.ramo))].filter(Boolean).sort();
-        ramosUnicos.forEach(r => {
-            let o = document.createElement("option"); o.text = r; o.value = r; sel.add(o);
-            let opt = document.createElement("option"); opt.value = r; list.appendChild(opt);
+        // MAPEAMENTO DINÂMICO PARA EVITAR BAGUNÇA
+        dLeads = json.map(l => {
+            const get = (key) => {
+                const found = Object.keys(l).find(k => k.toLowerCase() === key.toLowerCase());
+                return found ? l[found] : "";
+            };
+            return {
+                nome: get("Nome") || get("name") || "",
+                empresa: get("Empresa") || "",
+                telefone: String(get("Telefone") || "").replace(/\D/g, ""),
+                email: get("Email") || get("E-mail") || "",
+                ramo: get("Ramo") || get("Segmento") || "",
+                status: get("Status") || "Novo",
+                notas: get("Notas") || ""
+            };
         });
-        
+        popularFiltros();
         executarFiltragem();
     });
 }
 
-function executarFiltragem() {
-    const busca = document.getElementById("busca").value.toLowerCase();
-    const st = document.getElementById("fStatus").value;
-    const rm = document.getElementById("fRamo").value;
-    filtrados = dadosLeads.filter(d => {
-        return (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
-               (!st || d.status === st) && (!rm || d.ramo === rm);
+function popularFiltros() {
+    const sel = document.getElementById("fRamo");
+    const list = document.getElementById("ramos-list");
+    sel.innerHTML = '<option value="">Todos</option>';
+    const ramos = [...new Set(dLeads.map(d => d.ramo))].filter(Boolean).sort();
+    ramos.forEach(r => {
+        sel.add(new Option(r, r));
+        list.appendChild(new Option(r, r));
     });
-    pagAtual = 1; atualizarDashboard(); renderizarTabela();
 }
 
-function atualizarDashboard() {
-    document.getElementById("total").innerText = dadosLeads.length;
-    document.getElementById("dash-novo").innerText = dadosLeads.filter(d => d.status == "Novo").length;
-    document.getElementById("dash-contato").innerText = dadosLeads.filter(d => d.status == "Contato").length;
-    document.getElementById("dash-proposta").innerText = dadosLeads.filter(d => d.status == "Proposta").length;
-    document.getElementById("dash-fechado").innerText = dadosLeads.filter(d => d.status == "Fechado").length;
+function executarFiltragem() {
+    const b = document.getElementById("busca").value.toLowerCase();
+    const s = document.getElementById("fStatus").value;
+    const r = document.getElementById("fRamo").value;
+    fLeads = dLeads.filter(d => (!b || d.nome.toLowerCase().includes(b) || d.empresa.toLowerCase().includes(b)) && (!s || d.status === s) && (!r || d.ramo === r));
+    pAtu = 1; dash(); render();
 }
 
-function renderizarTabela() {
-    const body = document.getElementById("tabela-leads"); body.innerHTML = "";
-    const totalP = Math.ceil(filtrados.length / porPag) || 1;
-    document.getElementById("info-pag").innerText = `Página ${pagAtual} de ${totalP}`;
-    document.getElementById("btn-prev").disabled = pagAtual === 1;
-    document.getElementById("btn-next").disabled = pagAtual === totalP || filtrados.length === 0;
+function dash() {
+    document.getElementById("total").innerText = dLeads.length;
+    document.getElementById("dash-novo").innerText = dLeads.filter(d => d.status == "Novo").length;
+    document.getElementById("dash-contato").innerText = dLeads.filter(d => d.status == "Contato").length;
+    document.getElementById("dash-proposta").innerText = dLeads.filter(d => d.status == "Proposta").length;
+    document.getElementById("dash-fechado").innerText = dLeads.filter(d => d.status == "Fechado").length;
+}
 
-    filtrados.slice((pagAtual-1)*porPag, pagAtual*porPag).forEach(d => {
+function render() {
+    const b = document.getElementById("tabela-leads"); b.innerHTML = "";
+    const tP = Math.ceil(fLeads.length / pItem) || 1;
+    document.getElementById("info-pag").innerText = `Página ${pAtu} de ${tP}`;
+    fLeads.slice((pAtu-1)*pItem, pAtu*pItem).forEach(d => {
         let tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><strong>${d.nome}</strong><br><small style="color:var(--text-sub)">${d.empresa} | ${d.ramo}</small></td>
-            <td>
-                <select class="status-badge" onchange="salvarMudanca('${d.telefone}', this.value, null)">
-                    <option value="Novo" ${d.status=='Novo'?'selected':''}>Novo</option>
-                    <option value="Contato" ${d.status=='Contato'?'selected':''}>Contato</option>
-                    <option value="Proposta" ${d.status=='Proposta'?'selected':''}>Proposta</option>
-                    <option value="Fechado" ${d.status=='Fechado'?'selected':''}>Fechado</option>
-                </select>
-            </td>
-            <td><textarea class="note-area" onchange="salvarMudanca('${d.telefone}', null, this.value)">${d.notas}</textarea></td>
-            <td>
-                <div class="btn-group">
-                    <button class="btn-act btn-wa" onclick="window.open('https://wa.me/${d.telefone}?text=${encodeURIComponent(MSG_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}')">${iconWA}</button>
-                    <button class="btn-act btn-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI&body=${encodeURIComponent(MSG_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}'">${iconMail}</button>
-                    <button class="btn-act btn-edit" onclick="abrirEditarLead('${d.telefone}')">${iconEdit}</button>
-                    <button class="btn-act btn-del" onclick="deletarLead('${d.telefone}')">${iconDel}</button>
-                </div>
-            </td>
-        `;
-        body.appendChild(tr);
+            <td><strong>${d.nome}</strong><br><small>${d.empresa} | ${d.ramo}</small></td>
+            <td><select class="status-badge" onchange="salvarStatus('${d.telefone}', this.value, null)"><option value="Novo" ${d.status=='Novo'?'selected':''}>Novo</option><option value="Contato" ${d.status=='Contato'?'selected':''}>Contato</option><option value="Proposta" ${d.status=='Proposta'?'selected':''}>Proposta</option><option value="Fechado" ${d.status=='Fechado'?'selected':''}>Fechado</option></select></td>
+            <td><textarea class="note-area" onchange="salvarStatus('${d.telefone}', null, this.value)">${d.notas}</textarea></td>
+            <td><div class="btn-group">
+                <button class="btn-act btn-wa" onclick="window.open('https://wa.me/${d.telefone}?text=Olá ${d.nome}')">${iconWA}</button>
+                <button class="btn-act btn-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI'">${iconMail}</button>
+                <button class="btn-act btn-edit" onclick="abrirEditar('${d.telefone}')">${iconEdit}</button>
+                <button class="btn-act btn-del" onclick="deletar('${d.telefone}')">${iconDel}</button>
+            </div></td>`;
+        b.appendChild(tr);
     });
 }
 
-function salvarMudanca(tel, st, nt) {
-    document.getElementById("sync").innerText = "• Salvando..."; document.getElementById("sync").style.color = "orange";
-    let lead = dadosLeads.find(x => x.telefone === tel);
-    if(st) lead.status = st; if(nt !== null) lead.notas = nt;
-    atualizarDashboard();
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "updateLead", telefone: tel, status: lead.status, notas: lead.notas }) })
-    .then(() => { document.getElementById("sync").innerText = "• Sincronizado"; document.getElementById("sync").style.color = "#10b981"; });
+function salvarStatus(tel, st, nt) {
+    document.getElementById("sync").innerText = "• Salvando...";
+    let l = dLeads.find(x => x.telefone === tel);
+    if(st) l.status = st; if(nt !== null) l.notas = nt;
+    dash();
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "updateStatus", telefone: tel, status: l.status, notas: l.notas }) })
+    .then(() => document.getElementById("sync").innerText = "• Sincronizado");
 }
 
 function abrirNovoLead() {
@@ -291,40 +251,30 @@ function abrirNovoLead() {
     document.getElementById("addRamo").value = ""; document.getElementById("modal-lead").style.display='flex';
 }
 
-function abrirEditarLead(tel) {
-    const d = dadosLeads.find(x => x.telefone === tel);
-    if(!d) return;
+function abrirEditar(tel) {
+    const d = dLeads.find(x => x.telefone === tel);
     document.getElementById("modal-title").innerText = "Alterar Cadastro";
     document.getElementById("editOriginalTel").value = d.telefone;
-    document.getElementById("addNome").value = d.nome;
-    document.getElementById("addEmpresa").value = d.empresa;
-    document.getElementById("addTelefone").value = d.telefone;
-    document.getElementById("addEmail").value = d.email;
-    document.getElementById("addRamo").value = d.ramo;
-    document.getElementById("modal-lead").style.display='flex';
+    document.getElementById("addNome").value = d.nome; document.getElementById("addEmpresa").value = d.empresa;
+    document.getElementById("addTelefone").value = d.telefone; document.getElementById("addEmail").value = d.email;
+    document.getElementById("addRamo").value = d.ramo; document.getElementById("modal-lead").style.display='flex';
 }
 
-function salvarLeadNaPlanilha() {
+function salvarLead() {
     const telOrig = document.getElementById("editOriginalTel").value;
     const acao = telOrig ? "updateLead" : "addLead";
-    const d = { 
-        action: acao, telefoneOriginal: telOrig,
-        nome: document.getElementById("addNome").value, empresa: document.getElementById("addEmpresa").value, 
-        telefone: document.getElementById("addTelefone").value.replace(/\D/g, ""), 
-        email: document.getElementById("addEmail").value, ramo: document.getElementById("addRamo").value 
-    };
-    if(!d.nome || d.telefone.length < 8) return alert("Preencha Nome e WhatsApp.");
+    const d = { action: acao, telefoneOriginal: telOrig, nome: document.getElementById("addNome").value, empresa: document.getElementById("addEmpresa").value, telefone: document.getElementById("addTelefone").value.replace(/\D/g, ""), email: document.getElementById("addEmail").value, ramo: document.getElementById("addRamo").value };
     document.getElementById("overlay").style.display = "flex";
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => {
-        setTimeout(() => { document.getElementById("overlay").style.display = "none"; document.getElementById("modal-lead").style.display='none'; carregarLeads(); }, 2000);
+        setTimeout(() => { document.getElementById("overlay").style.display = "none"; document.getElementById("modal-lead").style.display='none'; carregar(); }, 2000);
     });
 }
 
-function deletarLead(tel) {
-    if(confirm("Deseja excluir permanentemente?")) {
+function deletar(tel) {
+    if(confirm("Excluir permanentemente?")) {
         document.getElementById("overlay").style.display = "flex";
         fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
-        .then(() => setTimeout(() => { document.getElementById("overlay").style.display = "none"; carregarLeads(); }, 2000));
+        .then(() => setTimeout(() => { document.getElementById("overlay").style.display = "none"; carregar(); }, 2000));
     }
 }
 
@@ -341,25 +291,25 @@ function cadastrarUsuario() {
 
 function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
-        let h = "<h4>Usuários na Planilha:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:10px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none; cursor:pointer;">[Excluir]</button></p>`; });
+        let h = "<h4>Usuários:</h4>";
+        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p>${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; cursor:pointer;">[Excluir]</button></p>`; });
         document.getElementById("lista-usuarios").innerHTML = h;
     });
 }
 
 function deletarUsuario(i) {
-    if(confirm("Remover acesso?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
+    if(confirm("Remover usuário?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
 }
 
-function mudarPagina(dir) { pagAtual += dir; renderizarTabela(); window.scrollTo(0,0); }
+function pag(dir) { pAtu += dir; render(); window.scrollTo(0,0); }
 function logout() { sessionStorage.clear(); location.reload(); }
 
 if(sessionStorage.getItem("rsi_logado")) {
-    nivelAcesso = sessionStorage.getItem("rsi_logado");
+    nAcesso = sessionStorage.getItem("rsi_logado");
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("crm-app").style.display = "block";
-    if(nivelAcesso !== "vendedor") document.getElementById("btn-tab-config").classList.remove("hidden");
-    carregarLeads();
+    if(nAcesso !== "vendedor") document.getElementById("btn-tab-config").classList.remove("hidden");
+    carregar();
 }
 </script>
 </body>
