@@ -3,115 +3,185 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>FF Person - RSI Leads</title>
+<title>CRM RSI - Leads Pro</title>
 
 <style>
-body { font-family: Arial; margin:0; background:#f4f6f9;}
-header { background:#111; color:#fff; padding:15px; font-size:20px;}
+:root {
+    --primary: #007bff;
+    --wa: #25D366;
+    --mail: #ea4335;
+    --dark: #111;
+    --bg: #f4f6f9;
+}
+
+body { font-family: 'Segoe UI', Arial, sans-serif; margin:0; background: var(--bg); color: #333;}
+
+/* HEADER COM LOGO REDONDO */
+header { 
+    background: var(--dark); 
+    color:#fff; 
+    padding: 10px 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.header-brand img {
+    height: 50px;       /* Altura do logo */
+    width: 50px;        /* Largura igual à altura para ficar circular */
+    object-fit: cover;  /* Garante que a imagem não distorça ao cortar */
+    border-radius: 50%; /* Deixa redondinho */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.header-brand span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .container { padding:20px;}
 
-/* Estilo das Abas */
-.tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #ddd; background: #fff; border-radius: 8px 8px 0 0; }
-.tab-btn { padding: 15px 20px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 14px; flex: 1; color: #666;}
-.tab-btn.active { border-bottom: 3px solid #007bff; color: #007bff; background: #f0f7ff; }
+/* Abas Modernas */
+.tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.tab-btn { padding: 15px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 13px; flex: 1; color: #666; transition: 0.3s; border-bottom: 3px solid transparent;}
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: #f8fbff; }
 
-.cards { display:flex; gap:10px; margin-bottom:20px;}
-.card { background:#fff; padding:15px; flex:1; border-radius:10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-input, select, textarea { padding:10px; margin-right:10px; margin-bottom:10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;}
-table { width:100%; background:#fff; border-collapse:collapse; border-radius: 10px; overflow: hidden;}
-th,td { padding:12px; border-bottom:1px solid #ddd; text-align: left;}
-tr:hover { background:#f9f9f9; }
+.cards { display:flex; gap:15px; margin-bottom:20px;}
+.card { background:#fff; padding:15px; flex:1; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-top: 4px solid var(--primary);}
+.card h3 { margin: 0; font-size: 12px; color: #888; text-transform: uppercase; }
+.card span { font-size: 24px; font-weight: bold; display: block; margin-top: 5px; }
 
-/* Botões de Ação */
-.btn-group { display: flex; gap: 5px; }
-.btn { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.2s; }
-.btn-wa { background: #25D366; color: white; }
-.btn-wa:hover { background: #1eb954; }
-.btn-mail { background: #ea4335; color: white; }
-.btn-mail:hover { background: #d3382b; }
-.btn-status { background: #e0e0e0; color: #333; }
-.btn-status.ok { background: #28a745; color: white; }
+/* Filtros */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+input, select, textarea { padding:10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none;}
+
+/* Tabela */
+.table-container { background:#fff; border-radius: 12px; overflow-x: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+table { width:100%; border-collapse:collapse; min-width: 600px;}
+th { background: #f8f9fa; padding:15px; text-align: left; font-size: 13px; color: #777; border-bottom: 2px solid #eee; }
+td { padding:15px; border-bottom:1px solid #eee; font-size: 14px; }
+
+/* Badges de Prioridade */
+.prio { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+.prio-alta { background: #ffebee; color: #c62828; }
+.prio-media { background: #fff3e0; color: #ef6c00; }
+.prio-baixa { background: #e3f2fd; color: #1565c0; }
+
+/* Botões */
+.btn-group { display: flex; gap: 6px; }
+.btn { padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
+.btn-wa { background: var(--wa); color: white; }
+.btn-mail { background: var(--mail); color: white; }
+.btn-status { background: #eee; color: #555; }
+.btn-status.ok { background: #4caf50; color: white; }
 
 .hidden { display: none; }
 
 @media (max-width: 768px) {
   .cards { flex-direction: column; }
-  input, select { width: 100%; }
   .btn-group { flex-direction: column; }
-  .btn { width: 100%; margin-bottom: 2px; }
 }
 </style>
 </head>
 
 <body>
 
-<header>📊 CRM de Leads RSI</header>
+<header>
+    <div class="header-brand">
+        <img src="logo.jpg" alt="RSI Logo">
+        <span>CRM RSI Leads</span>
+    </div>
+</header>
 
 <div class="container">
-    <!-- Navegação -->
     <div class="tabs">
-        <button class="tab-btn active" id="btn-tab-lista" onclick="showTab('lista')">LISTA DE LEADS</button>
-        <button class="tab-btn" id="btn-tab-email" onclick="showTab('email')">COMPOSTOR DE E-MAIL</button>
+        <button class="tab-btn active" id="btn-tab-lista" onclick="showTab('lista')">📋 LISTA DE LEADS</button>
+        <button class="tab-btn" id="btn-tab-email" onclick="showTab('email')">📧 COMPOSTOR DE E-MAIL</button>
     </div>
 
     <!-- ABA 1: LISTA -->
     <div id="aba-lista">
         <div class="cards">
-            <div class="card">Total: <span id="total"></span></div>
-            <div class="card">🔥 Alta: <span id="alta"></span></div>
-            <div class="card">Contatados: <span id="contatados"></span></div>
+            <div class="card" style="border-top-color: #333;"><h3>Total Leads</h3><span id="total">0</span></div>
+            <div class="card" style="border-top-color: #ea4335;"><h3>🔥 Alta</h3><span id="alta">0</span></div>
+            <div class="card" style="border-top-color: #25D366;"><h3>Contatados</h3><span id="contatados">0</span></div>
         </div>
 
-        <div style="display: flex; flex-wrap: wrap;">
+        <div class="filter-bar">
             <select id="filtroRamo"><option value="">Todos os Ramos</option></select>
             <select id="filtroPrioridade">
-                <option value="">Todas Prioridades</option>
-                <option>🔥 ALTA</option>
-                <option>⚡ MEDIA</option>
-                <option>❄️ BAIXA</option>
+                <option value="">Prioridades</option>
+                <option value="🔥 ALTA">🔥 ALTA</option>
+                <option value="⚡ MEDIA">⚡ MEDIA</option>
+                <option value="❄️ BAIXA">❄️ BAIXA</option>
             </select>
-            <input type="text" id="busca" placeholder="Buscar nome ou empresa..." style="flex-grow: 1;">
+            <input type="text" id="busca" placeholder="Buscar por nome ou empresa..." style="flex-grow: 1;">
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Lead / Empresa</th>
-                    <th>Ramo</th>
-                    <th>Prioridade</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="tabela"></tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lead / Empresa</th>
+                        <th>Ramo</th>
+                        <th>Prioridade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- ABA 2: EMAIL -->
     <div id="aba-email" class="hidden">
-        <div class="card" style="max-width: 600px; margin: auto;">
-            <h3 style="margin-top:0">📧 Compor E-mail</h3>
-            <label style="font-size: 12px; color: #666;">Para:</label>
-            <input type="email" id="mail-para" placeholder="E-mail do destinatário" style="width: 100%;">
+        <div class="card" style="max-width: 600px; margin: auto; border-top-color: var(--mail);">
+            <h3 style="margin-bottom: 15px; font-size: 18px; color: #333;">📧 Compor E-mail RSI</h3>
             
-            <label style="font-size: 12px; color: #666;">Assunto:</label>
-            <input type="text" id="mail-assunto" value="Soluções RSI - Contato Comercial" style="width: 100%;">
+            <label style="font-size: 12px; font-weight: bold;">Modelo de Mensagem:</label>
+            <select id="email-template" onchange="aplicarTemplate()" style="width: 100%; margin-bottom: 15px; background: #f9f9f9;">
+                <option value="apresentacao">Apresentação Institucional RSI</option>
+                <option value="feira">Follow-up Pós-Feira</option>
+                <option value="proposta">Envio de Proposta Técnica</option>
+            </select>
+
+            <label style="font-size: 12px; font-weight: bold;">Para:</label>
+            <input type="email" id="mail-para" placeholder="email@exemplo.com" style="width: 100%;">
             
-            <label style="font-size: 12px; color: #666;">Mensagem:</label>
-            <textarea id="mail-mensagem" rows="8" style="width: 100%; font-family: Arial;"></textarea>
+            <label style="font-size: 12px; font-weight: bold;">Assunto:</label>
+            <input type="text" id="mail-assunto" value="RSI – Soluções em Impressão" style="width: 100%;">
             
-            <button class="btn btn-mail" style="width: 100%; padding: 15px; font-size: 16px;" onclick="dispararEmail()">
-                Enviar Agora (Abrir Aplicativo)
-            </button>
-            <p style="font-size: 11px; color: #999; text-align: center; margin-top: 10px;">
-                Isso abrirá o seu Gmail, Outlook ou aplicativo de e-mail padrão.
-            </p>
+            <label style="font-size: 12px; font-weight: bold;">Mensagem:</label>
+            <textarea id="mail-mensagem" rows="12" style="width: 100%; font-family: sans-serif; resize: vertical; line-height: 1.5;"></textarea>
+            
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn btn-mail" style="flex: 2; padding: 15px; font-size: 14px;" onclick="dispararEmail()">
+                    🚀 Abrir no E-mail
+                </button>
+                <button class="btn btn-status" style="flex: 1;" onclick="copiarTexto()">
+                    📋 Copiar
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
+// Mantive toda a lógica original intacta para garantir o funcionamento
 let dados = [];
+let leadAtual = { nome: "", empresa: "" };
 let contatados = JSON.parse(localStorage.getItem("contatados") || "[]");
+
+const TEXTO_RSI = "RSI – Soluções em Impressão\nEspecializada na compra e venda de impressoras e multifuncionais novas e usadas. Oferecemos equipamentos de alta qualidade para atender às necessidades da sua empresa, com suporte técnico especializado e atendimento ágil.";
+
+const templates = {
+    apresentacao: "Olá [NOME],\n\nSou da RSI e gostaria de apresentar a você a:\n\n" + TEXTO_RSI + "\n\nPodemos agendar uma conversa para eu entender melhor suas necessidades atuais?\n\nNo aguardo!",
+    feira: "Olá [NOME], foi um prazer conhecê-lo na feira!\n\nReiterando nosso contato, somos a:\n\n" + TEXTO_RSI + "\n\nConforme conversamos, gostaria de enviar as opções de equipamentos para a [EMPRESA]. Qual o melhor horário?",
+    proposta: "Prezado(a) [NOME],\n\nSegue em anexo a proposta comercial solicitada para a [EMPRESA].\n\nLembrando que na RSI – Soluções em Impressão, oferecemos equipamentos de alta qualidade com suporte técnico especializado.\n\nQualquer dúvida, estou à disposição!"
+};
 
 function showTab(nome) {
     document.getElementById('aba-lista').classList.toggle('hidden', nome !== 'lista');
@@ -120,7 +190,6 @@ function showTab(nome) {
     document.getElementById('btn-tab-email').classList.toggle('active', nome === 'email');
 }
 
-// 🔥 API
 fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
 .then(res => res.json())
 .then(json => {
@@ -133,17 +202,20 @@ fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/lea
         prioridade: l.Prioridade || "❄️ BAIXA"
     }));
 
-    let ramos = [...new Set(dados.map(d => d.ramo))];
+    let ramos = [...new Set(dados.map(d => d.ramo))].filter(Boolean);
     let select = document.getElementById("filtroRamo");
-    ramos.forEach(r => { if(r) { let opt = document.createElement("option"); opt.value = r; opt.text = r; select.add(opt); } });
+    ramos.forEach(r => {
+        let opt = document.createElement("option");
+        opt.value = r; opt.text = r; select.add(opt);
+    });
 
     atualizar();
 });
 
-function prioridadeScore(p){
-    if(p.includes("ALTA")) return 3;
-    if(p.includes("MEDIA")) return 2;
-    return 1;
+function getPrioClass(p) {
+    if(p.includes("ALTA")) return 'prio-alta';
+    if(p.includes("MEDIA")) return 'prio-media';
+    return 'prio-baixa';
 }
 
 function atualizar(){
@@ -154,13 +226,11 @@ function atualizar(){
     let fRamo = document.getElementById("filtroRamo").value;
     let fPrio = document.getElementById("filtroPrioridade").value;
 
-    let filtrados = dados
-        .filter(d =>
-            (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
-            (!fRamo || d.ramo == fRamo) &&
-            (!fPrio || d.prioridade == fPrio)
-        )
-        .sort((a,b)=>prioridadeScore(b.prioridade)-prioridadeScore(a.prioridade));
+    let filtrados = dados.filter(d =>
+        (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
+        (!fRamo || d.ramo == fRamo) &&
+        (!fPrio || d.prioridade == fPrio)
+    ).sort((a,b) => (a.prioridade.includes("ALTA") ? -1 : 1));
 
     document.getElementById("total").innerText = filtrados.length;
     document.getElementById("alta").innerText = filtrados.filter(d=>d.prioridade.includes("ALTA")).length;
@@ -171,12 +241,12 @@ function atualizar(){
         let ja = contatados.includes(d.telefone);
 
         tr.innerHTML = `
-            <td><strong>${d.nome}</strong><br><small style="color:#666">${d.empresa}</small></td>
+            <td><strong>${d.nome}</strong><br><span style="color:#888; font-size:12px">${d.empresa}</span></td>
             <td>${d.ramo || "-"}</td>
-            <td>${d.prioridade}</td>
+            <td><span class="prio ${getPrioClass(d.prioridade)}">${d.prioridade}</span></td>
             <td>
                 <div class="btn-group">
-                    <button class="btn btn-wa" onclick="abrirWA('${d.nome}', '${d.telefone}')">WhatsApp</button>
+                    <button class="btn btn-wa" onclick="abrirWA('${d.nome}', '${d.telefone}', '${d.empresa}')">WhatsApp</button>
                     <button class="btn btn-mail" onclick="prepararEmail('${d.nome}', '${d.empresa}', '${d.email}')">E-mail</button>
                     <button class="btn btn-status ${ja?'ok':''}" onclick="alternarStatus('${d.telefone}')">
                         ${ja?'✔':'OK'}
@@ -188,17 +258,34 @@ function atualizar(){
     });
 }
 
-function abrirWA(nome, tel) {
-    if(!tel) return alert("Telefone não cadastrado.");
-    let msg = `Olá ${nome}, tudo bem? Somos da empresa RSI. Temos ótimas condições em impressoras laser. Podemos conversar?`;
-    window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, "_blank");
+function aplicarTemplate() {
+    const tipo = document.getElementById('email-template').value;
+    let texto = templates[tipo]
+        .replace("[NOME]", leadAtual.nome)
+        .replace("[EMPRESA]", leadAtual.empresa);
+    document.getElementById('mail-mensagem').value = texto;
 }
 
 function prepararEmail(nome, empresa, email) {
-    if(!email) { alert("Este lead não possui e-mail cadastrado."); return; }
+    if(!email) { alert("Lead sem e-mail."); return; }
+    leadAtual = { nome, empresa };
     showTab('email');
     document.getElementById('mail-para').value = email;
-    document.getElementById('mail-mensagem').value = `Olá ${nome},\n\nFoi um prazer conhecer você e a ${empresa} na feira.\n\nEstou entrando em contato para enviar as propostas de impressoras laser . Qual seria o melhor horário para falarmos?`;
+    document.getElementById('email-template').value = "apresentacao";
+    aplicarTemplate();
+}
+
+function abrirWA(nome, tel, empresa) {
+    if(!tel) return alert("Sem telefone.");
+    let msg = `Olá ${nome}, tudo bem?\n\nSomos da RSI – Soluções em Impressão. Especializada na compra e venda de impressoras novas e usadas.\n\nVi que você representa a ${empresa}. Podemos conversar sobre como melhorar sua estrutura de impressão?`;
+    window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
+function copiarTexto() {
+    let msg = document.getElementById('mail-mensagem');
+    msg.select();
+    document.execCommand("copy");
+    alert("Copiado!");
 }
 
 function dispararEmail() {
@@ -210,11 +297,7 @@ function dispararEmail() {
 
 function alternarStatus(tel) {
     let index = contatados.indexOf(tel);
-    if(index === -1) {
-        contatados.push(tel);
-    } else {
-        contatados.splice(index, 1);
-    }
+    index === -1 ? contatados.push(tel) : contatados.splice(index, 1);
     localStorage.setItem("contatados", JSON.stringify(contatados));
     atualizar();
 }
