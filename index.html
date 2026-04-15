@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM Cloud v1.8.1 | By FF Person</title>
+<title>RSI CRM Cloud v1.8.3 | By FF Person</title>
 <style>
 :root { 
     --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --edit: #f59e0b; --dark: #0f172a; --bg: #f8fafc; 
@@ -15,11 +15,10 @@ body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color:
 #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--dark); display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .login-box { background: #fff; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 .login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid #f1f5f9; object-fit: cover; }
-
 input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none; margin-bottom: 10px;}
 .btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
 
-/* APP LAYOUT */
+/* APP */
 #crm-app { display: none; }
 header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
 .header-brand { display: flex; align-items: center; gap: 10px; }
@@ -29,13 +28,13 @@ header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px;
 .container { padding: 20px; max-width: 1300px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
 
 /* DASHBOARD */
-.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin-bottom: 24px;}
-.card { background:#fff; padding:15px; border-radius:15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; border-left-width: 6px; }
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom: 20px;}
+.card { background:#fff; padding:12px; border-radius:15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; border-left-width: 5px; }
 .card h3 { margin: 0; font-size: 9px; color: var(--text-sub); text-transform: uppercase; font-weight: 700; }
-.card span { font-size: 24px; font-weight: 800; display: block; margin-top: 5px; }
+.card span { font-size: 22px; font-weight: 800; display: block; margin-top: 5px; }
 
 /* FILTROS */
-.filter-section { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 24px; border: 1px solid #e2e8f0; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.filter-section { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 24px; border: 1px solid #e2e8f0; display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
 .filter-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
 .filter-group label { font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; }
 .btn-filter { background: var(--dark); color: white; height: 42px; padding: 0 20px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; }
@@ -43,21 +42,22 @@ header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px;
 /* TABELA */
 .table-container { background:#fff; border-radius: 16px; overflow-x: auto; border: 1px solid #e2e8f0; }
 table { width:100%; border-collapse:collapse; min-width: 950px;}
-th { background: #f8fafc; padding: 16px; text-align: left; font-size: 11px; color: var(--text-sub); text-transform: uppercase; font-weight: 800; }
-td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+th { background: #f8fafc; padding: 14px; text-align: left; font-size: 11px; color: var(--text-sub); text-transform: uppercase; font-weight: 800; }
+td { padding: 14px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
 
+/* BOTÕES AÇÃO */
 .btn-group { display: flex; gap: 5px; }
 .btn-act { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
 .btn-wa { background: var(--wa); } 
 .btn-mail { background: var(--mail); }
 .btn-edit { background: var(--edit); }
 .btn-del { background: #444; } 
-.btn-act svg { width: 16px; height: 16px; fill: white; }
+.btn-act svg { width: 18px; height: 18px; fill: white; }
 
 .status-badge { padding: 6px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid #e2e8f0; width: 100%; cursor: pointer;}
-.note-area { border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; width: 100%; min-height: 45px; resize: vertical; }
+.note-area { border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; width: 100%; min-height: 40px; resize: vertical; }
 
-.pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0; flex-wrap: wrap;}
+.pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 20px 0; flex-wrap: wrap;}
 .btn-pag { background: #fff; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 700; }
 
 #modal-lead { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.7); display:none; justify-content: center; align-items: center; z-index: 1001; backdrop-filter: blur(2px); }
@@ -73,7 +73,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
     <div class="login-box">
         <img src="logo.jpg" alt="RSI">
         <h2>RSI Business Login</h2>
-        <input type="email" id="userEmail" placeholder="Usuário (E-mail)">
+        <input type="email" id="userEmail" placeholder="E-mail">
         <input type="password" id="userPass" placeholder="Senha">
         <button class="btn-main" onclick="acaoLogin()">ENTRAR NO SISTEMA</button>
         <p id="msg-login" style="font-size: 11px; margin-top: 15px;"></p>
@@ -82,7 +82,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
 
 <div id="crm-app">
     <header>
-        <div class="header-brand"><img src="logo.jpg"> <span>RSI CRM Cloud</span></div>
+        <div class="header-brand"><img src="logo.jpg"> <span>RSI Cloud</span></div>
         <div style="display:flex; align-items:center; gap: 15px;">
             <div id="sync" style="font-size: 11px; color: #10b981; font-weight: 800;">• Sincronizado</div>
             <button onclick="logout()" style="background: #f1f5f9; border:none; padding: 8px 16px; border-radius: 8px; cursor:pointer; font-size: 11px; font-weight: 700;">Sair</button>
@@ -91,7 +91,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
 
     <div class="container">
         <div class="cards">
-            <div class="card" style="border-left-color: var(--dark)"><h3>Total Leads</h3><span id="total">0</span></div>
+            <div class="card" style="border-left-color: var(--dark)"><h3>Total</h3><span id="total">0</span></div>
             <div class="card" style="border-left-color: #6c757d"><h3>Novos</h3><span id="dash-novo">0</span></div>
             <div class="card" style="border-left-color: #0ea5e9"><h3>Contato</h3><span id="dash-contato">0</span></div>
             <div class="card" style="border-left-color: #f59e0b"><h3>Propostas</h3><span id="dash-proposta">0</span></div>
@@ -114,37 +114,38 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
 
             <div class="table-container">
                 <table>
-                    <thead><tr><th>Cliente / Empresa</th><th>Status</th><th>Notas</th><th>Ações</th></tr></thead>
+                    <thead><tr><th>Lead / Empresa</th><th>Status</th><th>Notas</th><th>Ações</th></tr></thead>
                     <tbody id="tabela-leads"></tbody>
                 </table>
             </div>
 
             <div class="pagination">
                 <button class="btn-pag" id="btn-prev" onclick="mudarPagina(-1)">Anterior</button>
-                <span id="info-pag" style="font-weight: 800; font-size: 14px;">Página 1</span>
+                <span id="info-pag" style="font-weight: 800; font-size: 13px;">Página 1</span>
                 <button class="btn-pag" id="btn-next" onclick="mudarPagina(1)">Próximo</button>
-                <input type="number" id="jumpPag" class="btn-pag" style="width: 60px; margin-left: 15px;" placeholder="Pág">
-                <button class="btn-pag" onclick="irParaPagina()">Ir</button>
+                <div style="margin-left:15px; display:flex; align-items:center; gap:5px;">
+                    <input type="number" id="jumpPag" style="width:50px; padding:8px; border:1px solid #ddd; border-radius:8px;" placeholder="Ir">
+                    <button class="btn-pag" onclick="irParaPagina()">Pular</button>
+                </div>
             </div>
         </div>
 
         <div id="view-config" class="hidden">
             <div class="card" style="max-width: 500px; margin: auto; padding: 30px; border-left: none; border-top: 6px solid var(--dark);">
-                <h3>Novo Usuário</h3>
+                <h3>Gerenciar Usuário</h3>
                 <input type="email" id="newEmail" placeholder="E-mail">
                 <input type="text" id="newPass" placeholder="Senha">
-                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR</button>
+                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR USUÁRIO</button>
                 <div id="lista-usuarios" style="margin-top: 25px;"></div>
             </div>
         </div>
     </div>
 
     <footer>
-        VERSÃO 1.8.1 | DESENVOLVIDO POR <strong>FF PERSON</strong>
+        VERSÃO 1.8.3 | DESENVOLVIDO POR <strong>FF PERSON</strong>
     </footer>
 </div>
 
-<!-- MODAL LEAD (Serve para Novo e Editar) -->
 <div id="modal-lead">
     <div class="modal-box">
         <h3 id="modal-title">Novo Lead</h3>
@@ -153,8 +154,8 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
         <input type="text" id="addEmpresa" placeholder="Empresa">
         <input type="text" id="addTelefone" placeholder="WhatsApp (DDD + Número)">
         <input type="email" id="addEmail" placeholder="E-mail">
-        <input type="text" id="addRamo" placeholder="Ramo">
-        <button id="btn-save-lead" class="btn-main" onclick="salvarNovoLead()">SALVAR DADOS</button>
+        <input type="text" id="addRamo" placeholder="Segmento">
+        <button id="btn-save-lead" class="btn-main" onclick="salvarLeadNaPlanilha()">SALVAR DADOS</button>
         <button style="width:100%; border:none; background:none; margin-top:15px; cursor:pointer;" onclick="document.getElementById('modal-lead').style.display='none'">Cancelar</button>
     </div>
 </div>
@@ -178,6 +179,7 @@ const MSG_RSI = "Olá [NOME],\n\nSomos da RSI – Soluções em Impressão. Espe
 function acaoLogin() {
     const u = document.getElementById("userEmail").value;
     const s = document.getElementById("userPass").value;
+    document.getElementById("msg-login").innerText = "Verificando...";
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
     .then(r => r.json()).then(res => {
         if(res !== "erro") {
@@ -186,7 +188,7 @@ function acaoLogin() {
             document.getElementById("crm-app").style.display = "block";
             if(res !== "vendedor") document.getElementById("btn-tab-config").classList.remove("hidden");
             carregarLeads();
-        } else alert("Login Inválido!");
+        } else { document.getElementById("msg-login").innerText = "Acesso Negado!"; }
     });
 }
 
@@ -194,8 +196,10 @@ function carregarLeads() {
     fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
     .then(r => r.json()).then(json => {
         dadosLeads = json.map(l => ({
-            nome: l.name || l.Nome || "", empresa: l.Empresa || "", telefone: String(l.Telefone || "").replace(/\D/g, ""),
-            email: l.Email || "", ramo: l.Ramo || "", status: l.Status || "Novo", notas: l.Notas || ""
+            nome: l.name || l.Nome || "", empresa: l.Empresa || "", 
+            telefone: String(l.Telefone || "").replace(/\D/g, ""),
+            email: l.Email || l.email || l["E-mail"] || "", 
+            ramo: l.Ramo || "", status: l.Status || "Novo", notas: l.Notas || ""
         }));
         const sel = document.getElementById("fRamo");
         sel.innerHTML = '<option value="">Todos</option>';
@@ -261,7 +265,7 @@ function renderizarTabela() {
 }
 
 function salvarMudanca(tel, st, nt) {
-    document.getElementById("sync").innerText = "• Sincronizando..."; document.getElementById("sync").style.color = "orange";
+    document.getElementById("sync").innerText = "• Salvando..."; document.getElementById("sync").style.color = "orange";
     let lead = dadosLeads.find(x => x.telefone === tel);
     if(st) lead.status = st; if(nt !== null) lead.notas = nt;
     atualizarDashboard();
@@ -282,6 +286,7 @@ function abrirNovoLead() {
 
 function abrirEditarLead(tel) {
     const d = dadosLeads.find(x => x.telefone === tel);
+    if(!d) return;
     document.getElementById("modal-title").innerText = "Alterar Cadastro";
     document.getElementById("editOriginalTel").value = d.telefone;
     document.getElementById("addNome").value = d.nome;
@@ -292,23 +297,27 @@ function abrirEditarLead(tel) {
     document.getElementById("modal-lead").style.display='flex';
 }
 
-function salvarNovoLead() {
-    const telOriginal = document.getElementById("editOriginalTel").value;
-    const acao = telOriginal ? "updateLead" : "addLead";
-    const d = { 
-        action: acao, 
-        telefoneOriginal: telOriginal,
-        nome: document.getElementById("addNome").value, 
-        empresa: document.getElementById("addEmpresa").value, 
-        telefone: document.getElementById("addTelefone").value.replace(/\D/g, ""), 
-        email: document.getElementById("addEmail").value, 
-        ramo: document.getElementById("addRamo").value 
-    };
+function salvarLeadNaPlanilha() {
+    const telOrig = document.getElementById("editOriginalTel").value;
+    const acao = telOrig ? "updateLead" : "addLead";
+    const nome = document.getElementById("addNome").value;
+    const tel = document.getElementById("addTelefone").value.replace(/\D/g, "");
     
-    if(!d.nome || !d.telefone) return alert("Preencha Nome e WhatsApp.");
-    
+    if(!nome || tel.length < 8) return alert("Preencha Nome e Telefone válido.");
+
     document.getElementById("btn-save-lead").innerText = "Salvando...";
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => {
+    const payload = {
+        action: acao,
+        telefoneOriginal: telOrig,
+        nome: nome,
+        empresa: document.getElementById("addEmpresa").value,
+        telefone: tel,
+        email: document.getElementById("addEmail").value,
+        ramo: document.getElementById("addRamo").value
+    };
+
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
+    .then(() => {
         document.getElementById("modal-lead").style.display='none';
         document.getElementById("btn-save-lead").innerText = "SALVAR DADOS";
         setTimeout(carregarLeads, 1500);
@@ -316,9 +325,10 @@ function salvarNovoLead() {
 }
 
 function deletarLead(tel) {
-    if(confirm("Deseja excluir?")) {
+    if(tel.length < 5) return;
+    if(confirm("Deseja realmente excluir este lead? ESTA AÇÃO NÃO PODE SER RECUPERADA.")) {
         fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
-        .then(() => setTimeout(carregarLeads, 1000));
+        .then(() => setTimeout(carregarLeads, 1500));
     }
 }
 
@@ -342,8 +352,8 @@ function cadastrarUsuario() {
 
 function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
-        let h = "<h4>Usuários:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p>${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; cursor:pointer;">[Excluir]</button></p>`; });
+        let h = "<h4>Usuários na Planilha:</h4>";
+        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p>${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; cursor:pointer; border:none; background:none;">[Excluir]</button></p>`; });
         document.getElementById("lista-usuarios").innerHTML = h;
     });
 }
@@ -359,7 +369,7 @@ if(sessionStorage.getItem("rsi_logado")) {
     nivelAcesso = sessionStorage.getItem("rsi_logado");
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("crm-app").style.display = "block";
-    if(nivelAcesso !== "vendedor") document.getElementById("btn-tab-config").classList.remove("hidden");
+    if(nivelAcesso !== "vendedor") document.getElementById("tab-admin").classList.remove("hidden");
     carregarLeads();
 }
 </script>
