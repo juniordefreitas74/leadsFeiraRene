@@ -198,7 +198,7 @@ function prepararEmail(nome, empresa, email) {
     if(!email) { alert("Este lead não possui e-mail cadastrado."); return; }
     showTab('email');
     document.getElementById('mail-para').value = email;
-    document.getElementById('mail-mensagem').value = `Olá ${nome},\n\nFoi um prazer conhecer você e a ${empresa} na feira.\n\nEstou entrando em contato para enviar as propostas de impressoras laser que conversamos. Qual seria o melhor horário para falarmos?`;
+    document.getElementById('mail-mensagem').value = `Olá ${nome},\n\nFoi um prazer conhecer você e a ${empresa} na feira.\n\nEstou entrando em contato para enviar as propostas de impressoras laser . Qual seria o melhor horário para falarmos?`;
 }
 
 function dispararEmail() {
