@@ -3,92 +3,71 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM Cloud v1.7.2 | By FF Person</title>
+<title>RSI CRM Cloud v1.7.3 | By FF Person</title>
 <style>
 :root { 
-    --primary: #4f46e5; --primary-hover: #4338ca;
-    --wa: #22c55e; --mail: #ef4444; --dark: #0f172a; --bg: #f8fafc; 
+    --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --dark: #0f172a; --bg: #f8fafc; 
     --text-main: #1e293b; --text-sub: #64748b;
     --f-novo: #94a3b8; --f-contato: #0ea5e9; --f-proposta: #f59e0b; --f-fechado: #10b981;
 }
+body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
 
-body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; margin:0; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; -webkit-font-smoothing: antialiased; }
-
-/* TELA DE LOGIN */
+/* LOGIN */
 #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--dark); display: flex; justify-content: center; align-items: center; z-index: 9999; }
-.login-box { background: #fff; padding: 40px; border-radius: 20px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-.login-box img { width: 90px; height: 90px; margin-bottom: 20px; border-radius: 50%; border: 4px solid #f1f5f9; object-fit: cover; }
-.login-box h2 { margin-bottom: 25px; font-size: 20px; color: var(--dark); font-weight: 800; }
+.login-box { background: #fff; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+.login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid #f1f5f9; object-fit: cover; }
+input, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; }
 
-input, select { 
-    width: 100%; padding: 12px 16px; margin-bottom: 12px; border: 1px solid #e2e8f0; border-radius: 10px; 
-    box-sizing: border-box; font-size: 14px; transition: all 0.2s; background: #fff;
-}
-input:focus, select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+.btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
 
-.btn-main { 
-    width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; 
-    cursor: pointer; font-weight: 700; font-size: 15px; transition: all 0.2s; 
-}
-.btn-main:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-/* APP LAYOUT */
+/* APP */
 #crm-app { display: none; }
 header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-.header-brand { display: flex; align-items: center; gap: 12px; }
-.header-brand img { height: 38px; width: 38px; border-radius: 50%; object-fit: cover; }
-.header-brand span { font-size: 18px; font-weight: 800; color: var(--dark); letter-spacing: -0.5px; }
+.header-brand { display: flex; align-items: center; gap: 10px; }
+.header-brand img { height: 35px; width: 35px; border-radius: 50%; object-fit: cover; }
+.header-brand span { font-size: 18px; font-weight: 800; color: var(--dark); }
 
 .container { padding: 24px; max-width: 1300px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
 
-/* DASHBOARD CARDS */
 .cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin-bottom: 24px;}
-.card { background:#fff; padding:15px; border-radius:16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; border-left-width: 6px; }
-.card h3 { margin: 0; font-size: 10px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-.card span { font-size: 24px; font-weight: 800; display: block; margin-top: 5px; color: var(--dark); }
+.card { background:#fff; padding:15px; border-radius:15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; border-left-width: 6px; }
+.card h3 { margin: 0; font-size: 9px; color: var(--text-sub); text-transform: uppercase; font-weight: 700; }
+.card span { font-size: 24px; font-weight: 800; display: block; margin-top: 5px; }
 
-/* ABAS */
 .tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
-.tab-btn { padding: 14px; border: none; cursor: pointer; background: none; font-weight: 700; font-size: 12px; flex: 1; color: var(--text-sub); transition: 0.3s; }
+.tab-btn { padding: 14px; border: none; cursor: pointer; background: none; font-weight: 700; font-size: 12px; flex: 1; color: var(--text-sub); }
 .tab-btn.active { color: var(--primary); background: #f8fbff; border-bottom: 3px solid var(--primary); }
 
-/* FILTROS */
-.filter-section { 
-    background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 24px; 
-    border: 1px solid #e2e8f0; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;
-}
-.filter-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 150px; }
-.filter-group label { font-size: 11px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; }
+.filter-section { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 24px; border: 1px solid #e2e8f0; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.filter-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
+.filter-group label { font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; }
 .filter-group input, .filter-group select { margin-bottom: 0; }
 
-.btn-filter { background: var(--dark); color: white; height: 42px; padding: 0 20px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.btn-filter { background: var(--dark); color: white; height: 42px; padding: 0 20px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; }
 
 /* TABELA */
 .table-container { background:#fff; border-radius: 16px; overflow-x: auto; border: 1px solid #e2e8f0; }
 table { width:100%; border-collapse:collapse; min-width: 900px;}
-th { background: #f8fafc; padding: 16px; text-align: left; font-size: 12px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; }
+th { background: #f8fafc; padding: 16px; text-align: left; font-size: 11px; color: var(--text-sub); text-transform: uppercase; font-weight: 800; }
 td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
 
-/* BOTÕES DE AÇÃO COLORIDOS */
 .btn-group { display: flex; gap: 8px; }
 .btn-act { width: 36px; height: 36px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.btn-act svg { width: 18px; height: 18px; fill: white; }
 .btn-wa { background: var(--wa); } 
 .btn-mail { background: var(--mail); }
 .btn-del { background: #444; } 
-.btn-act svg { width: 18px; height: 18px; fill: white; }
 
-.status-badge { padding: 6px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid #e2e8f0; cursor: pointer; }
-.note-area { border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px; font-family: inherit; font-size: 13px; width: 100%; min-height: 45px; resize: vertical; }
+.status-badge { padding: 6px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid #e2e8f0; }
+.note-area { border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; width: 100%; min-height: 45px; resize: vertical; }
 
-/* PAGINAÇÃO */
-.pagination { display: flex; justify-content: center; align-items: center; gap: 20px; margin: 30px 0; }
-.btn-pag { background: #fff; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
-.btn-pag:disabled { opacity: 0.4; cursor: not-allowed; }
+.pagination { display: flex; justify-content: center; align-items: center; gap: 20px; margin: 20px 0; }
+.btn-pag { background: #fff; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
 
-#modal-lead { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.8); display:none; justify-content: center; align-items: center; z-index: 1001; backdrop-filter: blur(4px); }
-.modal-box { background: white; padding: 32px; border-radius: 20px; width: 100%; max-width: 400px; text-align: center;}
+#modal-lead { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.7); display:none; justify-content: center; align-items: center; z-index: 1001; backdrop-filter: blur(2px); }
+.modal-box { background: white; padding: 30px; border-radius: 20px; width: 350px; text-align: center; }
 
-footer { text-align: center; padding: 30px; font-size: 12px; color: var(--text-sub); border-top: 1px solid #e2e8f0; background: #fff; margin-top: auto;}
+footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-sub); border-top: 1px solid #e2e8f0; background: #fff; margin-top: auto;}
 .hidden { display: none; }
 </style>
 </head>
@@ -98,24 +77,23 @@ footer { text-align: center; padding: 30px; font-size: 12px; color: var(--text-s
     <div class="login-box">
         <img src="logo.jpg" alt="RSI">
         <h2>Acesso ao CRM</h2>
-        <input type="email" id="userEmail" placeholder="E-mail">
+        <input type="email" id="userEmail" placeholder="Usuário (E-mail)">
         <input type="password" id="userPass" placeholder="Senha">
         <button class="btn-main" onclick="acaoLogin()">ENTRAR NO SISTEMA</button>
-        <p id="msg-login" style="font-size: 12px; margin-top: 20px;"></p>
+        <p id="msg-login" style="font-size: 11px; margin-top: 15px;"></p>
     </div>
 </div>
 
 <div id="crm-app">
     <header>
-        <div class="header-brand"><img src="logo.jpg"> <span>RSI CRM</span></div>
+        <div class="header-brand"><img src="logo.jpg"> <span>RSI CRM Cloud</span></div>
         <div style="display:flex; align-items:center; gap: 15px;">
-            <div id="sync" style="font-size: 11px; color: #10b981; font-weight: 700;">• Conectado</div>
-            <button onclick="logout()" style="background: #f1f5f9; border:none; padding: 8px 16px; border-radius: 8px; cursor:pointer; font-size: 12px; font-weight: 600;">Sair</button>
+            <div id="sync" style="font-size: 11px; color: #10b981; font-weight: 800;">• Sincronizado</div>
+            <button onclick="logout()" style="background: #f1f5f9; border:none; padding: 8px 15px; border-radius: 8px; cursor:pointer; font-size: 11px; font-weight: 700;">Sair</button>
         </div>
     </header>
 
     <div class="container">
-        <!-- Dashboard Widgets -->
         <div class="cards">
             <div class="card" style="border-left-color: var(--dark)"><h3>Total Leads</h3><span id="total">0</span></div>
             <div class="card" style="border-left-color: var(--f-novo)"><h3>Novos</h3><span id="dash-novo">0</span></div>
@@ -129,76 +107,55 @@ footer { text-align: center; padding: 30px; font-size: 12px; color: var(--text-s
             <button id="tab-admin" class="tab-btn hidden" onclick="showTab('config', this)">CONFIGURAÇÃO DE USUÁRIOS</button>
         </div>
 
-        <!-- ABA FUNIL -->
         <div id="view-funil">
             <div class="filter-section">
-                <div class="filter-group">
-                    <label>Busca Cliente/Empresa</label>
-                    <input type="text" id="busca" placeholder="Nome...">
-                </div>
-                <div class="filter-group">
-                    <label>Filtrar por Status</label>
-                    <select id="fStatus">
-                        <option value="">Todos os Status</option>
-                        <option value="Novo">Novo</option>
-                        <option value="Contato">Em Contato</option>
-                        <option value="Proposta">Proposta Enviada</option>
-                        <option value="Fechado">Fechado</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Filtrar por Segmento</label>
-                    <select id="fRamo"><option value="">Todos os Ramos</option></select>
-                </div>
+                <div class="filter-group"><label>Buscar Cliente</label><input type="text" id="busca" placeholder="Nome ou empresa..."></div>
+                <div class="filter-group"><label>Status</label><select id="fStatus"><option value="">Todos</option><option value="Novo">Novo</option><option value="Contato">Contato</option><option value="Proposta">Proposta</option><option value="Fechado">Fechado</option></select></div>
+                <div class="filter-group"><label>Segmento</label><select id="fRamo"><option value="">Todos</option></select></div>
                 <button class="btn-filter" onclick="executarFiltragem()">APLICAR FILTROS</button>
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px;" onclick="abrirNovoLead()">+ NOVO LEAD</button>
             </div>
 
             <div class="table-container">
                 <table>
-                    <thead>
-                        <tr><th width="20%">Cliente / Empresa</th><th width="15%">Estágio Funil</th><th width="35%">Notas</th><th width="30%">Ações</th></tr>
-                    </thead>
+                    <thead><tr><th>Cliente / Empresa</th><th>Status</th><th>Notas</th><th>Ações</th></tr></thead>
                     <tbody id="tabela-leads"></tbody>
                 </table>
             </div>
 
             <div class="pagination">
                 <button class="btn-pag" id="btn-prev" onclick="mudarPagina(-1)">Anterior</button>
-                <span id="info-pag" style="font-weight: 700; font-size: 14px; color: var(--text-sub);">Página 1</span>
+                <span id="info-pag" style="font-weight: 800; font-size: 14px; color: var(--text-sub);">Página 1</span>
                 <button class="btn-pag" id="btn-next" onclick="mudarPagina(1)">Próximo</button>
             </div>
         </div>
 
-        <!-- ABA CONFIGURAÇÕES (RESTAURADA) -->
         <div id="view-config" class="hidden">
             <div class="card" style="max-width: 500px; margin: auto; padding: 30px; border-left: none; border-top: 6px solid var(--dark);">
-                <h2 style="margin-top:0;">Gerenciar Usuários</h2>
-                <p style="font-size: 13px; color: var(--text-sub);">Adicione um usuário secundário para acessar o sistema.</p>
-                <input type="email" id="newEmail" placeholder="E-mail do novo usuário">
-                <input type="text" id="newPass" placeholder="Senha provisória">
-                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR AGORA</button>
-                <div id="lista-usuarios" style="margin-top: 25px; text-align: left; border-top: 1px solid #eee; padding-top: 20px;"></div>
+                <h3>Gerenciar Usuário</h3>
+                <input type="email" id="newEmail" placeholder="E-mail">
+                <input type="text" id="newPass" placeholder="Senha">
+                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR USUÁRIO</button>
+                <div id="lista-usuarios" style="margin-top: 25px; text-align: left;"></div>
             </div>
         </div>
     </div>
 
     <footer>
-        VERSÃO 1.7.2 | DESENVOLVIDO POR <strong>FF PERSON</strong>
+        VERSÃO 1.7.3 | DESENVOLVIDO POR <strong>FF PERSON</strong>
     </footer>
 </div>
 
-<!-- MODAL LEAD -->
 <div id="modal-lead">
     <div class="modal-box">
-        <h2 style="margin-top:0;">Novo Lead</h2>
-        <input type="text" id="addNome" placeholder="Nome do Contato">
+        <h3>Novo Lead</h3>
+        <input type="text" id="addNome" placeholder="Nome">
         <input type="text" id="addEmpresa" placeholder="Empresa">
-        <input type="text" id="addTelefone" placeholder="WhatsApp (DDD + Número)">
+        <input type="text" id="addTelefone" placeholder="WhatsApp">
         <input type="email" id="addEmail" placeholder="E-mail">
-        <input type="text" id="addRamo" placeholder="Segmento">
-        <button class="btn-main" onclick="salvarNovoLead()">SALVAR LEAD</button>
-        <button style="width:100%; border:none; background:none; margin-top:15px; cursor:pointer; font-weight:600;" onclick="document.getElementById('modal-lead').style.display='none'">Cancelar</button>
+        <input type="text" id="addRamo" placeholder="Ramo">
+        <button class="btn-main" onclick="salvarNovoLead()">SALVAR</button>
+        <button style="width:100%; border:none; background:none; margin-top:15px; cursor:pointer;" onclick="document.getElementById('modal-lead').style.display='none'">Cancelar</button>
     </div>
 </div>
 
@@ -215,14 +172,11 @@ let nivelAcesso = "";
 let pagAtual = 1;
 const porPag = 20;
 
-const TEXTO_RSI = "Olá [NOME],\n\nSomos da RSI – Soluções em Impressão. Especializada na compra e venda de impressoras novas e usadas.\n\nPodemos conversar sobre as necessidades da [EMPRESA]?";
+const MSG_RSI = "Olá [NOME],\n\nSomos da RSI – Soluções em Impressão. Especializada na compra e venda de impressoras e multifuncionais novas e usadas. Oferecemos equipamentos de alta qualidade com suporte técnico especializado.\n\nPodemos conversar sobre as necessidades da [EMPRESA]?";
 
 function acaoLogin() {
     const u = document.getElementById("userEmail").value;
     const s = document.getElementById("userPass").value;
-    const msg = document.getElementById("msg-login");
-    if(!u || !s) return;
-    msg.innerText = "Validando..."; msg.style.color = "orange";
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
     .then(r => r.json()).then(res => {
         if(res !== "erro") {
@@ -231,7 +185,7 @@ function acaoLogin() {
             document.getElementById("crm-app").style.display = "block";
             if(res !== "vendedor") document.getElementById("tab-admin").classList.remove("hidden");
             carregarLeads();
-        } else { msg.innerText = "Acesso Negado."; msg.style.color = "red"; }
+        } else alert("Acesso Negado!");
     });
 }
 
@@ -243,7 +197,7 @@ function carregarLeads() {
             email: l.Email || "", ramo: l.Ramo || "", status: l.Status || "Novo", notas: l.Notas || ""
         }));
         const sel = document.getElementById("fRamo");
-        sel.innerHTML = '<option value="">Todos os Ramos</option>';
+        sel.innerHTML = '<option value="">Todos</option>';
         [...new Set(dadosLeads.map(d => d.ramo))].filter(Boolean).sort().forEach(r => {
             let o = document.createElement("option"); o.text = r; o.value = r; sel.add(o);
         });
@@ -277,12 +231,12 @@ function renderizarTabela() {
     const totalP = Math.ceil(dadosFiltrados.length / porPag) || 1;
     document.getElementById("info-pag").innerText = `Página ${pagAtual} de ${totalP}`;
     document.getElementById("btn-prev").disabled = pagAtual === 1;
-    document.getElementById("btn-next").disabled = pagAtual === totalP;
+    document.getElementById("btn-next").disabled = pagAtual === totalP || dadosFiltrados.length === 0;
 
     dadosFiltrados.slice((pagAtual-1)*porPag, pagAtual*porPag).forEach(d => {
         let tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><strong>${d.nome}</strong><br><small>${d.empresa} | ${d.ramo}</small></td>
+            <td><strong>${d.nome}</strong><br><small style="color:var(--text-sub)">${d.empresa} | ${d.ramo}</small></td>
             <td>
                 <select class="status-badge" onchange="salvarMudanca('${d.telefone}', this.value, null)">
                     <option value="Novo" ${d.status=='Novo'?'selected':''}>Novo</option>
@@ -294,8 +248,8 @@ function renderizarTabela() {
             <td><textarea class="note-area" onchange="salvarMudanca('${d.telefone}', null, this.value)">${d.notas}</textarea></td>
             <td>
                 <div class="btn-group">
-                    <button class="btn-act btn-wa" onclick="window.open('https://wa.me/${d.telefone}?text=${encodeURIComponent(TEXTO_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}')">${iconWA}</button>
-                    <button class="btn-act btn-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI – Soluções em Impressão&body=${encodeURIComponent(TEXTO_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}'">${iconMail}</button>
+                    <button class="btn-act btn-wa" onclick="window.open('https://wa.me/${d.telefone}?text=${encodeURIComponent(MSG_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}')">${iconWA}</button>
+                    <button class="btn-act btn-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI – Soluções em Impressão&body=${encodeURIComponent(MSG_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}'">${iconMail}</button>
                     <button class="btn-act btn-del" onclick="deletarLead('${d.telefone}')">${iconDel}</button>
                 </div>
             </td>
@@ -316,55 +270,29 @@ function salvarMudanca(tel, st, nt) {
 function salvarNovoLead() {
     const d = { action: "addLead", nome: document.getElementById("addNome").value, empresa: document.getElementById("addEmpresa").value, telefone: document.getElementById("addTelefone").value.replace(/\D/g, ""), email: document.getElementById("addEmail").value, ramo: document.getElementById("addRamo").value };
     if(!d.nome || !d.telefone) return alert("Preencha Nome e WhatsApp.");
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => { document.getElementById("modal-lead").style.display='none'; carregarLeads(); });
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => {
+        document.getElementById("modal-lead").style.display='none';
+        setTimeout(carregarLeads, 1500); // Dá tempo da planilha registrar
+    });
 }
 
 function deletarLead(tel) {
     if(confirm("Deseja realmente excluir? Esta ação não poderá ser recuperada.")) {
-        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) }).then(() => carregarLeads());
+        document.getElementById("sync").innerText = "• Excluindo...";
+        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
+        .then(() => {
+            setTimeout(carregarLeads, 1500); // Espera o Google apagar antes de recarregar
+        });
     }
 }
 
 function cadastrarUsuario() {
     const e = document.getElementById("newEmail").value; const s = document.getElementById("newPass").value;
-    if(!e || !s) return alert("Preencha tudo.");
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "addUser", newEmail: e, newPass: s }) })
-    .then(r => r.json()).then(res => {
-        if(res === "sucesso") { alert("Usuário criado!"); carregarUsuarios(); } else alert("Limite de usuários atingido!");
-    });
+    .then(r => r.json()).then(res => { if(res === "sucesso") carregarUsuarios(); else alert("Limite de usuários atingido!"); });
 }
 
 function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
-        let h = "<h4>Usuários Secundários:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:10px; border-radius:10px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[Excluir]</button></p>`; });
-        document.getElementById("lista-usuarios").innerHTML = h;
-    });
-}
-
-function deletarUsuario(i) {
-    if(confirm("Remover usuário?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
-}
-
-function showTab(v, btn) {
-    document.getElementById("view-funil").classList.toggle("hidden", v !== "funil");
-    document.getElementById("view-config").classList.toggle("hidden", v !== "config");
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    if(v === "config") carregarUsuarios();
-}
-
-function mudarPagina(dir) { pagAtual += dir; renderizarTabela(); window.scrollTo(0,0); }
-function abrirNovoLead() { document.getElementById('modal-lead').style.display='flex'; }
-function logout() { sessionStorage.clear(); location.reload(); }
-
-if(sessionStorage.getItem("rsi_logado")) {
-    nivelAcesso = sessionStorage.getItem("rsi_logado");
-    document.getElementById("login-screen").style.display = "none";
-    document.getElementById("crm-app").style.display = "block";
-    if(nivelAcesso !== "vendedor") document.getElementById("tab-admin").classList.remove("hidden");
-    carregarLeads();
-}
-</script>
-</body>
-</html>
+        let h = "<h4>Usuários Ativos:</h4>";
+        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:10px; border-radius:10px;
