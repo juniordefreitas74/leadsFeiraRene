@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>FF Person - RSI Leads</title>
+
+<style>
+body { font-family: Arial; margin:0; background:#f4f6f9;}
+header { background:#111; color:#fff; padding:15px; font-size:20px;}
+.container { padding:20px;}
+.cards { display:flex; gap:10px; margin-bottom:20px;}
+.card { background:#fff; padding:15px; flex:1; border-radius:10px;}
+input, select { padding:8px; margin-right:10px; margin-bottom:10px;}
+table { width:100%; background:#fff; border-collapse:collapse;}
+th,td { padding:10px; border-bottom:1px solid #ddd;}
+tr:hover { background:#f1f1f1; cursor:pointer;}
+.btn { padding:5px 10px; border:none; border-radius:5px; cursor:pointer;}
+.ok { background:green; color:#fff;}
+
+@media (max-width: 768px) {
+  .cards { flex-direction: column; }
+  input, select { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>📊 CRM de Leads</header>
+
+<div class="container">
+
+<div class="cards">
+<div class="card">Total: <span id="total"></span></div>
+<div class="card">🔥 Alta: <span id="alta"></span></div>
+<div class="card">Contatados: <span id="contatados"></span></div>
+</div>
+
+<select id="filtroRamo">
+<option value="">Ramo</option>
+</select>
+
+<select id="filtroPrioridade">
+<option value="">Prioridade</option>
+<option>🔥 ALTA</option>
+<option>⚡ MEDIA</option>
+<option>❄️ BAIXA</option>
+</select>
+
+<input type="text" id="busca" placeholder="Buscar nome ou empresa...">
+
+<table>
+<thead>
+<tr>
+<th>Nome</th>
+<th>Empresa</th>
+<th>Ramo</th>
+<th>Prioridade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="tabela"></tbody>
+</table>
+
+</div>
+
+<script>
+let dados = [];
+let contatados = JSON.parse(localStorage.getItem("contatados") || "[]");
+
+// 🔥 DETECTA MOBILE (caso queira usar futuramente)
+function isMobile() {
+    return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+}
+
+// 🔥 API
+fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
+.then(res => res.json())
+.then(json => {
+
+    dados = json.map(l => ({
+        nome: l.name || "",
+        empresa: l.Empresa || "",
+        telefone: (l.Telefone || "").replace(/\D/g, ""),
+        ramo: l.Ramo || "",
+        prioridade: l.Prioridade || "❄️ BAIXA"
+    }));
+
+    // filtros de ramo
+    let ramos = [...new Set(dados.map(d => d.ramo))];
+    let select = document.getElementById("filtroRamo");
+
+    ramos.forEach(r => {
+        if(r){
+            let opt = document.createElement("option");
+            opt.value = r;
+            opt.text = r;
+            select.add(opt);
+        }
+    });
+
+    atualizar();
+});
+
+function prioridadeScore(p){
+    if(!p) return 1;
+    if(p.includes("ALTA")) return 3;
+    if(p.includes("MEDIA")) return 2;
+    return 1;
+}
+
+function atualizar(){
+    let tabela = document.getElementById("tabela");
+    tabela.innerHTML = "";
+
+    let busca = document.getElementById("busca").value.toLowerCase();
+    let filtroRamo = document.getElementById("filtroRamo").value;
+    let filtroPrioridade = document.getElementById("filtroPrioridade").value;
+
+    let filtrados = dados
+        .filter(d =>
+            (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca)) &&
+            (!filtroRamo || d.ramo == filtroRamo) &&
+            (!filtroPrioridade || d.prioridade == filtroPrioridade)
+        )
+        .sort((a,b)=>prioridadeScore(b.prioridade)-prioridadeScore(a.prioridade));
+
+    document.getElementById("total").innerText = filtrados.length;
+    document.getElementById("alta").innerText = filtrados.filter(d=>d.prioridade.includes("ALTA")).length;
+    document.getElementById("contatados").innerText = contatados.length;
+
+    filtrados.forEach(d => {
+        let tr = document.createElement("tr");
+
+        let ja = contatados.includes(d.telefone);
+
+        tr.innerHTML = `
+            <td>${d.nome}</td>
+            <td>${d.empresa}</td>
+            <td>${d.ramo || "-"}</td>
+            <td>${d.prioridade}</td>
+            <td>
+                <button class="btn ${ja?'ok':''}">
+                    ${ja?'✔ Contatado':'Contatar'}
+                </button>
+            </td>
+        `;
+
+        // abrir WhatsApp
+        tr.onclick = () => {
+            if(!d.telefone) return;
+
+            let msg = `Olá ${d.nome}, tudo bem? Somos da empresa RSI que você conheceu na feira. Temos ótimas condições em impressoras laser. Posso te enviar algumas opções?`;
+
+            let url = `https://wa.me/${d.telefone}?text=${encodeURIComponent(msg)}`;
+
+            window.open(url, "_blank");
+        };
+
+        // marcar como contatado
+        tr.querySelector("button").onclick = (e)=>{
+            e.stopPropagation();
+
+            if(!contatados.includes(d.telefone)){
+                contatados.push(d.telefone);
+                localStorage.setItem("contatados", JSON.stringify(contatados));
+            }
+
+            atualizar();
+        };
+
+        tabela.appendChild(tr);
+    });
+}
+
+document.getElementById("busca").addEventListener("input", atualizar);
+document.getElementById("filtroRamo").addEventListener("change", atualizar);
+document.getElementById("filtroPrioridade").addEventListener("change", atualizar);
+</script>
+
+</body>
+</html>
