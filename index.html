@@ -3,12 +3,13 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM Cloud v1.9.0 | By FF Person</title>
+<title>RSI CRM Cloud v2.0 | By FF Person</title>
 <style>
 :root { 
     --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --edit: #f59e0b; --dark: #0f172a; --bg: #f8fafc; 
     --text-main: #1e293b; --text-sub: #64748b;
 }
+* { box-sizing: border-box; }
 body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
 
 #overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9); display:none; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; font-weight: 800; color: var(--primary); }
@@ -17,10 +18,13 @@ body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color:
 .login-box { background: #fff; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 .login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
 
-input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none; margin-bottom: 10px;}
+input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; outline: none; margin-bottom: 10px; font-family: inherit; background: #fff; color: var(--text-main); }
+input:focus, select:focus { border-color: var(--primary); }
 label { display: block; text-align: left; font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; margin-bottom: 4px; }
 
-.btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+.btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; font-family: inherit; }
+.btn-main:hover { opacity: 0.9; }
+.btn-main:active { transform: scale(0.98); }
 
 #crm-app { display: none; }
 header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
@@ -28,64 +32,91 @@ header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px;
 .header-brand img { height: 35px; width: 35px; border-radius: 50%; object-fit: cover; }
 .header-brand span { font-size: 18px; font-weight: 800; color: var(--dark); }
 
-.container { padding: 20px; max-width: 1300px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
+.container { padding: 20px; max-width: 1300px; margin: auto; flex: 1; width: 100%; }
 
-.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom: 24px;}
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom: 24px; }
 .card { background:#fff; padding:12px; border-radius:15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; border-left-width: 5px; }
 .card h3 { margin: 0; font-size: 9px; color: var(--text-sub); text-transform: uppercase; font-weight: 700; }
 .card span { font-size: 22px; font-weight: 800; display: block; margin-top: 5px; }
 
 .tabs { display: flex; margin-bottom: 20px; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
-.tab-btn { padding: 14px; border: none; cursor: pointer; background: none; font-weight: 700; font-size: 12px; flex: 1; color: var(--text-sub); transition: 0.3s; border-bottom: 3px solid transparent;}
+.tab-btn { padding: 14px; border: none; cursor: pointer; background: none; font-weight: 700; font-size: 12px; flex: 1; color: var(--text-sub); transition: 0.3s; border-bottom: 3px solid transparent; font-family: inherit; }
 .tab-btn.active { color: var(--primary); background: #f8fbff; border-bottom-color: var(--primary); }
 
 .filter-section { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 24px; border: 1px solid #e2e8f0; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
 .filter-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
+.filter-group input, .filter-group select { margin-bottom: 0; }
 
 .table-container { background:#fff; border-radius: 16px; overflow-x: auto; border: 1px solid #e2e8f0; }
-table { width:100%; border-collapse:collapse; min-width: 950px;}
+table { width:100%; border-collapse:collapse; min-width: 950px; }
 th { background: #f8fafc; padding: 16px; text-align: left; font-size: 11px; color: var(--text-sub); text-transform: uppercase; font-weight: 800; }
-td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
 
 .btn-group { display: flex; gap: 5px; }
-.btn-act { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.btn-wa { background: var(--wa); } .btn-mail { background: var(--mail); } .btn-edit { background: var(--edit); } .btn-del { background: #444; } 
+.btn-act { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; }
+.btn-act:hover { opacity: 0.8; transform: scale(1.05); }
+.btn-wa { background: var(--wa); }
+.btn-mail { background: var(--mail); }
+.btn-edit { background: var(--edit); }
+.btn-del { background: #475569; }
 .btn-act svg { width: 16px; height: 16px; fill: white; }
 
-.status-badge { padding: 6px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid #e2e8f0; width: 100%; }
-.note-area { border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; width: 100%; min-height: 40px; resize: vertical; font-family: inherit; }
+.status-badge { padding: 6px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid #e2e8f0; width: 100%; cursor: pointer; background: #fff; color: var(--text-main); font-family: inherit; }
+.note-area { border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; width: 100%; min-height: 40px; resize: vertical; font-family: inherit; color: var(--text-main); background: #fff; }
+.note-area:focus { outline: none; border-color: var(--primary); }
 
 .pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 20px 0; }
-.btn-pag { background: #fff; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 700; }
+.btn-pag { background: #fff; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; font-family: inherit; transition: 0.2s; }
+.btn-pag:hover:not(:disabled) { background: #f1f5f9; }
+.btn-pag:disabled { opacity: 0.4; cursor: default; }
 
-#modal-lead { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.7); display:none; justify-content: center; align-items: center; z-index: 1001; backdrop-filter: blur(2px); }
-.modal-box { background: white; padding: 30px; border-radius: 20px; width: 380px; text-align: center; }
+#modal-lead { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15,23,42,0.7); display:none; justify-content: center; align-items: center; z-index: 1001; backdrop-filter: blur(2px); }
+.modal-box { background: white; padding: 30px; border-radius: 20px; width: 400px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+.modal-box h3 { margin: 0 0 20px; font-size: 18px; }
 
-footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-sub); border-top: 1px solid #e2e8f0; background: #fff; margin-top: auto;}
-.hidden { display: none; }
+footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-sub); border-top: 1px solid #e2e8f0; background: #fff; margin-top: auto; }
+.hidden { display: none !important; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-sub); font-size: 14px; }
+.sync-badge { font-size: 11px; font-weight: 800; transition: color 0.3s; }
+.sync-ok { color: #10b981; }
+.sync-saving { color: #f59e0b; }
+.sync-error { color: #ef4444; }
+
+.nome-cell strong { display: block; font-size: 14px; }
+.nome-cell small { font-size: 12px; color: var(--text-sub); }
 </style>
 </head>
 <body>
 
-<div id="overlay">Processando...</div>
+<div id="overlay">
+  <div style="font-size:16px; margin-bottom:8px;">Processando...</div>
+  <div style="font-size:12px; font-weight:400; color: var(--text-sub);">Aguarde, sincronizando com a planilha</div>
+</div>
 
 <div id="login-screen">
     <div class="login-box">
-        <img src="logo.jpg">
+        <img src="logo.jpg" onerror="this.style.display='none'">
         <h2>RSI Business Login</h2>
-        <input type="email" id="userEmail" placeholder="Usuário">
-        <input type="password" id="userPass" placeholder="Senha">
+        <label>Usuário</label>
+        <input type="email" id="userEmail" placeholder="seu@email.com" autocomplete="username">
+        <label>Senha</label>
+        <input type="password" id="userPass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') acaoLogin()">
         <button class="btn-main" onclick="acaoLogin()">ENTRAR</button>
-        <p id="msg-login" style="font-size: 11px; margin-top: 15px;"></p>
+        <p id="msg-login" style="font-size: 11px; margin-top: 15px; color: #ef4444;"></p>
     </div>
 </div>
 
 <div id="crm-app">
     <header>
-        <div class="header-brand"><img src="logo.jpg"> <span>RSI CRM Cloud</span></div>
+        <div class="header-brand">
+            <img src="logo.jpg" onerror="this.style.display='none'">
+            <span>RSI CRM Cloud</span>
+        </div>
         <div style="display:flex; align-items:center; gap: 15px;">
-            <div id="sync" style="font-size: 11px; color: #10b981; font-weight: 800;">• Sincronizado</div>
-            <button onclick="logout()" style="background: #f1f5f9; border:none; padding: 8px 16px; border-radius: 8px; cursor:pointer; font-size: 11px; font-weight: 700;">Sair</button>
+            <div id="sync" class="sync-badge sync-ok">• Sincronizado</div>
+            <button onclick="logout()" style="background: #f1f5f9; border:none; padding: 8px 16px; border-radius: 8px; cursor:pointer; font-size: 11px; font-weight: 700; font-family: inherit;">Sair</button>
         </div>
     </header>
 
@@ -105,235 +136,543 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
 
         <div id="view-funil">
             <div class="filter-section">
-                <div class="filter-group"><label>Busca</label><input type="text" id="busca" placeholder="Nome ou empresa..."></div>
-                <div class="filter-group"><label>Status</label><select id="fStatus"><option value="">Todos</option><option value="Novo">Novo</option><option value="Contato">Contato</option><option value="Proposta">Proposta</option><option value="Fechado">Fechado</option></select></div>
-                <div class="filter-group"><label>Segmento</label><select id="fRamo"><option value="">Todos</option></select></div>
-                <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px; background: var(--dark);" onclick="executarFiltragem()">FILTRAR</button>
-                <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px;" onclick="abrirNovoLead()">+ NOVO LEAD</button>
+                <div class="filter-group">
+                    <label>Busca</label>
+                    <input type="text" id="busca" placeholder="Nome ou empresa..." oninput="executarFiltragem()">
+                </div>
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="fStatus" onchange="executarFiltragem()">
+                        <option value="">Todos</option>
+                        <option value="Novo">Novo</option>
+                        <option value="Contato">Contato</option>
+                        <option value="Proposta">Proposta</option>
+                        <option value="Fechado">Fechado</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Segmento</label>
+                    <select id="fRamo" onchange="executarFiltragem()"><option value="">Todos</option></select>
+                </div>
+                <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px; background: var(--dark); margin-bottom: 0;" onclick="abrirNovoLead()">+ NOVO LEAD</button>
             </div>
-            <div class="table-container"><table><thead><tr><th>Cliente / Empresa</th><th>Funil</th><th>Notas</th><th>Ações</th></tr></thead><tbody id="tabela-leads"></tbody></table></div>
-            <div class="pagination"><button class="btn-pag" id="btn-prev" onclick="pag(-1)">Anterior</button><span id="info-pag"></span><button class="btn-pag" id="btn-next" onclick="pag(1)">Próximo</button></div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente / Empresa</th>
+                            <th style="min-width:140px;">Funil</th>
+                            <th style="min-width:200px;">Notas</th>
+                            <th style="min-width:160px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-leads"></tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button class="btn-pag" id="btn-prev" onclick="pag(-1)">← Anterior</button>
+                <span id="info-pag" style="font-size:13px; color:var(--text-sub);"></span>
+                <button class="btn-pag" id="btn-next" onclick="pag(1)">Próximo →</button>
+            </div>
         </div>
 
         <div id="view-config" class="hidden">
-            <div class="card" style="max-width: 500px; margin: auto; padding: 30px; border-left: none; border-top: 6px solid var(--dark);">
-                <h3>Gerenciar Usuário</h3>
-                <input type="email" id="newEmail" placeholder="E-mail">
-                <input type="text" id="newPass" placeholder="Senha">
-                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR</button>
+            <div class="card" style="max-width: 500px; margin: auto; padding: 30px; border-left: none; border-top: 6px solid var(--dark); border-radius: 15px;">
+                <h3 style="margin: 0 0 20px;">Gerenciar Usuários</h3>
+                <label>E-mail do novo usuário</label>
+                <input type="email" id="newEmail" placeholder="vendedor@email.com">
+                <label>Senha</label>
+                <input type="text" id="newPass" placeholder="Senha provisória">
+                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR VENDEDOR</button>
                 <div id="lista-usuarios" style="margin-top: 25px;"></div>
             </div>
         </div>
     </div>
-    <footer>VERSÃO 1.9.0 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
+    <footer>VERSÃO 2.0 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
 </div>
 
 <div id="modal-lead">
     <div class="modal-box">
-        <h3 id="modal-title" style="margin-top:0;">Lead</h3>
-        <input type="hidden" id="editOriginalTel">
-        <label>Nome</label><input type="text" id="addNome">
-        <label>Empresa</label><input type="text" id="addEmpresa">
-        <label>WhatsApp</label><input type="text" id="addTelefone">
-        <label>E-mail</label><input type="email" id="addEmail">
-        <label>Segmento (Ramo)</label><input list="ramos-list" id="addRamo"><datalist id="ramos-list"></datalist>
+        <h3 id="modal-title">Lead</h3>
+        <input type="hidden" id="editIdx">
+        <label>Nome</label><input type="text" id="addNome" placeholder="Nome completo">
+        <label>Empresa</label><input type="text" id="addEmpresa" placeholder="Nome da empresa">
+        <label>WhatsApp</label><input type="tel" id="addTelefone" placeholder="11999998888">
+        <label>E-mail</label><input type="email" id="addEmail" placeholder="contato@empresa.com">
+        <label>Segmento (Ramo)</label>
+        <input list="ramos-list" id="addRamo" placeholder="Ex: Tecnologia">
+        <datalist id="ramos-list"></datalist>
         <button id="btn-save-lead" class="btn-main" onclick="salvarLead()">SALVAR DADOS</button>
-        <button style="width:100%; border:none; background:none; margin-top:15px; cursor:pointer;" onclick="document.getElementById('modal-lead').style.display='none'">Cancelar</button>
+        <button style="width:100%; border:none; background:none; margin-top:12px; cursor:pointer; font-size:14px; color:var(--text-sub); padding: 8px; font-family: inherit;" onclick="fecharModal()">Cancelar</button>
     </div>
 </div>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8w0XJfOtOEjIeemtJcPKl4G5UK1QJXo_J5UIJ9sqNZ-YA9pn6S2RhEEU_oYS5aFjwlA/exec";
+const SHEET_ID   = "1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U";
 
-const iconWA = `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+const iconWA   = `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
 const iconMail = `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`;
 const iconEdit = `<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`;
-const iconDel = `<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`;
+const iconDel  = `<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`;
 
-let dLeads = []; let fLeads = []; let nAcesso = ""; let pAtu = 1; const pItem = 20;
+// ── Estado global ──────────────────────────────────────────────
+let dLeads = [];   // array master — índice é a fonte da verdade
+let fLeads = [];   // array filtrado (referências aos mesmos objetos)
+let nAcesso = "";
+let pAtu = 1;
+const pItem = 20;
 
+// ── Sanitização contra XSS ─────────────────────────────────────
+function esc(str) {
+    const d = document.createElement("div");
+    d.appendChild(document.createTextNode(String(str || "")));
+    return d.innerHTML;
+}
+
+// ── Login (sem alterações) ─────────────────────────────────────
 function acaoLogin() {
-    const u = document.getElementById("userEmail").value;
+    const u = document.getElementById("userEmail").value.trim();
     const s = document.getElementById("userPass").value;
+    if (!u || !s) { document.getElementById("msg-login").textContent = "Preencha usuário e senha."; return; }
+    document.getElementById("msg-login").textContent = "Entrando...";
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
     .then(r => r.json()).then(res => {
-        if(res !== "erro") {
-            nAcesso = res; sessionStorage.setItem("rsi_logado", res);
+        if (res !== "erro") {
+            nAcesso = res;
+            sessionStorage.setItem("rsi_logado", res);
             document.getElementById("login-screen").style.display = "none";
             document.getElementById("crm-app").style.display = "block";
-            if(res !== "vendedor") document.getElementById("btn-config-tab").classList.remove("hidden");
+            if (res !== "vendedor") document.getElementById("btn-config-tab").classList.remove("hidden");
             carregar();
-        } else alert("Login Inválido!");
+        } else {
+            document.getElementById("msg-login").textContent = "Usuário ou senha inválidos.";
+        }
+    }).catch(() => {
+        document.getElementById("msg-login").textContent = "Erro de conexão. Tente novamente.";
     });
 }
 
+// ── Carregamento de leads ──────────────────────────────────────
 function carregar() {
-    fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/leads')
-    .then(r => r.json()).then(json => {
-        // MAPEAMENTO DINÂMICO INTELIGENTE
-        dLeads = json.map(l => {
+    setSyncStatus("saving");
+    fetch(`https://opensheet.elk.sh/${SHEET_ID}/leads`)
+    .then(r => r.json())
+    .then(json => {
+        dLeads = json.map((l, i) => {
             const find = (key) => {
-                const k = Object.keys(l).find(x => x.toLowerCase() === key.toLowerCase());
-                return k ? l[k] : "";
-            }
+                const k = Object.keys(l).find(x => x.toLowerCase().trim() === key.toLowerCase().trim());
+                return k ? String(l[k] || "").trim() : "";
+            };
             return {
-                nome: find("nome") || find("name") || "",
-                empresa: find("empresa") || "",
-                telefone: String(find("telefone") || find("whatsapp") || "").replace(/\D/g, ""),
-                email: find("email") || find("e-mail") || "",
-                ramo: find("ramo") || find("segmento") || "",
-                status: find("status") || "Novo",
-                notas: find("notas") || ""
+                _idx: i,                                           // índice original da linha
+                nome:     find("nome")     || find("name")     || "",
+                empresa:  find("empresa")                       || "",
+                telefone: (find("telefone") || find("whatsapp") || "").replace(/\D/g, ""),
+                email:    find("email")    || find("e-mail")   || "",
+                ramo:     find("ramo")     || find("segmento") || "",
+                status:   find("status")                       || "Novo",
+                notas:    find("notas")                        || ""
             };
         });
         popularFiltros();
         executarFiltragem();
-    });
+        setSyncStatus("ok");
+    })
+    .catch(() => setSyncStatus("error"));
 }
 
+function setSyncStatus(state) {
+    const el = document.getElementById("sync");
+    if (state === "ok")     { el.className = "sync-badge sync-ok";     el.textContent = "• Sincronizado"; }
+    if (state === "saving") { el.className = "sync-badge sync-saving"; el.textContent = "• Salvando..."; }
+    if (state === "error")  { el.className = "sync-badge sync-error";  el.textContent = "• Erro de sync"; }
+}
+
+// ── Filtros ────────────────────────────────────────────────────
 function popularFiltros() {
-    const sel = document.getElementById("fRamo");
+    const sel  = document.getElementById("fRamo");
     const list = document.getElementById("ramos-list");
+    const cur  = sel.value;
     sel.innerHTML = '<option value="">Todos</option>';
+    list.innerHTML = "";
     const ramos = [...new Set(dLeads.map(d => d.ramo))].filter(Boolean).sort();
     ramos.forEach(r => {
         sel.add(new Option(r, r));
-        list.appendChild(new Option(r, r));
+        const opt = document.createElement("option");
+        opt.value = r;
+        list.appendChild(opt);
     });
+    if (cur) sel.value = cur;
 }
 
 function executarFiltragem() {
     const b = document.getElementById("busca").value.toLowerCase();
     const s = document.getElementById("fStatus").value;
     const r = document.getElementById("fRamo").value;
-    fLeads = dLeads.filter(d => (!b || d.nome.toLowerCase().includes(b) || d.empresa.toLowerCase().includes(b)) && (!s || d.status === s) && (!r || d.ramo === r));
-    pAtu = 1; dash(); render();
+    fLeads = dLeads.filter(d =>
+        (!b || d.nome.toLowerCase().includes(b) || d.empresa.toLowerCase().includes(b)) &&
+        (!s || d.status === s) &&
+        (!r || d.ramo === r)
+    );
+    pAtu = 1;
+    dash();
+    render();
 }
 
+// ── Dashboard ──────────────────────────────────────────────────
 function dash() {
-    document.getElementById("total").innerText = dLeads.length;
-    document.getElementById("dash-novo").innerText = dLeads.filter(d => d.status == "Novo").length;
-    document.getElementById("dash-contato").innerText = dLeads.filter(d => d.status == "Contato").length;
-    document.getElementById("dash-proposta").innerText = dLeads.filter(d => d.status == "Proposta").length;
-    document.getElementById("dash-fechado").innerText = dLeads.filter(d => d.status == "Fechado").length;
+    document.getElementById("total").textContent        = dLeads.length;
+    document.getElementById("dash-novo").textContent    = dLeads.filter(d => d.status === "Novo").length;
+    document.getElementById("dash-contato").textContent = dLeads.filter(d => d.status === "Contato").length;
+    document.getElementById("dash-proposta").textContent= dLeads.filter(d => d.status === "Proposta").length;
+    document.getElementById("dash-fechado").textContent = dLeads.filter(d => d.status === "Fechado").length;
 }
 
+// ── Render da tabela ───────────────────────────────────────────
+// Usa _idx como chave — não depende do conteúdo do telefone
 function render() {
-    const b = document.getElementById("tabela-leads"); b.innerHTML = "";
+    const tbody = document.getElementById("tabela-leads");
+    tbody.innerHTML = "";
     const tP = Math.ceil(fLeads.length / pItem) || 1;
-    document.getElementById("info-pag").innerText = `Página ${pAtu} de ${tP}`;
-    fLeads.slice((pAtu-1)*pItem, pAtu*pItem).forEach(d => {
-        let tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td><strong>${d.nome}</strong><br><small style="color:var(--text-sub)">${d.empresa} | ${d.ramo}</small></td>
-            <td><select class="status-badge" onchange="salvarStatus('${d.telefone}', this.value, null)"><option value="Novo" ${d.status=='Novo'?'selected':''}>Novo</option><option value="Contato" ${d.status=='Contato'?'selected':''}>Contato</option><option value="Proposta" ${d.status=='Proposta'?'selected':''}>Proposta</option><option value="Fechado" ${d.status=='Fechado'?'selected':''}>Fechado</option></select></td>
-            <td><textarea class="note-area" onchange="salvarStatus('${d.telefone}', null, this.value)">${d.notas}</textarea></td>
-            <td><div class="btn-group">
-                <button class="btn-act btn-wa" onclick="window.open('https://wa.me/${d.telefone}')">${iconWA}</button>
-                <button class="btn-act btn-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI'">${iconMail}</button>
-                <button class="btn-act btn-edit" onclick="abrirEditar('${d.telefone}')">${iconEdit}</button>
-                <button class="btn-act btn-del" onclick="deletar('${d.telefone}')">${iconDel}</button>
-            </div></td>`;
-        b.appendChild(tr);
+    if (pAtu > tP) pAtu = tP;
+    document.getElementById("info-pag").textContent = `Página ${pAtu} de ${tP} (${fLeads.length} leads)`;
+    document.getElementById("btn-prev").disabled = pAtu <= 1;
+    document.getElementById("btn-next").disabled = pAtu >= tP;
+
+    const pagina = fLeads.slice((pAtu - 1) * pItem, pAtu * pItem);
+
+    if (pagina.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 4;
+        td.className = "empty-state";
+        td.textContent = "Nenhum lead encontrado.";
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+    }
+
+    pagina.forEach(d => {
+        const tr = document.createElement("tr");
+
+        // Célula nome/empresa — usando createElement, sem innerHTML com dados do usuário
+        const tdNome = document.createElement("td");
+        tdNome.className = "nome-cell";
+        const strong = document.createElement("strong");
+        strong.textContent = d.nome;
+        const small = document.createElement("small");
+        small.textContent = `${d.empresa}${d.empresa && d.ramo ? " | " : ""}${d.ramo}`;
+        tdNome.appendChild(strong);
+        tdNome.appendChild(document.createElement("br"));
+        tdNome.appendChild(small);
+
+        // Célula status
+        const tdStatus = document.createElement("td");
+        const sel = document.createElement("select");
+        sel.className = "status-badge";
+        ["Novo", "Contato", "Proposta", "Fechado"].forEach(v => {
+            const opt = new Option(v, v);
+            if (d.status === v) opt.selected = true;
+            sel.appendChild(opt);
+        });
+        sel.addEventListener("change", function() {
+            salvarStatus(d._idx, this.value, null);
+        });
+        tdStatus.appendChild(sel);
+
+        // Célula notas
+        const tdNotas = document.createElement("td");
+        const ta = document.createElement("textarea");
+        ta.className = "note-area";
+        ta.value = d.notas;
+        ta.addEventListener("change", function() {
+            salvarStatus(d._idx, null, this.value);
+        });
+        tdNotas.appendChild(ta);
+
+        // Célula ações
+        const tdAcoes = document.createElement("td");
+        const div = document.createElement("div");
+        div.className = "btn-group";
+
+        const btnWA = criarBtnAcao("btn-wa", iconWA, () => {
+            const num = d.telefone || "";
+            if (num) window.open(`https://wa.me/${num}`);
+            else alert("Número de WhatsApp não cadastrado.");
+        });
+        const btnMail = criarBtnAcao("btn-mail", iconMail, () => {
+            if (d.email) window.location.href = `mailto:${d.email}?subject=RSI`;
+            else alert("E-mail não cadastrado.");
+        });
+        const btnEdit = criarBtnAcao("btn-edit", iconEdit, () => abrirEditar(d._idx));
+        const btnDel  = criarBtnAcao("btn-del",  iconDel,  () => deletar(d._idx));
+
+        div.appendChild(btnWA);
+        div.appendChild(btnMail);
+        div.appendChild(btnEdit);
+        div.appendChild(btnDel);
+        tdAcoes.appendChild(div);
+
+        tr.appendChild(tdNome);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdNotas);
+        tr.appendChild(tdAcoes);
+        tbody.appendChild(tr);
     });
 }
 
-function salvarStatus(tel, st, nt) {
-    document.getElementById("sync").innerText = "• Salvando...";
-    let l = dLeads.find(x => x.telefone === tel);
-    if(st) l.status = st; if(nt !== null) l.notas = nt;
+function criarBtnAcao(cls, iconSvg, handler) {
+    const btn = document.createElement("button");
+    btn.className = `btn-act ${cls}`;
+    btn.innerHTML = iconSvg;
+    btn.addEventListener("click", handler);
+    return btn;
+}
+
+// ── Salvar status/notas ────────────────────────────────────────
+function salvarStatus(idx, st, nt) {
+    const lead = dLeads.find(x => x._idx === idx);
+    if (!lead) return;
+    if (st !== null) lead.status = st;
+    if (nt !== null) lead.notas = nt;
     dash();
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "updateStatus", telefone: tel, status: l.status, notas: l.notas }) })
-    .then(() => document.getElementById("sync").innerText = "• Sincronizado");
+    setSyncStatus("saving");
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({ action: "updateStatus", telefone: lead.telefone, status: lead.status, notas: lead.notas })
+    }).then(() => setSyncStatus("ok")).catch(() => setSyncStatus("error"));
 }
 
+// ── Modal: abrir novo lead ─────────────────────────────────────
 function abrirNovoLead() {
-    document.getElementById("modal-title").innerText = "Novo Lead";
-    document.getElementById("editOriginalTel").value = "";
-    document.getElementById("addNome").value = ""; document.getElementById("addEmpresa").value = "";
-    document.getElementById("addTelefone").value = ""; document.getElementById("addEmail").value = "";
-    document.getElementById("addRamo").value = ""; document.getElementById("modal-lead").style.display='flex';
+    document.getElementById("modal-title").textContent = "Novo Lead";
+    document.getElementById("editIdx").value = "";           // vazio = novo
+    document.getElementById("addNome").value     = "";
+    document.getElementById("addEmpresa").value  = "";
+    document.getElementById("addTelefone").value = "";
+    document.getElementById("addEmail").value    = "";
+    document.getElementById("addRamo").value     = "";
+    document.getElementById("modal-lead").style.display = "flex";
+    setTimeout(() => document.getElementById("addNome").focus(), 100);
 }
 
-function abrirEditar(tel) {
-    const d = dLeads.find(x => x.telefone === tel);
-    if(!d) return;
-    document.getElementById("modal-title").innerText = "Alterar Cadastro";
-    document.getElementById("editOriginalTel").value = d.telefone;
-    document.getElementById("addNome").value = d.nome;
-    document.getElementById("addEmpresa").value = d.empresa;
-    document.getElementById("addTelefone").value = d.telefone;
-    document.getElementById("addEmail").value = d.email;
-    document.getElementById("addRamo").value = d.ramo;
-    document.getElementById("modal-lead").style.display='flex';
+// ── Modal: abrir edição ────────────────────────────────────────
+// Recebe o _idx do objeto — não depende do telefone como chave
+function abrirEditar(idx) {
+    const d = dLeads.find(x => x._idx === idx);
+    if (!d) { alert("Lead não encontrado. Recarregue a página."); return; }
+
+    document.getElementById("modal-title").textContent   = "Alterar Cadastro";
+    document.getElementById("editIdx").value             = String(idx); // guarda o índice
+    document.getElementById("addNome").value             = d.nome;
+    document.getElementById("addEmpresa").value          = d.empresa;
+    document.getElementById("addTelefone").value         = d.telefone;
+    document.getElementById("addEmail").value            = d.email;
+    document.getElementById("addRamo").value             = d.ramo;
+    document.getElementById("modal-lead").style.display  = "flex";
+    setTimeout(() => document.getElementById("addNome").focus(), 100);
 }
 
+function fecharModal() {
+    document.getElementById("modal-lead").style.display = "none";
+}
+
+// ── Salvar lead (novo ou edição) ───────────────────────────────
 function salvarLead() {
-    const telOrig = document.getElementById("editOriginalTel").value;
-    const acao = telOrig ? "updateLead" : "addLead";
-    const nome = document.getElementById("addNome").value.trim();
-    const tel = document.getElementById("addTelefone").value.replace(/\D/g, "");
-    const email = document.getElementById("addEmail").value.trim();
-    const empresa = document.getElementById("addEmpresa").value.trim();
+    const idxStr   = document.getElementById("editIdx").value;
+    const isEdit   = idxStr !== "";
+    const nome     = document.getElementById("addNome").value.trim();
+    const empresa  = document.getElementById("addEmpresa").value.trim();
+    const tel      = document.getElementById("addTelefone").value.replace(/\D/g, "");
+    const email    = document.getElementById("addEmail").value.trim();
+    const ramo     = document.getElementById("addRamo").value.trim();
 
-    // TRAVA DUPLICADOS (SÓ PARA NOVOS)
-    if(!telOrig) {
-        const dup = dLeads.find(l => l.telefone === tel || (email && l.email === email) || (nome === l.nome && empresa === l.empresa));
-        if(dup) return alert("Erro: Este lead já existe!");
+    if (!nome)          return alert("Preencha o Nome.");
+    if (tel.length < 8) return alert("Informe um WhatsApp válido (mínimo 8 dígitos).");
+
+    if (!isEdit) {
+        // Verificar duplicados apenas para novos leads
+        const dup = dLeads.find(l =>
+            l.telefone === tel ||
+            (email && l.email && l.email.toLowerCase() === email.toLowerCase()) ||
+            (nome.toLowerCase() === l.nome.toLowerCase() && empresa.toLowerCase() === l.empresa.toLowerCase())
+        );
+        if (dup) return alert(`Lead já cadastrado!\nNome: ${dup.nome} | Tel: ${dup.telefone}`);
     }
 
-    if(!nome || tel.length < 8) return alert("Preencha Nome e WhatsApp válido.");
+    const idx    = isEdit ? parseInt(idxStr, 10) : null;
+    const lead   = isEdit ? dLeads.find(x => x._idx === idx) : null;
+    const telOrig = lead ? lead.telefone : "";
+
+    // Atualizar estado local imediatamente
+    if (isEdit && lead) {
+        lead.nome     = nome;
+        lead.empresa  = empresa;
+        lead.telefone = tel;
+        lead.email    = email;
+        lead.ramo     = ramo;
+    } else {
+        // Inserir localmente para resposta imediata
+        const novoIdx = dLeads.length > 0 ? Math.max(...dLeads.map(x => x._idx)) + 1 : 0;
+        dLeads.push({ _idx: novoIdx, nome, empresa, telefone: tel, email, ramo, status: "Novo", notas: "" });
+    }
+
+    popularFiltros();
+    executarFiltragem();
+    fecharModal();
+
+    // Enviar ao servidor
+    const payload = isEdit
+        ? { action: "updateLead", telefoneOriginal: telOrig, nome, empresa, telefone: tel, email, ramo }
+        : { action: "addLead", nome, empresa, telefone: tel, email, ramo };
 
     document.getElementById("overlay").style.display = "flex";
-    const d = { action: acao, telefoneOriginal: telOrig, nome, empresa, telefone: tel, email, ramo: document.getElementById("addRamo").value };
-    
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => {
-        setTimeout(() => { document.getElementById("overlay").style.display = "none"; document.getElementById("modal-lead").style.display='none'; carregar(); }, 2000);
+    setSyncStatus("saving");
+
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
+    .then(() => {
+        // Aguardar a planilha indexar e recarregar
+        setTimeout(() => {
+            document.getElementById("overlay").style.display = "none";
+            carregar();
+        }, 3000);
+    })
+    .catch(() => {
+        document.getElementById("overlay").style.display = "none";
+        setSyncStatus("error");
+        alert("Erro ao salvar. Verifique sua conexão.");
     });
 }
 
-function deletar(tel) {
-    if(!tel || tel.length < 5) return alert("Erro de segurança: ID de lead inválido.");
-    if(confirm("Deseja realmente excluir este lead? ESTA AÇÃO NÃO PODE SER RECUPERADA.")) {
-        document.getElementById("overlay").style.display = "flex";
-        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
-        .then(() => setTimeout(() => { document.getElementById("overlay").style.display = "none"; carregar(); }, 2000));
-    }
+// ── Deletar ────────────────────────────────────────────────────
+// Usa _idx para encontrar o lead no array local,
+// envia o telefone para o Apps Script (que busca por tel na planilha)
+function deletar(idx) {
+    const lead = dLeads.find(x => x._idx === idx);
+    if (!lead) { alert("Lead não encontrado."); return; }
+
+    if (!confirm(`Deseja excluir o lead "${lead.nome}"?\nEsta ação não pode ser desfeita.`)) return;
+
+    // Remover localmente de imediato
+    dLeads = dLeads.filter(x => x._idx !== idx);
+    executarFiltragem();
+
+    document.getElementById("overlay").style.display = "flex";
+    setSyncStatus("saving");
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({ action: "deleteLead", telefone: lead.telefone })
+    })
+    .then(() => {
+        setTimeout(() => {
+            document.getElementById("overlay").style.display = "none";
+            carregar(); // recarrega para confirmar deleção real
+        }, 3000);
+    })
+    .catch(() => {
+        document.getElementById("overlay").style.display = "none";
+        setSyncStatus("error");
+        alert("Erro ao excluir. Verifique sua conexão.");
+        carregar(); // restaurar estado
+    });
 }
 
+// ── Tabs ───────────────────────────────────────────────────────
 function showTab(v) {
     document.getElementById("view-funil").classList.toggle("hidden", v !== "funil");
     document.getElementById("view-config").classList.toggle("hidden", v !== "config");
     document.getElementById("btn-funil-tab").classList.toggle("active", v === "funil");
     document.getElementById("btn-config-tab").classList.toggle("active", v === "config");
+    if (v === "config") carregarUsuarios();
 }
 
+// ── Usuários ───────────────────────────────────────────────────
 function cadastrarUsuario() {
-    const e = document.getElementById("newEmail").value; const s = document.getElementById("newPass").value;
+    const e = document.getElementById("newEmail").value.trim();
+    const s = document.getElementById("newPass").value.trim();
+    if (!e || !s) return alert("Preencha e-mail e senha.");
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "addUser", newEmail: e, newPass: s }) })
-    .then(r => r.json()).then(res => { if(res === "sucesso") carregarUsuarios(); else alert("Limite atingido!"); });
-}
-
-function carregarUsuarios() {
-    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
-        let h = "<h4>Usuários Ativos:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:5px; margin-bottom:5px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[Excluir]</button></p>`; });
-        document.getElementById("lista-usuarios").innerHTML = h;
+    .then(r => r.json())
+    .then(res => {
+        if (res === "sucesso") {
+            document.getElementById("newEmail").value = "";
+            document.getElementById("newPass").value = "";
+            carregarUsuarios();
+            alert("Usuário cadastrado com sucesso!");
+        } else {
+            alert("Não foi possível cadastrar. Verifique o limite de vendedores.");
+        }
     });
 }
 
-function deletarUsuario(i) {
-    if(confirm("Remover usuário?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
+function carregarUsuarios() {
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) })
+    .then(r => r.json())
+    .then(users => {
+        const lista = document.getElementById("lista-usuarios");
+        // Filtra apenas vendedores e guarda o índice REAL da linha no array completo
+        const vendedores = users
+            .map((u, i) => ({ email: u[0], papel: u[2], rowIdx: i }))
+            .filter(u => u.papel === "vendedor");
+
+        if (vendedores.length === 0) {
+            lista.innerHTML = "<p style='font-size:13px; color:var(--text-sub);'>Nenhum vendedor cadastrado.</p>";
+            return;
+        }
+
+        lista.innerHTML = "<h4 style='margin:0 0 12px; font-size:13px;'>Vendedores ativos:</h4>";
+        vendedores.forEach(u => {
+            const row = document.createElement("div");
+            row.style.cssText = "display:flex; justify-content:space-between; align-items:center; font-size:13px; background:#f9f9f9; padding:10px 12px; border-radius:8px; margin-bottom:6px;";
+            const span = document.createElement("span");
+            span.textContent = u.email;
+            const btn = document.createElement("button");
+            btn.textContent = "Excluir";
+            btn.style.cssText = "color:#ef4444; border:none; background:none; cursor:pointer; font-weight:700; font-size:12px; font-family:inherit;";
+            btn.addEventListener("click", () => deletarUsuario(u.rowIdx, u.email));
+            row.appendChild(span);
+            row.appendChild(btn);
+            lista.appendChild(row);
+        });
+    });
 }
 
-function pag(dir) { pAtu += dir; render(); window.scrollTo(0,0); }
-function logout() { sessionStorage.clear(); location.reload(); }
+// rowIdx agora é o índice real no array retornado pelo getUsers
+function deletarUsuario(rowIdx, email) {
+    if (!confirm(`Remover o usuário ${email}?`)) return;
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: rowIdx }) })
+    .then(() => carregarUsuarios());
+}
 
-if(sessionStorage.getItem("rsi_logado")) {
+// ── Paginação ──────────────────────────────────────────────────
+function pag(dir) {
+    const tP = Math.ceil(fLeads.length / pItem) || 1;
+    pAtu = Math.max(1, Math.min(tP, pAtu + dir));
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ── Logout ─────────────────────────────────────────────────────
+function logout() {
+    sessionStorage.clear();
+    location.reload();
+}
+
+// ── Fechar modal ao clicar fora ────────────────────────────────
+document.getElementById("modal-lead").addEventListener("click", function(e) {
+    if (e.target === this) fecharModal();
+});
+
+// ── Auto-login por sessão ──────────────────────────────────────
+if (sessionStorage.getItem("rsi_logado")) {
     nAcesso = sessionStorage.getItem("rsi_logado");
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("crm-app").style.display = "block";
-    if(nAcesso !== "vendedor") document.getElementById("btn-config-tab").classList.remove("hidden");
+    if (nAcesso !== "vendedor") document.getElementById("btn-config-tab").classList.remove("hidden");
     carregar();
 }
 </script>
