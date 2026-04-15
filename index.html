@@ -3,10 +3,10 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM Cloud v1.8.0 | By FF Person</title>
+<title>RSI CRM Cloud v1.8.1 | By FF Person</title>
 <style>
 :root { 
-    --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --dark: #0f172a; --bg: #f8fafc; 
+    --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --edit: #f59e0b; --dark: #0f172a; --bg: #f8fafc; 
     --text-main: #1e293b; --text-sub: #64748b;
 }
 body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
@@ -16,7 +16,7 @@ body { font-family: 'Inter', sans-serif; margin:0; background: var(--bg); color:
 .login-box { background: #fff; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 .login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid #f1f5f9; object-fit: cover; }
 
-input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none;}
+input, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none; margin-bottom: 10px;}
 .btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
 
 /* APP LAYOUT */
@@ -42,24 +42,23 @@ header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px;
 
 /* TABELA */
 .table-container { background:#fff; border-radius: 16px; overflow-x: auto; border: 1px solid #e2e8f0; }
-table { width:100%; border-collapse:collapse; min-width: 900px;}
+table { width:100%; border-collapse:collapse; min-width: 950px;}
 th { background: #f8fafc; padding: 16px; text-align: left; font-size: 11px; color: var(--text-sub); text-transform: uppercase; font-weight: 800; }
 td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
 
-.btn-group { display: flex; gap: 8px; }
-.btn-act { width: 36px; height: 36px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.btn-group { display: flex; gap: 5px; }
+.btn-act { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
 .btn-wa { background: var(--wa); } 
 .btn-mail { background: var(--mail); }
+.btn-edit { background: var(--edit); }
 .btn-del { background: #444; } 
-.btn-act svg { width: 18px; height: 18px; fill: white; }
+.btn-act svg { width: 16px; height: 16px; fill: white; }
 
 .status-badge { padding: 6px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid #e2e8f0; width: 100%; cursor: pointer;}
 .note-area { border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px; font-size: 13px; width: 100%; min-height: 45px; resize: vertical; }
 
-/* PAGINAÇÃO MELHORADA */
 .pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0; flex-wrap: wrap;}
-.btn-pag { background: #fff; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: 700; }
-.jump-input { width: 60px; text-align: center; padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; }
+.btn-pag { background: #fff; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 700; }
 
 #modal-lead { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.7); display:none; justify-content: center; align-items: center; z-index: 1001; backdrop-filter: blur(2px); }
 .modal-box { background: white; padding: 30px; border-radius: 20px; width: 350px; text-align: center; }
@@ -109,7 +108,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
                 <div class="filter-group"><label>Busca</label><input type="text" id="busca" placeholder="Nome ou empresa..."></div>
                 <div class="filter-group"><label>Status</label><select id="fStatus"><option value="">Todos</option><option value="Novo">Novo</option><option value="Contato">Contato</option><option value="Proposta">Proposta</option><option value="Fechado">Fechado</option></select></div>
                 <div class="filter-group"><label>Segmento</label><select id="fRamo"><option value="">Todos</option></select></div>
-                <button class="btn-filter" onclick="executarFiltragem()">APLICAR FILTROS</button>
+                <button class="btn-filter" onclick="executarFiltragem()">FILTRAR</button>
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px;" onclick="abrirNovoLead()">+ NOVO LEAD</button>
             </div>
 
@@ -124,11 +123,8 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
                 <button class="btn-pag" id="btn-prev" onclick="mudarPagina(-1)">Anterior</button>
                 <span id="info-pag" style="font-weight: 800; font-size: 14px;">Página 1</span>
                 <button class="btn-pag" id="btn-next" onclick="mudarPagina(1)">Próximo</button>
-                <div style="margin-left: 20px;">
-                    <label style="font-size: 12px; font-weight: 700;">Ir para:</label>
-                    <input type="number" id="jumpPag" class="jump-input" min="1">
-                    <button class="btn-pag" onclick="irParaPagina()">Ir</button>
-                </div>
+                <input type="number" id="jumpPag" class="btn-pag" style="width: 60px; margin-left: 15px;" placeholder="Pág">
+                <button class="btn-pag" onclick="irParaPagina()">Ir</button>
             </div>
         </div>
 
@@ -144,19 +140,21 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
     </div>
 
     <footer>
-        VERSÃO 1.8.0 | DESENVOLVIDO POR <strong>FF PERSON</strong>
+        VERSÃO 1.8.1 | DESENVOLVIDO POR <strong>FF PERSON</strong>
     </footer>
 </div>
 
+<!-- MODAL LEAD (Serve para Novo e Editar) -->
 <div id="modal-lead">
     <div class="modal-box">
-        <h3 style="margin-top:0">Novo Lead</h3>
+        <h3 id="modal-title">Novo Lead</h3>
+        <input type="hidden" id="editOriginalTel">
         <input type="text" id="addNome" placeholder="Nome">
         <input type="text" id="addEmpresa" placeholder="Empresa">
         <input type="text" id="addTelefone" placeholder="WhatsApp (DDD + Número)">
         <input type="email" id="addEmail" placeholder="E-mail">
         <input type="text" id="addRamo" placeholder="Ramo">
-        <button id="btn-save-lead" class="btn-main" onclick="salvarNovoLead()">SALVAR LEAD</button>
+        <button id="btn-save-lead" class="btn-main" onclick="salvarNovoLead()">SALVAR DADOS</button>
         <button style="width:100%; border:none; background:none; margin-top:15px; cursor:pointer;" onclick="document.getElementById('modal-lead').style.display='none'">Cancelar</button>
     </div>
 </div>
@@ -166,6 +164,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8w0XJfOtOEjIeemtJc
 
 const iconWA = `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
 const iconMail = `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`;
+const iconEdit = `<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`;
 const iconDel = `<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`;
 
 let dadosLeads = [];
@@ -179,7 +178,6 @@ const MSG_RSI = "Olá [NOME],\n\nSomos da RSI – Soluções em Impressão. Espe
 function acaoLogin() {
     const u = document.getElementById("userEmail").value;
     const s = document.getElementById("userPass").value;
-    document.getElementById("msg-login").innerText = "Verificando...";
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
     .then(r => r.json()).then(res => {
         if(res !== "erro") {
@@ -252,8 +250,9 @@ function renderizarTabela() {
             <td>
                 <div class="btn-group">
                     <button class="btn-act btn-wa" onclick="window.open('https://wa.me/${d.telefone}?text=${encodeURIComponent(MSG_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}')">${iconWA}</button>
-                    <button class="btn-act btn-mail" onclick="window.location.href='mailto:${d.email}?subject=CRM RSI&body=${encodeURIComponent(MSG_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}'">${iconMail}</button>
-                    <button class="btn-act btn-del" onclick="deletarLead('${d.telefone}')">${iconDel}</button>
+                    <button class="btn-act btn-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI&body=${encodeURIComponent(MSG_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}'">${iconMail}</button>
+                    <button class="btn-act btn-edit" title="Alterar Cadastro" onclick="abrirEditarLead('${d.telefone}')">${iconEdit}</button>
+                    <button class="btn-act btn-del" title="Excluir" onclick="deletarLead('${d.telefone}')">${iconDel}</button>
                 </div>
             </td>
         `;
@@ -261,52 +260,65 @@ function renderizarTabela() {
     });
 }
 
-// SALVAMENTO OTIMISTA (Velocidade instantânea na UI)
 function salvarMudanca(tel, st, nt) {
     document.getElementById("sync").innerText = "• Sincronizando..."; document.getElementById("sync").style.color = "orange";
-    
-    // Atualiza localmente imediato
     let lead = dadosLeads.find(x => x.telefone === tel);
-    if(st) lead.status = st; 
-    if(nt !== null) lead.notas = nt;
-    
-    atualizarDashboard(); // Dashboard muda na hora
-
+    if(st) lead.status = st; if(nt !== null) lead.notas = nt;
+    atualizarDashboard();
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "updateLead", telefone: tel, status: lead.status, notas: lead.notas }) })
-    .then(() => { 
-        document.getElementById("sync").innerText = "• Sincronizado"; 
-        document.getElementById("sync").style.color = "#10b981";
-    });
+    .then(() => { document.getElementById("sync").innerText = "• Sincronizado"; document.getElementById("sync").style.color = "#10b981"; });
+}
+
+function abrirNovoLead() {
+    document.getElementById("modal-title").innerText = "Novo Lead";
+    document.getElementById("editOriginalTel").value = "";
+    document.getElementById("addNome").value = "";
+    document.getElementById("addEmpresa").value = "";
+    document.getElementById("addTelefone").value = "";
+    document.getElementById("addEmail").value = "";
+    document.getElementById("addRamo").value = "";
+    document.getElementById("modal-lead").style.display='flex';
+}
+
+function abrirEditarLead(tel) {
+    const d = dadosLeads.find(x => x.telefone === tel);
+    document.getElementById("modal-title").innerText = "Alterar Cadastro";
+    document.getElementById("editOriginalTel").value = d.telefone;
+    document.getElementById("addNome").value = d.nome;
+    document.getElementById("addEmpresa").value = d.empresa;
+    document.getElementById("addTelefone").value = d.telefone;
+    document.getElementById("addEmail").value = d.email;
+    document.getElementById("addRamo").value = d.ramo;
+    document.getElementById("modal-lead").style.display='flex';
 }
 
 function salvarNovoLead() {
-    const nome = document.getElementById("addNome").value;
-    const tel = document.getElementById("addTelefone").value.replace(/\D/g, "");
+    const telOriginal = document.getElementById("editOriginalTel").value;
+    const acao = telOriginal ? "updateLead" : "addLead";
+    const d = { 
+        action: acao, 
+        telefoneOriginal: telOriginal,
+        nome: document.getElementById("addNome").value, 
+        empresa: document.getElementById("addEmpresa").value, 
+        telefone: document.getElementById("addTelefone").value.replace(/\D/g, ""), 
+        email: document.getElementById("addEmail").value, 
+        ramo: document.getElementById("addRamo").value 
+    };
     
-    // BLOQUEIO DE DUPLICADOS LOCAL
-    const existe = dadosLeads.find(l => l.telefone === tel);
-    if(existe) return alert("ERRO: Este WhatsApp já está cadastrado para: " + existe.nome);
+    if(!d.nome || !d.telefone) return alert("Preencha Nome e WhatsApp.");
     
-    if(!nome || !tel) return alert("Preencha Nome e WhatsApp.");
-
     document.getElementById("btn-save-lead").innerText = "Salvando...";
-
-    const d = { action: "addLead", nome, empresa: document.getElementById("addEmpresa").value, telefone: tel, email: document.getElementById("addEmail").value, ramo: document.getElementById("addRamo").value };
-    
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) })
-    .then(() => {
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => {
         document.getElementById("modal-lead").style.display='none';
-        document.getElementById("btn-save-lead").innerText = "SALVAR LEAD";
-        carregarLeads(); // Recarrega para confirmar
+        document.getElementById("btn-save-lead").innerText = "SALVAR DADOS";
+        setTimeout(carregarLeads, 1500);
     });
 }
 
 function deletarLead(tel) {
-    if(confirm("Deseja realmente excluir? Esta ação não poderá ser recuperada.")) {
-        // Remove local imediato
-        dadosLeads = dadosLeads.filter(x => x.telefone !== tel);
-        executarFiltragem();
-        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) });
+    if(confirm("Deseja excluir?")) {
+        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
+        .then(() => setTimeout(carregarLeads, 1000));
     }
 }
 
@@ -314,7 +326,6 @@ function irParaPagina() {
     let p = parseInt(document.getElementById("jumpPag").value);
     const totalP = Math.ceil(filtrados.length / porPag);
     if(p >= 1 && p <= totalP) { pagAtual = p; renderizarTabela(); }
-    else alert("Página inválida.");
 }
 
 function showTab(v) {
@@ -331,19 +342,17 @@ function cadastrarUsuario() {
 
 function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
-        let h = "<h4>Usuários Ativos:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p>${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; cursor:pointer; border:none; background:none;">[Excluir]</button></p>`; });
+        let h = "<h4>Usuários:</h4>";
+        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p>${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; cursor:pointer;">[Excluir]</button></p>`; });
         document.getElementById("lista-usuarios").innerHTML = h;
     });
 }
 
 function deletarUsuario(i) {
-    if(confirm("Remover acesso?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
+    if(confirm("Remover usuário?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
 }
 
 function mudarPagina(dir) { pagAtual += dir; renderizarTabela(); window.scrollTo(0,0); }
-function resetPagina() { pagAtual = 1; atualizarTabela(); }
-function abrirNovoLead() { document.getElementById('modal-lead').style.display='flex'; }
 function logout() { sessionStorage.clear(); location.reload(); }
 
 if(sessionStorage.getItem("rsi_logado")) {
