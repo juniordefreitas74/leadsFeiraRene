@@ -13,7 +13,6 @@
     --dark: #111;
     --bg: #f4f6f9;
     --text: #333;
-    /* Cores do Funil */
     --f-novo: #6c757d;
     --f-contato: #17a2b8;
     --f-proposta: #fd7e14;
@@ -39,7 +38,7 @@ header {
 
 .container { padding: 20px; max-width: 1200px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
 
-/* Dashboard / Dados para Decisão */
+/* Dashboard */
 .cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:15px; margin-bottom: 25px;}
 .card { background:#fff; padding:15px; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #ddd; }
 .card h3 { margin: 0; font-size: 11px; color: #888; text-transform: uppercase; }
@@ -54,7 +53,7 @@ header {
 .tab-btn { padding: 15px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 13px; flex: 1; color: #666; transition: 0.3s; border-bottom: 3px solid transparent;}
 .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: #f8fbff; }
 
-/* Filtros / Organização */
+/* Filtros */
 .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 12px; }
 input, select, textarea { padding:10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none;}
 
@@ -64,25 +63,20 @@ table { width:100%; border-collapse:collapse; min-width: 900px;}
 th { background: #f8f9fa; padding:12px 15px; text-align: left; font-size: 11px; color: #777; text-transform: uppercase; border-bottom: 2px solid #eee; }
 td { padding:12px 15px; border-bottom:1px solid #eee; font-size: 14px; vertical-align: middle; }
 
-/* Status do Funil */
-.status-select { 
-    padding: 5px; 
-    border-radius: 6px; 
-    font-size: 11px; 
-    font-weight: bold; 
-    border: 1px solid #ddd;
-    cursor: pointer;
-}
+/* Paginação */
+.pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding-bottom: 20px; }
+.btn-pag { background: #fff; border: 1px solid #ddd; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+.btn-pag:disabled { opacity: 0.3; cursor: not-allowed; }
 
-/* Botões de Ação Automatizada */
+/* Botões de Ação */
 .btn-group { display: flex; gap: 5px; }
 .btn { width: 38px; height: 38px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.btn:hover { transform: scale(1.1); }
 .btn svg { width: 18px; height: 18px; fill: white; }
 .btn-wa { background: var(--wa); }
 .btn-mail { background: var(--mail); }
 .btn-call { background: #6366f1; }
 
+.status-select { padding: 5px; border-radius: 6px; font-size: 11px; font-weight: bold; border: 1px solid #ddd; cursor: pointer;}
 .note-area { font-size: 12px; width: 100%; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 6px; padding: 6px; min-height: 40px; font-family: inherit;}
 
 footer { text-align: center; padding: 20px; font-size: 11px; color: #888; background: #fff; border-top: 1px solid #eee; margin-top: auto;}
@@ -101,7 +95,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
 </header>
 
 <div class="container">
-    <!-- DASHBOARD: DADOS PARA DECISÃO -->
+    <!-- DASHBOARD -->
     <div class="cards">
         <div class="card"><h3>Total Leads</h3><span id="total">0</span></div>
         <div class="card c-novo"><h3>Novos</h3><span id="dash-novo">0</span></div>
@@ -116,22 +110,29 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
     </div>
 
     <div id="aba-lista">
-        <!-- ORGANIZAÇÃO DOS CONTATOS -->
+        <!-- BARRA DE FILTROS ORGANIZADA -->
         <div class="filter-bar">
-            <select id="filtroStatus" style="flex: 1;">
-                <option value="">Todos os Status (Funil)</option>
+            <select id="filtroStatus" style="flex: 1; min-width: 140px;">
+                <option value="">Status (Todos)</option>
                 <option value="Novo">🟡 Novo</option>
                 <option value="Contato">🔵 Em Contato</option>
-                <option value="Proposta">🟠 Proposta Enviada</option>
+                <option value="Proposta">🟠 Proposta</option>
                 <option value="Fechado">🟢 Fechado</option>
             </select>
-            <select id="filtroPrioridade" style="flex: 1;">
-                <option value="">Todas Prioridades</option>
+            
+            <!-- NOVO FILTRO DE SEGMENTO -->
+            <select id="filtroRamo" style="flex: 1; min-width: 140px;">
+                <option value="">Segmentos (Todos)</option>
+            </select>
+
+            <select id="filtroPrioridade" style="flex: 1; min-width: 140px;">
+                <option value="">Prioridade (Todas)</option>
                 <option value="🔥 ALTA">🔥 ALTA</option>
                 <option value="⚡ MEDIA">⚡ MEDIA</option>
                 <option value="❄️ BAIXA">❄️ BAIXA</option>
             </select>
-            <input type="text" id="busca" placeholder="Buscar por cliente, empresa ou observação..." style="flex: 2;">
+
+            <input type="text" id="busca" placeholder="Buscar por cliente, empresa ou nota..." style="flex: 2; min-width: 200px;">
         </div>
 
         <div class="table-container">
@@ -141,15 +142,20 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
                         <th width="20%">Cliente / Empresa</th>
                         <th width="15%">Estágio Funil</th>
                         <th width="35%">Notas Estratégicas</th>
-                        <th width="30%">Ações de Automação</th>
+                        <th width="30%">Ações</th>
                     </tr>
                 </thead>
                 <tbody id="tabela"></tbody>
             </table>
         </div>
+
+        <div class="pagination">
+            <button class="btn-pag" id="btn-prev" onclick="mudarPagina(-1)">Anterior</button>
+            <span id="info-pag" style="font-size: 14px; font-weight: bold;">Página 1 de 1</span>
+            <button class="btn-pag" id="btn-next" onclick="mudarPagina(1)">Próximo</button>
+        </div>
     </div>
 
-    <!-- AUTOMAÇÃO DE TAREFAS (EMAIL) -->
     <div id="aba-email" class="hidden">
         <div class="card" style="max-width: 600px; margin: auto; border-top-color: var(--mail); padding: 25px;">
             <h3>📧 Compostor de Vendas</h3>
@@ -167,18 +173,18 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
 </div>
 
 <footer>
-    VERSÃO 1.3 | DESENVOLVIDO POR FF PERSON
+    CRM RSI Leads v1.3.2 | Desenvolvido por <strong>FF Person</strong>
 </footer>
 
 <script>
 let dados = [];
 let dbExtra = JSON.parse(localStorage.getItem("rsi_db_v3") || "{}");
+let paginaAtual = 1;
+const itensPorPagina = 20;
 
 const iconWA = `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
 const iconMail = `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`;
 const iconCall = `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.01-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
-
-const TEXTO_RSI = "RSI – Soluções em Impressão\nEspecializada na compra e venda de impressoras novas e usadas. Atendimento ágil e suporte técnico especializado.";
 
 function showTab(n) {
     document.getElementById('aba-lista').classList.toggle('hidden', n!=='lista');
@@ -196,16 +202,30 @@ fetch('https://opensheet.elk.sh/1oAqQR4Qb16tW6T8c-aWoIAKAcWFs0RTnvSC56_SWQ2U/lea
         empresa: l.Empresa || "",
         telefone: (l.Telefone || "").replace(/\D/g, ""),
         email: l.Email || l.email || "",
+        ramo: l.Ramo || "",
         prioridade: l.Prioridade || "❄️ BAIXA"
     }));
+
+    popularFiltroRamo();
     atualizar();
 });
+
+function popularFiltroRamo() {
+    let ramos = [...new Set(dados.map(d => d.ramo))].filter(Boolean).sort();
+    let select = document.getElementById("filtroRamo");
+    ramos.forEach(r => {
+        let opt = document.createElement("option");
+        opt.value = r; opt.text = r; select.add(opt);
+    });
+}
 
 function atualizar() {
     let tabela = document.getElementById("tabela");
     tabela.innerHTML = "";
+    
     let busca = document.getElementById("busca").value.toLowerCase();
     let fStatus = document.getElementById("filtroStatus").value;
+    let fRamo = document.getElementById("filtroRamo").value;
     let fPrio = document.getElementById("filtroPrioridade").value;
 
     let filtrados = dados.filter(d => {
@@ -213,22 +233,30 @@ function atualizar() {
         return (
             (!busca || d.nome.toLowerCase().includes(busca) || d.empresa.toLowerCase().includes(busca) || extra.notas.toLowerCase().includes(busca)) &&
             (!fStatus || extra.status == fStatus) &&
+            (!fRamo || d.ramo == fRamo) &&
             (!fPrio || d.prioridade == fPrio)
         );
     });
 
-    // Dados para Decisão (Dashboard)
+    // Dashboard
     document.getElementById("total").innerText = filtrados.length;
     document.getElementById("dash-novo").innerText = filtrados.filter(d => (dbExtra[d.id]?.status || "Novo") == "Novo").length;
     document.getElementById("dash-contato").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Contato").length;
     document.getElementById("dash-proposta").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Proposta").length;
     document.getElementById("dash-fechado").innerText = filtrados.filter(d => dbExtra[d.id]?.status == "Fechado").length;
 
-    filtrados.forEach(d => {
+    // Paginação
+    const totalPaginas = Math.ceil(filtrados.length / itensPorPagina) || 1;
+    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+
+    const inicio = (paginaAtual - 1) * itensPorPagina;
+    const itensPaginados = filtrados.slice(inicio, inicio + itensPorPagina);
+
+    itensPaginados.forEach(d => {
         let extra = dbExtra[d.id] || { status: "Novo", notas: "" };
         let tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><strong>${d.nome}</strong><br><small>${d.empresa}</small></td>
+            <td><strong>${d.nome}</strong><br><small>${d.empresa} | ${d.ramo}</small></td>
             <td>
                 <select class="status-select" onchange="salvarStatus('${d.id}', this.value)">
                     <option value="Novo" ${extra.status=='Novo'?'selected':''}>🟡 Novo</option>
@@ -248,6 +276,21 @@ function atualizar() {
         `;
         tabela.appendChild(tr);
     });
+
+    document.getElementById("info-pag").innerText = `Página ${paginaAtual} de ${totalPaginas}`;
+    document.getElementById("btn-prev").disabled = paginaAtual === 1;
+    document.getElementById("btn-next").disabled = paginaAtual === totalPaginas;
+}
+
+function mudarPagina(direcao) {
+    paginaAtual += direcao;
+    atualizar();
+    window.scrollTo(0, 0);
+}
+
+function resetarPagina() {
+    paginaAtual = 1;
+    atualizar();
 }
 
 function salvarStatus(id, st) {
@@ -280,8 +323,8 @@ function prepararEmail(id) {
 function aplicarTemplate(nome, empresa) {
     const tipo = document.getElementById('email-template').value;
     let t = {
-        apresentacao: `Olá ${nome || 'Cliente'},\n\nSou da RSI e gostaria de apresentar nossa estrutura para a ${empresa || 'sua empresa'}:\n\n${TEXTO_RSI}`,
-        feira: `Olá ${nome}, foi um prazer falar com você na feira!\n\nReiterando nosso contato pela RSI.\n\n${TEXTO_RSI}`,
+        apresentacao: `Olá ${nome || 'Cliente'},\n\nSou da RSI e gostaria de apresentar nossa estrutura para a ${empresa || 'sua empresa'}:\n\nRSI – Soluções em Impressão\nEspecializada na compra e venda de impressoras novas e usadas. Atendimento ágil e suporte técnico especializado.`,
+        feira: `Olá ${nome}, foi um prazer falar com você na feira!\n\nReiterando nosso contato pela RSI.`,
         proposta: `Prezado(a) ${nome},\n\nConforme solicitado, segue anexo a proposta para a ${empresa}.\n\nA RSI garante equipamentos revisados com suporte técnico completo.`
     };
     document.getElementById('mail-mensagem').value = t[tipo];
@@ -294,9 +337,10 @@ function dispararEmail() {
     window.location.href = `mailto:${p}?subject=${encodeURIComponent(a)}&body=${encodeURIComponent(c)}`;
 }
 
-document.getElementById("busca").addEventListener("input", atualizar);
-document.getElementById("filtroStatus").addEventListener("change", atualizar);
-document.getElementById("filtroPrioridade").addEventListener("change", atualizar);
+document.getElementById("busca").addEventListener("input", resetarPagina);
+document.getElementById("filtroStatus").addEventListener("change", resetarPagina);
+document.getElementById("filtroRamo").addEventListener("change", resetarPagina);
+document.getElementById("filtroPrioridade").addEventListener("change", resetarPagina);
 </script>
 
 </body>
