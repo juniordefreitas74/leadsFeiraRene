@@ -3,19 +3,23 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM - Cloud v1.6.7</title>
+<title>RSI CRM - Cloud v1.6.8 | Desenvolvido por FF Person</title>
 <style>
 :root { --primary: #007bff; --wa: #25D366; --mail: #ea4335; --dark: #111; --bg: #f4f6f9; }
 body { font-family: 'Segoe UI', system-ui, sans-serif; margin:0; background: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
 
-/* LOGIN */
+/* TELA DE LOGIN */
 #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #111; display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .login-box { background: #fff; padding: 40px; border-radius: 15px; width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-.login-box img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
+.login-box img { 
+    width: 80px; height: 80px; margin-bottom: 20px; 
+    border-radius: 50%; border: 3px solid var(--primary); 
+    object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
 input, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; outline: none; }
 .btn-main { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
 
-/* APP */
+/* APP CRM */
 #crm-app { display: none; }
 header { background: var(--dark); color:#fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
 .header-brand { display: flex; align-items: center; gap: 12px; }
@@ -23,7 +27,7 @@ header { background: var(--dark); color:#fff; padding: 12px 20px; display: flex;
 
 .container { padding: 20px; max-width: 1200px; margin: auto; flex: 1; width: 100%; box-sizing: border-box;}
 
-/* DASHBOARD COM NOVO BOX */
+/* DASHBOARD ESTRATÉGICO */
 .cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-bottom: 20px;}
 .card { background:#fff; padding:12px; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #ddd; }
 .card h3 { margin: 0; font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -33,21 +37,24 @@ header { background: var(--dark); color:#fff; padding: 12px 20px; display: flex;
 .tab-btn { padding: 15px; border: none; cursor: pointer; background: none; font-weight: bold; font-size: 12px; flex: 1; color: #666; transition: 0.3s; }
 .tab-btn.active { color: var(--primary); background: #f8fbff; border-bottom: 3px solid var(--primary); }
 
+/* TABELA */
 .table-container { background:#fff; border-radius: 12px; overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 table { width:100%; border-collapse:collapse; min-width: 900px;}
-th { background: #f8f9fa; padding:12px 15px; text-align: left; font-size: 11px; color: #777; text-transform: uppercase; border-bottom: 1px solid #eee; }
+th { background: #f8f9fa; padding:12px 15px; text-align: left; font-size: 11px; color: #777; text-transform: uppercase; border-bottom: 2px solid #eee; }
 td { padding:12px 15px; border-bottom:1px solid #eee; font-size: 14px; vertical-align: middle; }
 
+/* AÇÕES */
 .btn-group { display: flex; gap: 5px; }
 .btn-act { width: 38px; height: 38px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; color: white; }
 .btn-wa { background: var(--wa); }
 .btn-mail { background: var(--mail); }
-.btn-del { background: #444; }
+.btn-del { background: #444; } /* Cinza Escuro para Excluir */
 .btn-act svg { width: 18px; height: 18px; fill: white; }
 
 .status-select { padding: 5px; border-radius: 6px; font-size: 11px; font-weight: bold; border: 1px solid #ddd; cursor: pointer;}
 .note-area { font-size: 12px; width: 100%; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 6px; padding: 6px; min-height: 40px; font-family: inherit; resize: vertical;}
 
+/* PAGINAÇÃO */
 .pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding-bottom: 20px; }
 .btn-pag { background: #fff; border: 1px solid #ddd; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 .btn-pag:disabled { opacity: 0.3; }
@@ -55,6 +62,7 @@ td { padding:12px 15px; border-bottom:1px solid #eee; font-size: 14px; vertical-
 #modal-lead { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display:none; justify-content: center; align-items: center; z-index: 1001; }
 .modal-box { background: white; padding: 25px; border-radius: 15px; width: 350px; text-align: center; }
 
+/* RODAPÉ COM CRÉDITOS */
 footer { text-align: center; padding: 20px; font-size: 11px; color: #888; background: #fff; border-top: 1px solid #eee; margin-top: auto;}
 .hidden { display: none; }
 </style>
@@ -67,7 +75,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
         <h2 style="margin:0 0 20px 0; font-size: 18px;">RSI Business Login</h2>
         <input type="email" id="userEmail" placeholder="Usuário (E-mail)">
         <input type="password" id="userPass" placeholder="Senha">
-        <button class="btn-main" onclick="acaoLogin()">ENTRAR</button>
+        <button class="btn-main" onclick="acaoLogin()">ENTRAR NO CRM</button>
         <p id="msg-login" style="font-size: 11px; margin-top: 15px; font-weight: bold;"></p>
     </div>
 </div>
@@ -79,7 +87,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
     </header>
 
     <div class="container">
-        <!-- DASHBOARD COM BOX CONTATO -->
+        <!-- DASHBOARD ATUALIZADO -->
         <div class="cards">
             <div class="card"><h3>Total Leads</h3><span id="total">0</span></div>
             <div class="card" style="border-left-color: #6c757d"><h3>Novos</h3><span id="dash-novo">0</span></div>
@@ -96,13 +104,13 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
 
         <div id="view-funil">
             <div style="display:flex; gap:10px; margin-bottom: 15px; flex-wrap: wrap;">
-                <input type="text" id="busca" oninput="resetPagina()" placeholder="Buscar nome ou empresa..." style="flex:2; min-width: 200px;">
-                <select id="fRamo" onchange="resetPagina()" style="flex:1; min-width: 150px;"><option value="">Todos Segmentos</option></select>
+                <input type="text" id="busca" oninput="resetarPagina()" placeholder="Buscar cliente ou empresa..." style="flex:2; min-width: 200px;">
+                <select id="fRamo" onchange="resetarPagina()" style="flex:1; min-width: 150px;"><option value="">Todos Segmentos</option></select>
                 <button class="btn-main" style="flex:1; min-width: 150px; background: #007bff;" onclick="document.getElementById('modal-lead').style.display='flex'">+ NOVO LEAD</button>
             </div>
             <div class="table-container">
                 <table>
-                    <thead><tr><th width="20%">Cliente</th><th width="15%">Status Funil</th><th width="35%">Notas</th><th width="30%">Ações</th></tr></thead>
+                    <thead><tr><th width="20%">Cliente</th><th width="15%">Status Funil</th><th width="35%">Notas Estratégicas</th><th width="30%">Ações</th></tr></thead>
                     <tbody id="tabela-leads"></tbody>
                 </table>
             </div>
@@ -115,7 +123,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
 
         <div id="view-config" class="hidden">
             <div class="card" style="max-width: 500px; margin: auto; padding: 25px;">
-                <h3 style="margin-bottom: 15px;">Cadastrar Novo Usuário</h3>
+                <h3>Cadastrar Novo Usuário</h3>
                 <input type="email" id="newEmail" placeholder="E-mail">
                 <input type="text" id="newPass" placeholder="Senha">
                 <button class="btn-main" onclick="cadastrarUsuario()">SALVAR USUÁRIO</button>
@@ -125,7 +133,6 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
     </div>
 </div>
 
-<!-- MODAL NOVO LEAD -->
 <div id="modal-lead">
     <div class="modal-box">
         <h3>Novo Lead</h3>
@@ -138,6 +145,10 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: #888; backgr
         <button style="width:100%; border:none; background:none; margin-top:10px; cursor:pointer; color:red;" onclick="document.getElementById('modal-lead').style.display='none'">Cancelar</button>
     </div>
 </div>
+
+<footer>
+    VERSÃO 1.6.8 | DESENVOLVIDO POR <strong>FF PERSON</strong>
+</footer>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8w0XJfOtOEjIeemtJcPKl4G5UK1QJXo_J5UIJ9sqNZ-YA9pn6S2RhEEU_oYS5aFjwlA/exec";
@@ -158,7 +169,7 @@ function acaoLogin() {
     const s = document.getElementById("userPass").value;
     const msg = document.getElementById("msg-login");
     if(!u || !s) return alert("Preencha tudo!");
-    msg.innerText = "Validando..."; msg.style.color = "orange";
+    msg.innerText = "Validando acesso..."; msg.style.color = "orange";
 
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "login", usuario: u, senha: s }) })
     .then(r => r.json()).then(res => {
@@ -205,7 +216,7 @@ function atualizarTabela() {
         (!ramo || d.ramo == ramo)
     );
 
-    // ATUALIZAÇÃO DO DASHBOARD (Lê da lista filtrada)
+    // ATUALIZAÇÃO DO DASHBOARD INSTANTÂNEA
     document.getElementById("total").innerText = filtrados.length;
     document.getElementById("dash-novo").innerText = filtrados.filter(d => d.status == "Novo").length;
     document.getElementById("dash-contato").innerText = filtrados.filter(d => d.status == "Contato").length;
@@ -234,7 +245,7 @@ function atualizarTabela() {
                 <div class="btn-group">
                     <button class="btn-act btn-wa" title="WhatsApp" onclick="window.open('https://wa.me/${d.telefone}?text=${encodeURIComponent(TEXTO_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}')">${iconWA}</button>
                     <button class="btn-act btn-mail" title="E-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI – Soluções em Impressão&body=${encodeURIComponent(TEXTO_RSI.replace('[NOME]',d.nome).replace('[EMPRESA]',d.empresa))}'">${iconMail}</button>
-                    <button class="btn-act btn-del" title="Excluir" onclick="deletarLead('${d.telefone}')">${iconDel}</button>
+                    <button class="btn-act btn-del" title="Excluir Lead" onclick="deletarLead('${d.telefone}')">${iconDel}</button>
                 </div>
             </td>
         `;
@@ -245,9 +256,12 @@ function atualizarTabela() {
 function salvarStatus(tel, st, nt) {
     document.getElementById("sync").innerText = "• Salvando..."; document.getElementById("sync").style.color = "orange";
     
-    // Atualiza localmente para o Dashboard mudar na hora
+    // Atualiza o objeto local para o dashboard refletir na hora
     let l = dadosLeads.find(x => x.telefone === tel);
-    if(st) { l.status = st; atualizarTabela(); } // Atualiza a UI imediatamente se mudar status
+    if(st) {
+        l.status = st;
+        atualizarTabela(); // Recarrega dashboard imediatamente
+    }
     if(nt !== null) l.notas = nt;
 
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "updateLead", telefone: tel, status: l.status, notas: l.notas }) })
@@ -266,13 +280,14 @@ function salvarNovoLead() {
 function deletarLead(tel) {
     if(confirm("Deseja realmente excluir? Esta ação não poderá ser recuperada.")) {
         fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
-        .then(() => { carregarLeads(); alert("Lead excluído."); });
+        .then(() => { carregarLeads(); alert("Lead excluído com sucesso."); });
     }
 }
 
 function cadastrarUsuario() {
     const e = document.getElementById("newEmail").value;
     const s = document.getElementById("newPass").value;
+    if(!e || !s) return alert("Preencha e-mail e senha!");
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "addUser", newEmail: e, newPass: s }) })
     .then(r => r.json()).then(res => {
         if(res === "sucesso") { alert("Usuário cadastrado!"); carregarUsuarios(); }
@@ -283,13 +298,13 @@ function cadastrarUsuario() {
 function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
         let h = "<h4>Usuários Ativos:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:5px; margin-bottom:5px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none; cursor:pointer;">[Excluir]</button></p>`; });
+        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:5px; margin-bottom:5px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[Excluir]</button></p>`; });
         document.getElementById("lista-usuarios").innerHTML = h;
     });
 }
 
 function deletarUsuario(i) {
-    if(confirm("Remover acesso?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
+    if(confirm("Remover este acesso?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
 }
 
 function showTab(v, btn) {
@@ -300,7 +315,7 @@ function showTab(v, btn) {
     if(v === "config") carregarUsuarios();
 }
 
-function mudarPagina(dir) { pagAtual += dir; atualizarTabela(); window.scrollTo(0,0); }
+function mudarPagina(dir) { paginaAtual += dir; atualizarTabela(); window.scrollTo(0,0); }
 function resetPagina() { paginaAtual = 1; atualizarTabela(); }
 function logout() { sessionStorage.clear(); location.reload(); }
 
