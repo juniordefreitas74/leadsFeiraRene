@@ -111,6 +111,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
                 <div class="filter-group"><label>Status</label><select id="fStatus" onchange="executarFiltragem()"><option value="">Todos</option><option value="Novo">Novo</option><option value="Contato">Contato</option><option value="Proposta">Proposta</option><option value="Fechado">Fechado</option></select></div>
                 <div class="filter-group"><label>Segmento</label><select id="fRamo" onchange="executarFiltragem()"><option value="">Todos</option></select></div>
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px; background: var(--dark);" onclick="executarFiltragem()">FILTRAR</button>
+                <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px; background: #64748b;" onclick="limparFiltros()">LIMPAR</button>
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px;" onclick="abrirNovoLead()">+ NOVO LEAD</button>
             </div>
             <div class="table-container"><table><thead><tr><th>Cliente / Empresa</th><th>Funil</th><th>Notas</th><th>Ações</th></tr></thead><tbody id="tabela-leads"></tbody></table></div>
@@ -127,7 +128,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
             </div>
         </div>
     </div>
-    <footer>VERSÃO 1.9.2 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
+    <footer>VERSÃO 1.9.3 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
 </div>
 
 <div id="modal-lead">
@@ -224,6 +225,13 @@ function executarFiltragem() {
     const r = document.getElementById("fRamo").value;
     fLeads = dLeads.filter(d => (!b || d.nome.toLowerCase().includes(b) || d.empresa.toLowerCase().includes(b)) && (!s || d.status === s) && (!r || d.ramo === r));
     pAtu = 1; dash(); render();
+}
+
+function limparFiltros() {
+    document.getElementById("busca").value = "";
+    document.getElementById("fStatus").value = "";
+    document.getElementById("fRamo").value = "";
+    executarFiltragem();
 }
 
 function dash() {
