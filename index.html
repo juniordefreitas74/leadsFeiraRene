@@ -44,9 +44,13 @@ header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px;
 .filter-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
 
 .table-container { background:#fff; border-radius: 16px; overflow-x: auto; border: 1px solid #e2e8f0; }
-table { width:100%; border-collapse:collapse; min-width: 950px;}
+table { width:100%; border-collapse:collapse; min-width: 1100px;}
 th { background: #f8fafc; padding: 16px; text-align: left; font-size: 11px; color: var(--text-sub); text-transform: uppercase; font-weight: 800; }
 td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+
+.hist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; font-size: 10px; font-weight: 700; min-width: 150px; }
+.hist-item { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+.hist-item input { width: auto; margin: 0; cursor: pointer; }
 
 .btn-group { display: flex; gap: 5px; }
 .btn-act { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
@@ -114,17 +118,17 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px; background: #64748b;" onclick="limparFiltros()">LIMPAR</button>
                 <button class="btn-main" style="width: auto; height: 42px; padding: 0 20px;" onclick="abrirNovoLead()">+ NOVO LEAD</button>
             </div>
-            <div class="table-container"><table><thead><tr><th>Cliente / Empresa</th><th>Funil</th><th>Notas</th><th>Ações</th></tr></thead><tbody id="tabela-leads"></tbody></table></div>
+            <div class="table-container"><table><thead><tr><th>Cliente / Empresa</th><th>Funil</th><th>Histórico</th><th>Notas</th><th>Ações</th></tr></thead><tbody id="tabela-leads"></tbody></table></div>
             <div class="pagination"><button class="btn-pag" id="btn-prev" onclick="pag(-1)">Anterior</button><span id="info-pag"></span><button class="btn-pag" id="btn-next" onclick="pag(1)">Próximo</button></div>
         </div>
 
         <div id="view-config" class="hidden">
             <div class="card" style="max-width: 500px; margin: auto; padding: 30px; border-left: none; border-top: 6px solid var(--dark);">
-                <h3>Gerenciar Usuário</h3>
+                <h3>Gerenciar Usuários</h3>
                 <input type="email" id="newEmail" placeholder="E-mail">
                 <input type="text" id="newPass" placeholder="Senha">
-                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR</button>
-                <div id="lista-usuarios" style="margin-top: 25px;"></div>
+                <button class="btn-main" style="background: var(--dark);" onclick="cadastrarUsuario()">CADASTRAR VENDEDOR</button>
+                <div id="lista-usuarios" style="margin-top: 25px; text-align: left;"></div>
             </div>
         </div>
     </div>
@@ -169,7 +173,10 @@ function acaoLogin() {
             sessionStorage.setItem("rsi_logado", res);
             document.getElementById("login-screen").style.display = "none";
             document.getElementById("crm-app").style.display = "block";
-            if(res !== "vendedor") document.getElementById("btn-config-tab").classList.remove("hidden");
+            if(res !== "vendedor") {
+                document.getElementById("btn-config-tab").classList.remove("hidden");
+                carregarUsuarios();
+            }
             carregar();
         } else alert("Login Inválido!");
     }).catch(e => {
@@ -194,7 +201,8 @@ function carregar() {
                 email: find("email") || find("e-mail") || "",
                 ramo: find("ramo") || find("segmento") || "",
                 status: find("status") || "Novo",
-                notas: find("notas") || ""
+                notas: find("notas") || "",
+                historico: find("historico") || ""
             };
         });
         popularFiltros();
@@ -250,11 +258,20 @@ function render() {
     document.getElementById("btn-next").disabled = pAtu === tP;
 
     fLeads.slice((pAtu-1)*pItem, pAtu*pItem).forEach(d => {
+        const hist = d.historico || "";
         let tr = document.createElement("tr");
         tr.innerHTML = `
             <td><strong>${d.nome}</strong><br><small style="color:var(--text-sub)">${d.empresa} | ${d.ramo}</small></td>
-            <td><select class="status-badge" onchange="salvarStatus('${d.telefone}', this.value, null)"><option value="Novo" ${d.status=='Novo'?'selected':''}>Novo</option><option value="Contato" ${d.status=='Contato'?'selected':''}>Contato</option><option value="Proposta" ${d.status=='Proposta'?'selected':''}>Proposta</option><option value="Fechado" ${d.status=='Fechado'?'selected':''}>Fechado</option></select></td>
-            <td><textarea class="note-area" onchange="salvarStatus('${d.telefone}', null, this.value)">${d.notas}</textarea></td>
+            <td><select class="status-badge" onchange="salvarStatus('${d.telefone}', this.value, null, null)"><option value="Novo" ${d.status=='Novo'?'selected':''}>Novo</option><option value="Contato" ${d.status=='Contato'?'selected':''}>Contato</option><option value="Proposta" ${d.status=='Proposta'?'selected':''}>Proposta</option><option value="Fechado" ${d.status=='Fechado'?'selected':''}>Fechado</option></select></td>
+            <td>
+                <div class="hist-grid">
+                    <label class="hist-item"><input type="checkbox" ${hist.includes('Lig')?'checked':''} onclick="toggleHist('${d.telefone}', 'Lig')"> Ligação</label>
+                    <label class="hist-item"><input type="checkbox" ${hist.includes('Ema')?'checked':''} onclick="toggleHist('${d.telefone}', 'Ema')"> E-mail</label>
+                    <label class="hist-item"><input type="checkbox" ${hist.includes('Msg')?'checked':''} onclick="toggleHist('${d.telefone}', 'Msg')"> Mensagem</label>
+                    <label class="hist-item"><input type="checkbox" ${hist.includes('Ano')?'checked':''} onclick="toggleHist('${d.telefone}', 'Ano')"> Anotação</label>
+                </div>
+            </td>
+            <td><textarea class="note-area" onchange="salvarStatus('${d.telefone}', null, this.value, null)">${d.notas}</textarea></td>
             <td><div class="btn-group">
                 <button class="btn-act btn-wa" title="WhatsApp" onclick="window.open('https://wa.me/${d.telefone}')">${iconWA}</button>
                 <button class="btn-act btn-mail" title="E-mail" onclick="window.location.href='mailto:${d.email}?subject=RSI'">${iconMail}</button>
@@ -265,14 +282,36 @@ function render() {
     });
 }
 
-function salvarStatus(tel, st, nt) {
+function toggleHist(tel, tag) {
+    let l = dLeads.find(x => x.telefone === tel);
+    if(!l) return;
+    let hArr = l.historico ? l.historico.split(',') : [];
+    if(hArr.includes(tag)) hArr = hArr.filter(t => t !== tag);
+    else hArr.push(tag);
+    l.historico = hArr.join(',');
+    salvarStatus(tel, null, null, l.historico);
+}
+
+function salvarStatus(tel, st, nt, hist) {
     document.getElementById("sync").innerText = "• Salvando...";
     let l = dLeads.find(x => x.telefone === tel);
     if(!l) return;
-    if(st) l.status = st; if(nt !== null) l.notas = nt;
+    if(st) l.status = st; 
+    if(nt !== null) l.notas = nt;
+    if(hist !== null) l.historico = hist;
+    
     dash();
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "updateStatus", telefone: tel, status: l.status, notas: l.notas }) })
-    .then(() => {
+    fetch(SCRIPT_URL, { 
+        method: "POST", 
+        mode: "no-cors", 
+        body: JSON.stringify({ 
+            action: "updateStatus", 
+            telefone: tel, 
+            status: l.status, 
+            notas: l.notas,
+            historico: l.historico 
+        }) 
+    }).then(() => {
         document.getElementById("sync").innerText = "• Sincronizado";
     });
 }
@@ -381,14 +420,28 @@ function cadastrarUsuario() {
 
 function carregarUsuarios() {
     fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUsers" }) }).then(r => r.json()).then(users => {
-        let h = "<h4>Usuários Ativos:</h4>";
-        users.forEach((u, i) => { if(u[2] === "vendedor") h += `<p style="display:flex; justify-content:space-between; font-size:13px; background:#f9f9f9; padding:8px; border-radius:5px; margin-bottom:5px;">${u[0]} <button onclick="deletarUsuario(${i})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[Excluir]</button></p>`; });
+        let h = "<h4>Usuários Ativos (Vendedores):</h4>";
+        users.forEach((u, i) => { 
+            if(u[2] === "vendedor") {
+                h += `<div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid #e2e8f0;">
+                        <div><span style="font-weight:800; color:var(--dark)">${u[0]}</span><br><small>${u[2]}</small></div>
+                        <button onclick="deletarUsuario(${i})" style="background:var(--mail); color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:10px;">EXCLUIR</button>
+                      </div>`;
+            }
+        });
         document.getElementById("lista-usuarios").innerHTML = h;
     });
 }
 
 function deletarUsuario(i) {
-    if(confirm("Remover usuário?")) fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) }).then(() => carregarUsuarios());
+    if(confirm("Tem certeza que deseja remover este acesso?")) {
+        document.getElementById("overlay").style.display = "flex";
+        fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteUser", row: i }) })
+        .then(() => {
+            document.getElementById("overlay").style.display = "none";
+            carregarUsuarios();
+        });
+    }
 }
 
 function pag(dir) { pAtu += dir; render(); window.scrollTo(0,0); }
