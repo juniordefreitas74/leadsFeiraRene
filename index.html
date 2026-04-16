@@ -1,49 +1,10 @@
 
-
-Iniciar teste gratuito
-
-Compartilhar
-pasted_content.txt
-Texto · 21.86 KB
-isso está funcionando não mude muita coisa, ele só não está apagando o lead cadastrado, e me diga se tem algo mais para ajustar sem perder a essencia
-Lite
-Entendido! Vou analisar o código para corrigir o problema do formulário que não limpa após o cadastro e sugerir pequenos ajustes mantendo a essência do seu projeto.
-Analisando o código, percebo que a função de limpeza do formulário após cadastro não está implementada. Próximo passo: implementar essa limpeza ao salvar lead e verificar outros ajustes no CRM HTML.
-
-Lite
-Aqui está a versão corrigida e otimizada do seu CRM (v1.9.1).
-O que foi corrigido:
-Limpeza do Formulário: Adicionei a limpeza obrigatória de todos os campos (Nome, Empresa, WhatsApp, E-mail, Ramo) dentro da função salvarLead após a confirmação do servidor.
-Reset de ID: O campo oculto editOriginalTel agora é resetado após salvar, garantindo que o próximo cadastro não tente sobrescrever o anterior.
-Ajustes sugeridos (sem perder a essência):
-Melhoria na Paginação: Os botões "Anterior" e "Próximo" agora ficam desabilitados automaticamente quando não há mais páginas, evitando erros de navegação.
-Filtros Inteligentes: Adicionei eventos de onchange nos selects de Status e Segmento. Agora a tabela filtra automaticamente assim que você seleciona uma opção, sem precisar clicar sempre no botão "Filtrar".
-Busca com Enter: Agora você pode pressionar "Enter" no campo de busca para executar a filtragem rapidamente.
-Feedback de Login: Adicionei o overlay de "Processando" também no login, para o usuário saber que o sistema está validando os dados.
-Segurança Simples: Adicionei validações básicas para evitar o envio de formulários de usuário vazios.
-O arquivo anexo rsi_crm_v1_9_1.html já está pronto para uso. Basta substituir o seu código atual por este.
-rsi_crm_v1_9_1.html
-Código · 23.56 KB
-Ver todos os arquivos nesta tarefa
-Corrigi a função de limpeza do formulário após cadastro, incluindo o reset dos campos e do ID oculto. Também sugeri melhorias na navegação, filtros e validações para otimizar o CRM.
-
-Tarefa concluída
-Como foi este resultado?
-Sugestões de acompanhamento
-
-
-
-
-Todos os arquivos nesta tarefa
-Hoje
-
-rsi_crm_v1_9_1.html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>RSI CRM Cloud v1.9.1 | By FF Person</title>
+<title>RSI CRM Cloud v1.9.2 | By FF Person</title>
 <style>
 :root { 
     --primary: #4f46e5; --wa: #22c55e; --mail: #ef4444; --edit: #f59e0b; --dark: #0f172a; --bg: #f8fafc; 
@@ -167,7 +128,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
             </div>
         </div>
     </div>
-    <footer>VERSÃO 1.9.1 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
+    <footer>VERSÃO 1.9.2 | DESENVOLVIDO POR <strong>FF PERSON</strong></footer>
 </div>
 
 <div id="modal-lead">
@@ -180,7 +141,7 @@ footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-s
         <label>E-mail</label><input type="email" id="addEmail">
         <label>Segmento (Ramo)</label><input list="ramos-list" id="addRamo"><datalist id="ramos-list"></datalist>
         <button id="btn-save-lead" class="btn-main" onclick="salvarLead()">SALVAR DADOS</button>
-        <button style="width:100%; border:none; background:none; margin-top:15px; cursor:pointer;" onclick="document.getElementById('modal-lead').style.display='none'">Cancelar</button>
+        <button style="width:100%; border:none; background:none; margin-top:15px; cursor:pointer;" onclick="fecharModal()">Cancelar</button>
     </div>
 </div>
 
@@ -227,7 +188,7 @@ function carregar() {
                 return k ? l[k] : "";
             }
             return {
-                nome: find("nome") || find("name") || "",
+                nome: find("name") || find("nome") || "",
                 empresa: find("empresa") || "",
                 telefone: String(find("telefone") || find("whatsapp") || "").replace(/\D/g, ""),
                 email: find("email") || find("e-mail") || "",
@@ -311,12 +272,7 @@ function salvarStatus(tel, st, nt) {
 
 function abrirNovoLead() {
     document.getElementById("modal-title").innerText = "Novo Lead";
-    document.getElementById("editOriginalTel").value = "";
-    document.getElementById("addNome").value = ""; 
-    document.getElementById("addEmpresa").value = "";
-    document.getElementById("addTelefone").value = ""; 
-    document.getElementById("addEmail").value = "";
-    document.getElementById("addRamo").value = ""; 
+    limparForm();
     document.getElementById("modal-lead").style.display='flex';
 }
 
@@ -331,6 +287,20 @@ function abrirEditar(tel) {
     document.getElementById("addEmail").value = d.email;
     document.getElementById("addRamo").value = d.ramo;
     document.getElementById("modal-lead").style.display='flex';
+}
+
+function limparForm() {
+    document.getElementById("addNome").value = "";
+    document.getElementById("addEmpresa").value = "";
+    document.getElementById("addTelefone").value = "";
+    document.getElementById("addEmail").value = "";
+    document.getElementById("addRamo").value = "";
+    document.getElementById("editOriginalTel").value = "";
+}
+
+function fecharModal() {
+    document.getElementById("modal-lead").style.display='none';
+    limparForm();
 }
 
 function salvarLead() {
@@ -355,14 +325,7 @@ function salvarLead() {
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(d) }).then(() => {
         setTimeout(() => { 
             document.getElementById("overlay").style.display = "none"; 
-            document.getElementById("modal-lead").style.display='none'; 
-            // LIMPEZA DO FORMULÁRIO APÓS SALVAR
-            document.getElementById("addNome").value = "";
-            document.getElementById("addEmpresa").value = "";
-            document.getElementById("addTelefone").value = "";
-            document.getElementById("addEmail").value = "";
-            document.getElementById("addRamo").value = "";
-            document.getElementById("editOriginalTel").value = "";
+            fecharModal();
             carregar(); 
         }, 1500);
     }).catch(e => {
@@ -376,7 +339,15 @@ function deletar(tel) {
     if(confirm("Deseja realmente excluir este lead? ESTA AÇÃO NÃO PODE SER RECUPERADA.")) {
         document.getElementById("overlay").style.display = "flex";
         fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "deleteLead", telefone: tel }) })
-        .then(() => setTimeout(() => { document.getElementById("overlay").style.display = "none"; carregar(); }, 1500));
+        .then(() => {
+            setTimeout(() => { 
+                document.getElementById("overlay").style.display = "none"; 
+                carregar(); 
+            }, 1500);
+        }).catch(e => {
+            document.getElementById("overlay").style.display = "none";
+            alert("Erro ao excluir lead.");
+        });
     }
 }
 
